@@ -1,0 +1,2 @@
+# This file ensures the directory is tracked by git
+# Actual processed metadata files are excluded via .gitignore

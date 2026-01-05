@@ -1,0 +1,211 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+env/
+venv/
+ENV/
+.venv
+env.bak/
+venv.bak/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.cert
+secrets/
+
+# API Keys and Credentials
+**/api_keys.txt
+**/credentials.json
+**/config.ini
+**/secrets.yaml
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+chroma_db/
+**/chroma_db/
+*.db-journal
+
+# Data files - EXCLUDE ALL CONTRACT FILES
+data/raw_contracts/*
+!data/raw_contracts/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+**/raw_contracts/*.pdf
+**/raw_contracts/*.doc
+**/raw_contracts/*.docx
+**/processed/*.json
+**/processed/*.pdf
+**/processed/*.doc
+**/processed/*.docx
+
+# Document files (PDF, DOC, DOCX) - exclude all
+*.pdf
+*.doc
+*.docx
+*.xlsx
+*.xls
+*.ppt
+*.pptx
+
+# Training and test data
+**/training_data/
+**/test_data/
+**/sample_data/
+**/datasets/
+*.csv
+*.tsv
+*.parquet
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.model
+*.weights
+*.ckpt
+*.pt
+*.pth
+
+# Logs
+*.log
+logs/
+**/*.log
+rag_test.log
+backend.log
+*.log.*
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+*.cover
+.cache
+nosetests.xml
+coverage.xml
+*.coveragerc
+
+# Node.js (Frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Frontend build outputs
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+frontend/.nuxt/
+frontend/.vuepress/dist/
+frontend/.serverless/
+frontend/.svelte-kit/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# pyenv
+.python-version
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath
+*.sage.py
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# mkdocs
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# Project specific
+test_rag_pipeline.py
+test_pipeline.py
+debug_extraction.py
+check_backend.py
+check_ocr_status.py
+check_storage.py
+verify_data_sources.py
+test_poppler_detection.py
+migrate_add_analysis_json.py
+ingest_contracts.py
+
+# Keep directory structure but exclude files
+!data/raw_contracts/.gitkeep
+!data/processed/.gitkeep

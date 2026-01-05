@@ -1,0 +1,2 @@
+# This file ensures the directory is tracked by git
+# Actual contract files (.pdf, .docx, .doc) are excluded via .gitignore
