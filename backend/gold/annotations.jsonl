@@ -1,0 +1,3 @@
+{"file": "../data/raw_contracts/EMPLOYMENT_AGREEMENT_1.pdf", "salary_in_inr": 1200000, "notice_period_days": 60, "non_compete": true, "contract_type": "employment"}
+{"file": "../data/raw_contracts/CONSULTANCY_AGREEMENT_1.pdf", "salary_in_inr": null, "notice_period_days": 30, "non_compete": false, "contract_type": "consultancy"}
+{"file": "../data/raw_contracts/interndoc_1.pdf", "salary_in_inr": 300000, "notice_period_days": 15, "non_compete": false, "contract_type": "internship"}

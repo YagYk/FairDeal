@@ -30,6 +30,12 @@ class ChatbotService:
         """
         Generate a chatbot response based on the question and analysis data.
         
+        IMPORTANT:
+        - To avoid LLM rate limiting and quota issues, the chatbot now uses
+          deterministic, rule-based responses only.
+        - This still uses the full analysis data (fairness score, red flags,
+          market data, negotiation priorities) to answer questions.
+        
         Args:
             question: User's question about the contract analysis
             analysis_data: Complete analysis result dictionary
@@ -37,33 +43,79 @@ class ChatbotService:
         Returns:
             Chatbot response as string
         """
-        logger.info(f"Generating chatbot response for question: {question[:100]}...")
+        logger.info(f"Generating chatbot response (rule-based) for question: {question[:100]}...")
         
-        # Build context from analysis data
-        context = self._build_context(analysis_data)
-        
-        # Build prompt for LLM
-        prompt = self._build_chatbot_prompt(question, context)
-        
+        # Directly use rule-based engine to avoid LLM and rate limits
         try:
-            # Generate response using LLM (no response_format for text output)
-            response = self.llm_service._call_llm(
-                prompt,
-                response_format=None,  # Text response, not JSON
-                max_tokens=1000,
-            )
-            
-            if isinstance(response, str):
-                return response.strip()
-            else:
-                # If response is a dict (from JSON mode), extract text
-                if isinstance(response, dict):
-                    return str(response).strip()
-                return str(response).strip()
-                
+            return self._generate_fallback_response(question, analysis_data)
         except Exception as e:
-            logger.error(f"Error generating chatbot response: {e}")
-            return "I apologize, but I'm having trouble processing your question right now. Please try again or rephrase your question."
+            logger.error(f"Rule-based chatbot failed: {e}")
+            return "I had trouble generating a detailed answer, but your analysis dashboard (Fairness Score, Red Flags, Market Data, Negotiation) has the latest results."
+            
+    def _generate_fallback_response(self, question: str, analysis_data: Dict[str, Any]) -> str:
+        """
+        Generate a rule-based response when LLM is unavailable.
+        Uses keyword matching to find relevant analysis sections.
+        """
+        q_lower = question.lower()
+        
+        # 1. Fairness Score / Overall Assessment
+        if any(w in q_lower for w in ["score", "fair", "rating", "assessment", "good", "bad"]):
+            score = analysis_data.get("fairness_score", 0)
+            rating = "Excellent" if score >= 80 else "Good" if score >= 65 else "Average" if score >= 50 else "Poor"
+            return f"Based on my analysis, this contract has a Fairness Score of **{score}/100** ({rating}). This score is calculated based on salary competitiveness (%s percentile), notice period, and the presence of red flags." % (
+                analysis_data.get("percentile_rankings", {}).get("salary", "unknown")
+            )
+
+        # 2. Salary / Pay / Compensation
+        if any(w in q_lower for w in ["salary", "pay", "compensation", "money", "ctc"]):
+            meta = analysis_data.get("contract_metadata", {})
+            salary = meta.get("salary")
+            try:
+                # Try to format if it's a number
+                if isinstance(salary, (int, float)):
+                    salary_str = f"₹{salary:,}"
+                elif isinstance(salary, str) and salary.isdigit():
+                    salary_str = f"₹{int(salary):,}"
+                else:
+                    salary_str = str(salary) if salary else "not specified"
+            except:
+                salary_str = str(salary) if salary else "not specified"
+                
+            percentile = analysis_data.get("percentile_rankings", {}).get("salary", "unknown")
+            return f"The extracted salary is **{salary_str}** per year. In the current market context, this places you in the **{percentile}th percentile**. Ensuring your compensation aligns with industry standards is critical."
+            
+        # 3. Notice Period
+        if any(w in q_lower for w in ["notice", "resign", "leaving", "period"]):
+            meta = analysis_data.get("contract_metadata", {})
+            days = meta.get("notice_period_days") or "standard"
+            percentile = analysis_data.get("percentile_rankings", {}).get("notice_period", "neutral")
+            return f"The notice period is **{days} days**. Compared to similar contracts, this is in the **{percentile}th percentile**. A standard notice period is typically 30-60 days."
+
+        # 4. Red Flags / Risks / Issues
+        if any(w in q_lower for w in ["red flag", "risk", "issue", "problem", "warn", "bad"]):
+            flags = analysis_data.get("red_flags", [])
+            if not flags:
+                return "I found no major red flags in this contract. It appears to be relatively standard."
+            
+            flag_text = "\n".join([f"- {f.get('issue', f) if isinstance(f, dict) else f}" for f in flags[:3]])
+            return f"I identified **{len(flags)} potential red flags** that you should review:\n\n{flag_text}\n\nI recommend clarifying these clauses before signing."
+
+        # 5. Negotiation / Improvement
+        if any(w in q_lower for w in ["negotiate", "improve", "better", "ask", "change"]):
+            priorities = analysis_data.get("negotiation_priorities", [])
+            if not priorities:
+                return "Based on the score, the terms seem reasonable, but you can always negotiate salary or benefits."
+
+            priority_text = "\n".join([f"- {p.get('priority', p) if isinstance(p, dict) else p}" for p in priorities[:3]])
+            return f"Here are the top areas you might want to negotiate:\n\n{priority_text}\n\nCheck the 'Negotiation' tab for specific scripts you can use."
+
+        # Fallback context-aware generic response
+        return (
+            "I couldn't match your question to a specific part of the analysis, "
+            "but your contract has already been analyzed. Try asking about:\n"
+            "- fairness score\n- salary / compensation\n- notice period\n- red flags or risks\n- what to negotiate"
+        )
     
     def _build_context(self, analysis_data: Dict[str, Any]) -> str:
         """

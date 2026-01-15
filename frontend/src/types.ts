@@ -1,23 +1,27 @@
 export interface ContractMetadata {
   contractType: string
   industry: string
-  role: string
+  role: string | null
   location: string
-  salary: number
-  noticePeriodDays: number
+  salary: number | null
+  noticePeriodDays: number | null
   nonCompete: boolean
+  benefits?: string[]
 }
 
 export interface PercentileRankings {
-  salary: number
-  noticePeriod: number
-  [key: string]: number
+  salary: number | null
+  noticePeriod: number | null
+  [key: string]: number | null
 }
 
 export interface NegotiationScript {
   clause: string
   script: string
   successProbability: number
+  // Legacy fields (for backwards compatibility)
+  topic?: string
+  reason?: string
 }
 
 export interface DetailedExplanation {

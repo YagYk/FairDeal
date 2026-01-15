@@ -236,7 +236,8 @@ class StatsService:
         """
         Load all processed contract metadata from disk.
         
-        This reads from the processed_contracts_path directory.
+        Uses progressive fallback: if strict filters return no data,
+        tries looser filters to ensure useful comparisons.
         """
         processed_dir = settings.get_processed_contracts_path()
         
@@ -244,32 +245,77 @@ class StatsService:
             logger.warning(f"Processed contracts directory not found: {processed_dir}")
             return []
         
-        contracts = []
+        # Load all contracts first
+        all_contracts = []
         for metadata_file in processed_dir.glob("*_metadata.json"):
             try:
                 with open(metadata_file, "r", encoding="utf-8") as f:
                     contract_data = json.load(f)
-                
-                # Apply filters
-                metadata = contract_data.get("metadata", {})
-                
-                m_type = self._extract_value(metadata.get("contract_type"))
-                m_industry = self._extract_value(metadata.get("industry"))
-                m_role = self._extract_value(metadata.get("role"))
-                m_location = self._extract_value(metadata.get("location"))
-                
-                if contract_type and m_type != contract_type:
-                    continue
-                if industry and m_industry != industry:
-                    continue
-                if role and m_role != role:
-                    continue
-                if location and m_location != location:
-                    continue
-                
-                contracts.append(contract_data)
+                all_contracts.append(contract_data)
             except Exception as e:
                 logger.error(f"Error loading {metadata_file}: {e}")
         
-        return contracts
+        if not all_contracts:
+            logger.warning("No contracts found in processed directory")
+            return []
+        
+        # Try progressive filtering (strict to loose)
+        # Level 1: Try all filters
+        filtered = self._apply_filters(all_contracts, contract_type, industry, role, location)
+        if filtered:
+            logger.info(f"Found {len(filtered)} contracts with all filters")
+            return filtered
+        
+        # Level 2: Try without location
+        filtered = self._apply_filters(all_contracts, contract_type, industry, role, None)
+        if filtered:
+            logger.info(f"Found {len(filtered)} contracts (relaxed: no location filter)")
+            return filtered
+        
+        # Level 3: Try without role and location
+        filtered = self._apply_filters(all_contracts, contract_type, industry, None, None)
+        if filtered:
+            logger.info(f"Found {len(filtered)} contracts (relaxed: no role/location filter)")
+            return filtered
+        
+        # Level 4: Try only contract_type
+        filtered = self._apply_filters(all_contracts, contract_type, None, None, None)
+        if filtered:
+            logger.info(f"Found {len(filtered)} contracts (only contract_type filter)")
+            return filtered
+        
+        # Level 5: Return all contracts if nothing matches
+        logger.info(f"No filters matched, returning all {len(all_contracts)} contracts")
+        return all_contracts
+    
+    def _apply_filters(
+        self,
+        contracts: List[Dict[str, Any]],
+        contract_type: Optional[str],
+        industry: Optional[str],
+        role: Optional[str],
+        location: Optional[str],
+    ) -> List[Dict[str, Any]]:
+        """Apply filters to contract list and return matches."""
+        filtered = []
+        for contract_data in contracts:
+            metadata = contract_data.get("metadata", {})
+            
+            m_type = self._extract_value(metadata.get("contract_type"))
+            m_industry = self._extract_value(metadata.get("industry"))
+            m_role = self._extract_value(metadata.get("role"))
+            m_location = self._extract_value(metadata.get("location"))
+            
+            if contract_type and m_type and m_type.lower() != contract_type.lower():
+                continue
+            if industry and m_industry and m_industry.lower() != industry.lower():
+                continue
+            if role and m_role and m_role.lower() != role.lower():
+                continue
+            if location and m_location and m_location.lower() != location.lower():
+                continue
+            
+            filtered.append(contract_data)
+        
+        return filtered
 

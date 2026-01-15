@@ -79,7 +79,7 @@ class ExplanationService:
         similar_contracts: List[Dict[str, Any]],
         market_stats: Dict[str, Any],
     ) -> Dict[str, Any]:
-        """Build transparency report on data sources."""
+        """Build transparency report on data sources using actual knowledge base count."""
         # Extract unique contract IDs from similar contracts
         contract_ids = set()
         contract_details = []

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence, motion } from 'framer-motion'
 import { AuthProvider } from './contexts/AuthContext'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Home from './pages/Home'
 import HowItWorks from './pages/HowItWorks'
 import Features from './pages/Features'
@@ -16,15 +17,12 @@ import ProtectedRoute from './components/ProtectedRoute'
 
 function AppRoutes() {
   const location = useLocation()
+  const showFooter = !['/', '/login', '/signup'].includes(location.pathname)
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden">
-      {/* Ambient background lights - Subtle */}
-      <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-gold-500/2 rounded-full blur-[120px] pointer-events-none" />
-      <div className="fixed bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-accent-purple/2 rounded-full blur-[120px] pointer-events-none" />
-
+    <div className="min-h-screen relative overflow-x-hidden flex flex-col">
       <Header />
-      <main className="min-h-screen w-full">
+      <main className="flex-1 w-full">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -61,6 +59,7 @@ function AppRoutes() {
           </motion.div>
         </AnimatePresence>
       </main>
+      {showFooter && <Footer />}
     </div>
   )
 }

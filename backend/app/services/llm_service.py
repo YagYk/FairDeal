@@ -438,17 +438,72 @@ Return ONLY valid JSON in this format:
 """
         return prompt
     
+    
+    def analyze_contract_comprehensive(self, text: str) -> Dict[str, Any]:
+        """
+        Perform comprehensive analysis in a SINGLE LLM call to save rate limits.
+        Returns metadata, fairness score, and summary all at once.
+        """
+        # Truncate text to avoid token limits
+        truncated_text = text[:15000] if len(text) > 15000 else text
+        
+        prompt = f"""
+        Analyze this employment contract text and return a JSON object with the following structure:
+        {{
+            "metadata": {{
+                "contract_type": "employment | freelance | internship | other",
+                "role": "extracted role title",
+                "industry": "extracted industry",
+                "salary": 1200000 (numeric yearly value in local currency),
+                "location": "extracted location",
+                "notice_period_days": 30 (numeric days),
+                "non_compete": true/false (boolean),
+                "benefits": ["list", "of", "benefits"],
+                "termination_clauses": "summary of termination terms"
+            }},
+            "fairness_score": 75 (integer 0-100),
+            "fairness_reasoning": "Brief explanation of the score",
+            "summary": "2-3 sentence summary of the contract"
+        }}
+
+        SCORING GUIDELINES:
+        - 80-100: Excellent, pro-employee, high salary, good benefits
+        - 60-79: Fair/Good, standard market terms
+        - 40-59: Average/Below Average, some restrictive clauses
+        - 0-39: Poor/Exploitative, very low salary or harsh terms
+
+        Contract Text:
+        {truncated_text}
+        """
+        
+        try:
+            # reduced retries to prevent locking up
+            response_text = self._call_llm(prompt, max_tokens=1000, response_format="json_object", max_retries=2)
+            
+            # Clean up response if needed (remove markdown)
+            if response_text.startswith("```json"):
+                response_text = response_text[7:]
+            if response_text.startswith("```"):
+                response_text = response_text[3:]
+            if response_text.endswith("```"):
+                response_text = response_text[:-3]
+                
+            return json.loads(response_text)
+        except Exception as e:
+            logger.error(f"Comprehensive analysis failed: {e}")
+            return {}
+
     def _call_llm(
         self,
         prompt: str,
         response_format: Optional[str] = None,
         max_tokens: int = 2000,
+        max_retries: int = 0,  # CRITICAL: Default to 0 to prevent blocking/hanging. Fail fast.
     ) -> Any:
         """
         Call Gemini Flash with prompt and return response.
         Handles rate limits with robust exponential backoff.
         """
-        max_retries = 5
         base_delay = 5  # Start with 5s delay
         
         for attempt in range(max_retries):

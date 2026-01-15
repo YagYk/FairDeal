@@ -163,4 +163,58 @@ class RAGService:
     def get_collection_stats(self) -> Dict[str, Any]:
         """Get statistics about the vector database."""
         return self.chroma_client.get_collection_stats()
-
+    
+    def get_contracts_by_metadata_fast(
+        self,
+        contract_type: Optional[str] = None,
+        n_results: int = 10,
+    ) -> List[Dict[str, Any]]:
+        """
+        FAST retrieval - no embedding API call needed!
+        Gets contracts by metadata filter using ChromaDB's get() method.
+        
+        Args:
+            contract_type: Filter by contract type
+            n_results: Max results to return
+            
+        Returns:
+            List of contract chunks with metadata
+        """
+        import time
+        start_time = time.time()
+        logger.info(f"Fast retrieval: contract_type={contract_type}")
+        
+        try:
+            # Build filter
+            where_clause = None
+            if contract_type and contract_type not in ['general', 'Unknown']:
+                where_clause = {"contract_type": {"$eq": contract_type}}
+            
+            # Use get() instead of query() - no embedding needed!
+            results = self.chroma_client.collection.get(
+                where=where_clause,
+                limit=n_results,
+                include=["documents", "metadatas"]
+            )
+            
+            # Format results
+            formatted = []
+            ids = results.get("ids", [])
+            documents = results.get("documents", [])
+            metadatas = results.get("metadatas", [])
+            
+            for i in range(len(ids)):
+                formatted.append({
+                    "id": ids[i],
+                    "text": documents[i] if documents else "",
+                    "similarity_score": 0.85,  # Simulated score
+                    "metadata": metadatas[i] if metadatas else {},
+                    "contract_id": metadatas[i].get("contract_id", "unknown") if metadatas else "unknown",
+                })
+            
+            logger.info(f"Fast retrieval complete: {len(formatted)} results in {time.time() - start_time:.2f}s")
+            return formatted
+            
+        except Exception as e:
+            logger.error(f"Fast retrieval failed: {e}")
+            return []

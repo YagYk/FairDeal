@@ -95,32 +95,59 @@ class FastExtractionService:
         })
     
     def _extract_salary(self, text: str) -> ExtractedField[float]:
+        """Extract salary with improved accuracy and validation."""
         text_lower = text.lower()
-        for pattern in self.salary_patterns:
+        
+        # More specific patterns - prioritize explicit salary mentions
+        salary_patterns = [
+            # Explicit CTC/salary with LPA
+            r'(?:ctc|cost to company|salary|annual salary|compensation)[:\s]+(?:rs\.?|inr|₹)?[\s]*([\d,]+(?:\.\d+)?)\s*(?:lpa|lac|lakh(?:s)?|l)\s*(?:per annum|p\.?a\.?)?',
+            # Format: 4.5 LPA, 4.5 Lacs, etc.
+            r'([\d,]+(?:\.\d+)?)\s*(?:lpa|lac|lakh(?:s)?)\s*(?:per annum|p\.?a\.?)?',
+            # Format: Rs. X,XX,XXX per annum
+            r'(?:rs\.?|inr|₹)\s*([\d,]+(?:\.\d+)?)\s*(?:per annum|p\.?a\.?|annually|/-)',
+            # Format: salary of Rs X
+            r'salary[:\s]+(?:of\s+)?(?:rs\.?|inr|₹)\s*([\d,]+(?:\.\d+)?)',
+            # Format: Rs. X (simple capture if context is clear or strong patterns fail)
+            r'(?:rs\.?|inr|₹)\s*([\d,]{4,})',  # Capture explicitly currency prefixed numbers > 1000
+            # Format: X,XXX,XXX (look for large numbers with commas)
+            r'([\d]{1,3}(?:,[\d]{2,3})+)',
+        ]
+        
+        for pattern in salary_patterns:
             matches = re.finditer(pattern, text_lower, re.IGNORECASE)
             for match in matches:
-                value_str = match.group(1).replace(',', '').replace(' ', '')
-                source_text = match.group(0)
                 try:
-                    value = 0.0
-                    multiplier = 1.0
-                    if 'lakh' in source_text.lower() or 'l' in source_text.lower():
-                        multiplier = 100000.0
-                    elif 'crore' in source_text.lower():
-                        multiplier = 10000000.0
+                    value_str = match.group(1).replace(',', '').strip()
+                    source_text = match.group(0)
+                    value = float(value_str)
                     
-                    value = float(value_str) * multiplier
+                    # Determine if it's in lakhs or raw rupees
+                    source_lower = source_text.lower()
+                    if any(x in source_lower for x in ['lpa', 'lac', 'lakh', ' l ']):
+                        # Value is in lakhs (e.g., 4.5 LPA = 4.5 * 100000 = 450000)
+                        value = value * 100000
+                    elif value < 100:
+                        # Small number without unit - likely in lakhs
+                        value = value * 100000
+                    elif value > 100000000:
+                        # Extremely large (> 10 crore) - likely OCR error, reject
+                        logger.warning(f"Rejecting unrealistic salary: {value}")
+                        continue
                     
-                    return ExtractedField(
-                        value=value,
-                        confidence=0.9,
-                        source_text=source_text,
-                        explanation="Extracted via regex pattern matching"
-                    )
-                except:
+                    # Sanity check: typical Indian salaries are 2L to 2Cr
+                    if 100000 <= value <= 200000000:
+                        return ExtractedField(
+                            value=value,
+                            confidence=0.85,
+                            source_text=source_text[:100],  # Truncate for readability
+                            explanation="Extracted via improved salary pattern matching"
+                        )
+                except Exception as e:
+                    logger.debug(f"Salary parse error: {e}")
                     continue
         
-        return ExtractedField(value=None, confidence=0.0, explanation="No salary pattern found")
+        return ExtractedField(value=None, confidence=0.0, explanation="No valid salary pattern found")
 
     def _extract_notice_period(self, text: str) -> ExtractedField[int]:
         text_lower = text.lower()

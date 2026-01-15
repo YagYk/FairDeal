@@ -93,11 +93,25 @@ export const profileAPI = {
 
 // Contract Analysis API
 export const contractAPI = {
+  // V1 API (legacy) - still works
   analyze: async (file: File) => {
     const formData = new FormData()
     formData.append('file', file)
     
     const response = await api.post('/api/contracts/analyze', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    return response.data
+  },
+
+  // V2 API (deterministic scoring)
+  analyzeV2: async (file: File, enableNarration: boolean = false) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    
+    const response = await api.post(`/api/v2/analyze?enable_narration=${enableNarration}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -119,6 +133,18 @@ export const contractAPI = {
 
   getKnowledgeBaseStats: async () => {
     const response = await api.get('/api/contracts/stats')
+    return response.data
+  },
+
+  // V2 KB stats
+  getKnowledgeBaseStatsV2: async () => {
+    const response = await api.get('/api/kb/stats')
+    return response.data
+  },
+
+  // V2 Scoring info
+  getScoringInfo: async () => {
+    const response = await api.get('/api/v2/scoring-info')
     return response.data
   },
 
