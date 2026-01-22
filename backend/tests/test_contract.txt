@@ -1,0 +1,1 @@
+This is a test contract for Amazon SDE 2. Salary is 18,00,000 INR. Notice period is 30 days. No non-compete. Provident fund is included.

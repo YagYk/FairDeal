@@ -1,0 +1,58 @@
+{
+  "contract_id": "b94e6b7d7915f5ef",
+  "filename": "startup_founders_sha_sample.pdf",
+  "file_hash": "b94e6b7d7915f5ef7cd5cf888ee6d3eb4fb89f934fc2d951a0a7661ef355af67",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "confidentiality": {
+        "text": "15 Communication among Partners to the Agreement\n[Company name]\n[Document ID]\n[company URL]\n\n7\nShareholders\u2019 Agreement of [Company Name]",
+        "evidence": {
+          "value": 136,
+          "confidence": 0.7,
+          "source_text": "confidentiality before making the disclosure.\n15 Communication among Partners to the Agreement\n[Company name]\n[Document ID]\n[company URL]\n\n7\nShare",
+          "page_number": 6,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 24
+}

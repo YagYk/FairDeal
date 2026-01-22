@@ -1,0 +1,68 @@
+{
+  "contract_id": "58eb22ba4c74338d",
+  "filename": "Product_MSA_V1.pdf",
+  "file_hash": "58eb22ba4c74338d6b5a47721fca74ce39551d87fa2125457548a2f2fd064ac1",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "ip": {
+        "text": "6.2. Upon termination or expiration of this Agreement, the Parties shall return",
+        "evidence": {
+          "value": 79,
+          "confidence": 0.7,
+          "source_text": "Intellectual Property Rights, the obligations shall subsist indefinitely.\n6.2. Upon termination or expiration of this Agreement, the Parties shall return",
+          "page_number": 7,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "6.1. During the Term, each Party may be exposed to Confidential Information\nrelating to the other Party, their clients, and their business partners. Each",
+        "evidence": {
+          "value": 153,
+          "confidence": 0.7,
+          "source_text": "CONFIDENTIALITY\n6.1. During the Term, each Party may be exposed to Confidential Information\nrelating to the other Pa",
+          "page_number": 6,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 58
+}

@@ -1,0 +1,78 @@
+{
+  "contract_id": "2bb54bbca407b95d",
+  "filename": "RfPPMU.pdf",
+  "file_hash": "2bb54bbca407b95d1d5acd287dcd2592be5d37c1e54c61dbecde33bed14eea9d",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 5000000.0,
+      "confidence": 0.9,
+      "source_text": "50\nlakh",
+      "page_number": 20,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": 100.0,
+      "confidence": 0.9,
+      "source_text": "liquidated damages, as applicable, for delay and non-\nperformance, as mentioned in this bidding document, will be deducted from\nthe payments for the respective payment period and the deducted amount will\nnot be repaid to the successful bidder.\nxi. Taxes, as applicable, will be deducted/ paid, as per the prevalent rules and\nregulations. Change in Govt. tax structure (increase / decrease) will be borne\nby CTA during the payment made to CONSULTING AGENCY from the\napplicable period.\nA. Service Level Standards\nService level plays an important role in defining the Quality of Services (QoS).\nThe prime objective of service levels is to ensure high quality of services from\nsuccessful bidder, in an efficient manner to the identified users.\nDelays in service delivery caused entirely due to the acts of the CONSULTANT\nand if such delays exceed beyond a week from agreed timeline / plan for\nservice delivery, the DEPARTMENT at its discretion, may impose a penalty of up\nto 1% (one percent) of the payment applicable for that month. If the said delay\nextends beyond four (4) weeks for a period of up to eight (08) weeks after which\nthe DEPARTMENT may choose to terminate the contract. Such penalties imposed\nshall be communicated to the CONSULTANT in writing by the DEPARTMENT with\ndue justification and evidence. Recoveries of penalties shall be adjusted against\noutstanding dues to the CONSULTANT or will be set off against future payments\nif any.\nThe CONSULTANT shall be responsible to ensure that experts shall be\navailable for the defined period and does not leave during the assignment\nperiod. In case such person himself leave the assignment or due to some action /\ninaction on part of the bidder such Experts become unavailable during the\nassignment period, or such persons are not available during such period due to\nany other reason including medical grounds, the bidder shall be liable for penalty\nas defined under the \u201cTerms of Payment\u201d section in this document. If the penalty\nreaches above 5% of the payment to be made in a quarter, and if it occurs two\ntimes in a calendar year then necessary action will be initiated by the\nDEPARTMENT.\n32\n\nList of Annexures\nAnnexure-1 - Pre-Bid Queries Format\nAnnexure-2 - Bidder\u201fs Authorization Certificate\nAnnexure-3 - Self Declaration\nAnnexure-4 - Bank Guarantee Format\nAnnexure-5 - Draft Agreement Format\n33\n\nANNEXURE-1: PRE-BID QUERIES FORMAT\n{to be filled by the bidder}\nName of the Company/Firm:\nBidding Document Fee Receipt No. Dated for Rs. /-\nName of Person(s) Representing the Company/ Firm:\nName of Person Designation Email-IDs Tel. Nos & Fax Nos\nCompany Firm / Contacts:\nAddress for\nContact Person (s) E-mail \u2013 ID(s) Tel. Nos & Fax Nos\nCorrespondence\nQuery/ Clarification Sought:\nQuery /\nS.No RFP Page No RFP Clause No Clause Details Suggestion /\nClarification\nNote: - Queries must be strictly submitted only in the prescribed format (.XLS/ .XLSX/ .ODF).\nQueries not submitted in the prescribed format will not be considered/ responded by the\nprocuring entity. Also, kindly attach the coloured scanned copy of the receipt towards the\nsubmission of the bidding / tender document fee.\n34\n\nANNEXURE-2: BIDDER\u201fS AUTHORIZATION CERTIFICATE\n{to be filled by the bidder}\nTo,\n{DoF/CTA},\n,\n,\nI/ We {Name/ Designation} hereby declare/ certify that {Name/ Designation} is hereby\nauthorized to sign relevant documents on behalf of the company/ firm in dealing with Bid\nreference No. dated . He/ She is also authorized to attend\nmeetings & submit technical & commercial information/ clarifications as may be required by\nyou in the course of processing the Bid. For the purpose of validation, his/ her verified\nsignatures are as under.\nThanking you,\nName of the Bidder: - Verified Signature:\nAuthorised Signatory: -\nSeal of the Organization: -\nDate:\nPlace:\n35\n\nANNEXURE-3: SELF-DECLARATION\n{to be filled by the bidder}\nTo,\n{CTA/DoF},\n,\nIn response to the Bid Ref. No. dated for {Project\nTitle}, as an Owner/ Partner/ Director/ Auth. Sign. Of ,\nI/ We hereby declare that presently our Company/ firm , at the time of\nbidding: -\na) possess the necessary professional, technical, financial, and managerial resources and\ncompetence required by the Bidding Document issued by the Procuring Entity.\nb) have fulfilled my/ our obligation to pay such of the taxes payable to the Union and the\nState Government or any local authority as specified in the Bidding Document.\nc) is having unblemished record and is not declared ineligible for corrupt & fraudulent\npractices either indefinitely or for a particular period of time by any State/ Central\ngovernment/ PSU/ UT.\nd) does not have any previous transgressions with any entity in India or any other\ncountry during the last three years\ne) does not have any debarment by any other procuring entity\nf) is not insolvent in receivership, bankrupt or being wound up, not have its affairs\nadministered by a court or a judicial officer, not have its business activities suspended\nand is not the subject of legal proceedings for any of the foregoing reasons.\ng) does not have, and our directors and officers have not been convicted of any criminal\noffence related to their professional conduct or the making of false statements or\nmisrepresentations as to their qualifications to enter into a procurement contract\nwithin a period of three years preceding the commencement of the procurement\nprocess, or not have been otherwise disqualified pursuant to debarment proceedings.\nh) does not have a conflict of interest as mentioned in the bidding document which\nmaterially affects the fair competition.\ni) will comply with the code of integrity as specified in the bidding document.\nAlso, this is to certify that, the specifications of Hardware & Software which I/ We have\nmentioned in the technical bid, and which I/ We shall supply if I/ We am/ are awarded with\nthe work, are in conformity with the minimum technical specifications of the bidding\ndocument and that there are no deviations of any kind from the requirement specifications.\n36\n\nAlso, I/ we have thoroughly read the bidding document and by signing this certificate, we\nhereby submit our token of unconditional acceptance to all the terms & conditions of the\nbidding document without any deviations and assumptions.\nI/ We also certify that the price I/ we have quoted is inclusive of all the cost factors involved\nin the end-to-end implementation and execution of the project, to meet the desired\nStandards set out in the bidding Document.\nIf this declaration is found to be incorrect then without prejudice to any other action that\nmay be taken, my/ our security may be forfeited in full and the bid, if any, to the extent\naccepted may be cancelled. If this declaration is found to be incorrect then without prejudice\nto any other action that may be taken as per the provisions of the applicable Act and Rules\nthereto prescribed by GoTN, my/ our security may be forfeited in full and our bid, to the\nextent accepted, may be cancelled.\nThanking you,\nName of the Bidder: -\nAuthorised Signatory: -\nSeal of the Organization: -\nDate:\nPlace:\n37\n\nANNEXURE -4: BANK GUARANTEE FORMAT\n(To be executed in Rs.100",
+      "page_number": 33,
+      "method": "regex"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "and the EMD / SD, as the case may be, shall be forfeited.\n21\n\nii. Bidders should note that any figures in the proof documents submitted by\nthe Bidders for proving their eligibility is found suppressed or erased, CTA\nshall have the right to seek the correct facts and figures or reject such Bids.\niii. It is up to the Bidders to submit the full copies of the proof documents to\nmeet out the Minimum Eligibility Criteria and Technical Evaluation System.\nOtherwise, CTA at its discretion may or may not consider such documents.\niv. The Tender calls for full copies of documents to prove the Bidder's\nexperience and capacity to undertake the project.\n3) Technical Bid Evaluation\nMinimum Eligibility Criteria (MEC)\nTSC will examine the technical bids as per Cl.6.1 MEC given in the Tender\ndocument. The documents which did not meet the eligibility criteria in the first",
+        "evidence": {
+          "value": 864,
+          "confidence": 0.7,
+          "source_text": "Termination of the contract will be without any compensation to the Bidder\nand the EMD / SD, as the case may be, shall be forfeited.\n21\n\nii. Bidders should note that any figur",
+          "page_number": 22,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "the rights and is otherwise authorized to deliver the TREASURIES AND ACCOUNTS DEPARTMENT Material",
+        "evidence": {
+          "value": 97,
+          "confidence": 0.7,
+          "source_text": "intellectual property rights of any third parties. Further, the TREASURIES AND ACCOUNTS DEPARTMENT has\nthe rights and is otherwise authorized to deliver the TREASURIES AND ACCOUNTS DEPARTMENT Material",
+          "page_number": 46,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "iii. was known to the successful bidder before its disclosure under this Agreement\niv. was or is independently developed by the successful bidder without breach of this Agreement (or)\nv. is required to be disclosed by governmental or judicial order, in which case the successful bidder shall give the\nTreasuries and Accounts Department prompt written notice, where possible, and use reasonable efforts to ensure",
+        "evidence": {
+          "value": 411,
+          "confidence": 0.7,
+          "source_text": "confidentiality of such information\niii. was known to the successful bidder before its disclosure under this Agreement\niv. was or is ind",
+          "page_number": 41,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 223
+}

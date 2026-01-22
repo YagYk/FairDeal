@@ -1,0 +1,47 @@
+{
+  "contract_id": "66de368587780af6",
+  "filename": "Websiteconsultant.pdf",
+  "file_hash": "66de368587780af6d5271f104831d7d4b7e5dc05bbd3bdfacdbd8cf12de99333",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": 15,
+      "confidence": 0.9,
+      "source_text": "15 days notice",
+      "page_number": 6,
+      "method": "regex"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {}
+  },
+  "num_chunks": 63
+}

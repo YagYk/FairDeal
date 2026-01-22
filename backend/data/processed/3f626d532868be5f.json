@@ -1,0 +1,68 @@
+{
+  "contract_id": "3f626d532868be5f",
+  "filename": "377_RZONUNSIAMI.pdf",
+  "file_hash": "3f626d532868be5fc5594959f3a7687eeb9674e23c8a001befdb835efc1f636b",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "equipment along with any data or intellectual property pertaining to CRISIL Foundation or\nits clients shall be returned or permanently deleted there from, at CRISIL Foundation\u2019s\noption. The Consultant shall not retain the copy of any information whether capable of being",
+        "evidence": {
+          "value": 270,
+          "confidence": 0.7,
+          "source_text": "termination of this Agreement or discontinuation of the Services, all CRISIL provided\nequipment along with any data or intellectual property pertaining to CRISIL Foundation or\nits client",
+          "page_number": 3,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "All intellectual property, if any, which pertains to the Services rendered by the Consultant\nhereunder, including, without limitation, any know- how, inventions, data, sketches, drawings,\nplans, blueprints, recommendations, concepts, designs, research, information, data, materials and\nall other matter which the Consultant generates in the course of, or as a result of, Services\nperformed under this Agreement, whether of a technical, operational, or economic nature, and\nany improvements or inventions based thereon and any patent and/or copyright applications\ndirected thereto and any patents and/or copyrights issuing there from which are conceived or\ndeveloped by the Consultant, solely or jointly with CRISIL Foundation(\u201cIntellectual\nProperty\u201d), shall be the sole property of CRISIL Foundation. The Consultant agrees to execute\nany documents or take any other actions as may reasonably be necessary, or as CRISIL\nFoundation may reasonably request, at CRISIL Foundation expense, to perfect CRISIL\nFoundation perpetual ownership of Intellectual Property.",
+        "evidence": {
+          "value": 1058,
+          "confidence": 0.7,
+          "source_text": "Intellectual Property\nAll intellectual property, if any, which pertains to the Services rendered by the Consultant\nhereund",
+          "page_number": 6,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 45
+}

@@ -1,0 +1,58 @@
+{
+  "contract_id": "e62b17a5c3b4a935",
+  "filename": "pinternships1920_3.pdf",
+  "file_hash": "e62b17a5c3b4a9358a21e99158e6ffbf19d9c63fc42aa48606a7ae349a111103",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 125000.0,
+      "confidence": 0.9,
+      "source_text": "1.25 lakhs",
+      "page_number": 2,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": 1.0,
+      "confidence": 0.9,
+      "source_text": "training cost amounting to Rs.1",
+      "page_number": 2,
+      "method": "regex"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "ip": {
+        "text": "11. You will be responsible for safekeeping and return in good condition and order of all Company assets, which may be in\nyour use, custody or charge; failing which the Company shall be entitled to recover the costs of the same from you.",
+        "evidence": {
+          "value": 237,
+          "confidence": 0.7,
+          "source_text": "intellectual property rights, which you may make or conceive during the internship.\n11. You will be responsible for safekeeping and return in good condition and order of all Company as",
+          "page_number": 3,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 26
+}

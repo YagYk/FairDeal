@@ -1,0 +1,88 @@
+{
+  "contract_id": "5c438abcd61fe6f3",
+  "filename": "FOUNDER_AGREEMENT (1).pdf",
+  "file_hash": "5c438abcd61fe6f3436346e16fa1694ee14a009b26622cf87bb511a19db43613",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "11.1 Termination Without Cause\nThis Agreement and the employment of the Founder with the Company may be terminated by the Company, without\nCause by giving the Founder 6 (six) months\u2019 notice in writing or payment of 6 (six) months\u2019 salary in lieu of such\nnotice.",
+        "evidence": {
+          "value": 261,
+          "confidence": 0.7,
+          "source_text": "TERMINATION\n11.1 Termination Without Cause\nThis Agreement and the employment of the Founder with the Company may",
+          "page_number": 5,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "The Founder\u2019s obligations with respect to Intellectual Property shall be as set forth in the Confidentiality and\nIntellectual Property Assignment Agreement.",
+        "evidence": {
+          "value": 156,
+          "confidence": 0.7,
+          "source_text": "INTELLECTUAL PROPERTY RIGHTS\nThe Founder\u2019s obligations with respect to Intellectual Property shall be as set forth in the Confide",
+          "page_number": 4,
+          "method": "regex"
+        }
+      },
+      "non_compete": {
+        "text": "8.1 The Founder covenants and agrees that during the term of his employment starting from the Effective Date and\nuntil the later of (i) the Founder ceasing to be a shareholder in the Company; or (ii) 12 (Twelve) months from the\nlast working day of the Founder upon termination of employment (with or without Cause) with the Company, the\nFounder shall not, directly or indirectly, in any capacity, whether through partnership or as a shareholder, joint\nventure partner, collaborator, consultant or agent or in any other manner whatsoever, whether for profit or otherwise:\n(a) carry on or participate (whether as a partner, shareholder, principal, agent, director, employee or consultant)\nin any business and/ or activity which is the same as or substantially similar to the Business, including in\nthe business of any Competitor, other than through the Company;\n(b) render any services to a Competitor or enter into employment with any of the Competitors;\n(c) solicit or influence or attempt to influence any client, customer or other Person to direct its purchase of\nthe products and/or services of the Company to itself or any Competitor; and/or\n(d) solicit or attempt to influence any Person, employed or engaged by the Company (whether as an employee\nconsultant, advisor or distributor or in any other manner) to terminate or otherwise cease such employment",
+        "evidence": {
+          "value": 1359,
+          "confidence": 0.7,
+          "source_text": "NON COMPETE AND NON SOLICIT\n8.1 The Founder covenants and agrees that during the term of his employment starting from the Effect",
+          "page_number": 4,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "The Founder shall have executed a separate confidentiality and intellectual property assignment agreement with the\nCompany which sets forth the confidentiality obligations of the Founder towards the Company.",
+        "evidence": {
+          "value": 207,
+          "confidence": 0.7,
+          "source_text": "CONFIDENTIALITY\nThe Founder shall have executed a separate confidentiality and intellectual property assignment agre",
+          "page_number": 5,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 30
+}

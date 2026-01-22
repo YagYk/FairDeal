@@ -1,0 +1,78 @@
+{
+  "contract_id": "7e4cc887f4c18e32",
+  "filename": "ratifyme-intern-agreement.pdf",
+  "file_hash": "7e4cc887f4c18e32eb18d97525a0044b42467565441efe88b3328b786d407390",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "Either Party may terminate this Agreement for cause by providing the other Party written notice if the\nother Party: (i) is in material breach of this Agreement and has failed to cure such breach within One (1)\ndays after its receipt of written notice of such breach provided by the non-breaching Party; (ii) engages in\nany unlawful business practice related to that Party's performance under the Agreement; or (iii) files a\npetition for bankruptcy, becomes insolvent, acknowledges its insolvency in any manner, makes an\n3\ne\nassignment for the benefit of its creditors, or has a receiver, trustee or similar party appointed for its",
+        "evidence": {
+          "value": 630,
+          "confidence": 0.7,
+          "source_text": "TERMINATION\nEither Party may terminate this Agreement for cause by providing the other Party written notice if t",
+          "page_number": 3,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "Intern grants to an irrevocable, non-exclusive, royalty free license for the term of this Agreement to use\nIntern\u2019s Intellectual Property Rights owned or created by it under this Agreement for Company, if any.\nIntern\u2019s intellectual property is and shall remain the exclusive property of Intern. Intern is not allowed to\nmake use of Company Intellectual Property without taking the written consent approval from Company.",
+        "evidence": {
+          "value": 419,
+          "confidence": 0.7,
+          "source_text": "INTELLECTUAL PROPERTY RIGHTS, ADVERTISEMENT AND PUBLICITY\nIntern grants to an irrevocable, non-exclusive, royalty free license for the term of this Agreement ",
+          "page_number": 5,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "The Intern agrees that at all times during or subsequent to the performance of the Services, the Intern will\nkeep confidential and not disclose or cause to be disclosed, publish, disseminate or otherwise make\navailable or use Confidential Information, except for the Intern's own use during the Term of this\nAgreement and only to the extent necessary to perform the Services. The Intern shall not remove or cause\nto removed tangible embodiments of, or electronic files containing, Confidential Information from the\nCompany, without prior written approval of the Company.",
+        "evidence": {
+          "value": 570,
+          "confidence": 0.7,
+          "source_text": "NON-DISCLOSURE AND PROTECTION\nThe Intern agrees that at all times during or subsequent to the performance of the Services, the Int",
+          "page_number": 4,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 55
+}

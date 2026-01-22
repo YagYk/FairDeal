@@ -1,0 +1,58 @@
+{
+  "contract_id": "61a925142492c289",
+  "filename": "vacancy-circular-for-engagement-of-legal-consultants.pdf",
+  "file_hash": "61a925142492c28959fa259bac2f007dc04e784663d865e44900b063334eba7b",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 960000.0,
+      "confidence": 0.9,
+      "source_text": "Rs. 80,000 per month",
+      "page_number": 1,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "a) The engagement shall automatically stand terminated at the end of the period unless\nextended by the Directorate, on mutual consent of both the parties. The Directorate\nmay terminate the Consultancy under any of the conditions mentioned below:\ni) The Consultant is unable to address the assigned work,\nIi) Quality of the assigned work is not to the satisfaction of the Controlling\nOfficer/ Competent Authority in the Directorate.\nPage 4 of 8\n\niii) The Consultant fails in timely achievement of the targets as finally decided\nby the Directorate.\niv) The Consultant is found lacking in honesty and integrity, decision in which\nregard of the Controlling Officer/ Competent Authority in the Directorate\nshall be final.\nv) If a selected candidate fails to join on the date of joining, he / she may be\ndebarred for a period of six months.\nvi) In case any Consultant want to discontinue, mllllmum 15 days prior\nwritten notice is required to be submitted by letter/c-mail to Directorate of\nIncome Tax (Legal and Research), New Delhi.\nvii) The Competent Authority in the Directorate may also terminate the",
+        "evidence": {
+          "value": 1098,
+          "confidence": 0.7,
+          "source_text": "TERMINATION OF ENGAGEMENT\na) The engagement shall automatically stand terminated at the end of the period unless\nextended by t",
+          "page_number": 4,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 46
+}

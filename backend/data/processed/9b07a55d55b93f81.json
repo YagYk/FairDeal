@@ -1,0 +1,68 @@
+{
+  "contract_id": "9b07a55d55b93f81",
+  "filename": "Appointment-letter-template.pdf",
+  "file_hash": "9b07a55d55b93f811ce28b86420b7eb7e70f0e4eb5240ccacfabe1e5f76aab50",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": 30,
+      "confidence": 0.9,
+      "source_text": "1 month notice",
+      "page_number": 2,
+      "method": "regex"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": 1,
+      "confidence": 0.9,
+      "source_text": "probation. During this tenure, your conduct, behavior\nand skills would be analyzed. We follow a _______ dress code. You can read more about it in the\nemployee handbook.\nPlease sign the enclosed Employee Agreement Form as your acceptance for the position and revert\nwith a signed copy by ____________.\nPlease carry all your documents like Aadhar Card, PAN Card, Marksheets, etc. on your first joining day.\nShould you have any query, feel free to contact ________ during office hours on ______________.\nYours truly,\nFor [your company name]\n[Signing Authority]\nHead-Human Resource\nAppointment letter template\n\nAppointment letter template\n*T&C Annexure Attached*\nEMPLOYMENT TERMS AND CONDITIONS\n\u25cf Your appointment is with effect from [DATE].\n\u25cf Your Cost to Company Package and Reimbursements (if any) shall be mentioned in the\nAnnexure 1 of Appointment Letter or Service Agreement whichever is applicable.\n\u25cf You will be posted at our \u201cLocation\u201d and will be reporting to \u201cReporting Manager- Name\n\u25cf You will be on probation for a period of six (6) months from the date of your joining, where\nafter, your services if found satisfactory, will stand confirmed. Any decision to the contrary or\nto extend the probation period will be communicated to you by the Human Resource\nDepartment. [your company name] reserves the right to reduce/dispense with or extend your\nprobation period at its absolute discretion.\n\u25cf You are entitled to avail 1.75 casual Sick leaves (CSL) per month until your services are\nconfirmed. After successful completion of the probation period, you will be entitled to 12\ndays earned leave (EL), which can be carried forward, if not availed in a calendar year.\n\u25cf In case you decide to resign from your services, you will be required to serve one (1) month\nnotice of physical presence in case you are under probation period AND Two (2) months\nnotice period of physical presence OR 1 month",
+      "page_number": 1,
+      "method": "regex"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "month gross salary in lieu of the notice period in case you are confirmed on the payrolls of the\ncompany unless otherwise mentioned in the Service agreement. However, [your company\nname] reserves the right to reduce/ dispense with or take any contrary decision at its absolute\ndiscretion.\n\u25cf The Company reserves the right to terminate your services in case your performance is found\nto be unsatisfactory/poor/below average, by giving either one-month notice/or one-month\ngross salary in case you are under probation period and 2 months notice period / or one-\nmonth notice with one-month gross salary in case you are confirmed on the payrolls of the\ncompany. The Company also reserves the right to terminate your services without any notice\nor salary in lieu thereof on the grounds of misconduct, or even in the case of reasonable\nsuspicion of misconduct, disloyalty, the commission of any act involving moral turpitude, or\nany act of indiscipline or inefficiency or for loss of confidence.\n\u25cf Your assignments at work may be changed at any time depending on the business\nexigencies.\n\u25cf You may be transferred at work in any of the company\u2019s branches or client sites/ offices\nacross India or Abroad.\n\u25cf You will be employed in the service of the company only as long as you are medically fit for\nemployment in all aspects. Management has the right to get you medically examined by any\nqualified medical practitioner during the tenure of your service.\n\u25cf In addition to the employment terms and conditions mentioned herein, all other standard and\ngeneral rules, practices and policies of the Company as existing now and which may be\namended from time to time shall be applicable to you.\n\u25cf You are required at all times to maintain the highest order of discipline and secrecy as regards\nto the work of the Company and/or its Subsidiaries or Associate Companies. All inventions,\nimprovements, discoveries made by you either alone or with other persons, will become the\nsole property of the company. You will ensure that patent protections are obtained for such",
+        "evidence": {
+          "value": 2053,
+          "confidence": 0.7,
+          "source_text": "notice period of physical presence OR 1 month notice period of physical presence with one-\nmonth gross salary in lieu of the notice period in case you are confirmed on the payrolls of the\ncom",
+          "page_number": 2,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "company.\n\u25cf You are required to devote your total attention and abilities exclusively for the business of the\nCompany. You will respect, obey and conform to all the regulations framed and issued by the\nCompany from time to time. You shall not, while in the employment of the Company, be\nengaged in any other employment, conduct business whatsoever or hold any office of profit\nor accept any other emoluments without the previous consent in writing of the Company.\n\u25cf During the course of your employment and if the nature of your business requires it, the",
+        "evidence": {
+          "value": 553,
+          "confidence": 0.7,
+          "source_text": "inventions/improvements and discoveries in India or elsewhere and assign the same to the\ncompany.\n\u25cf You are required to devote your total attention and abilities exclusively for the busines",
+          "page_number": 3,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 11
+}

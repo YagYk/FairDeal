@@ -1,0 +1,78 @@
+{
+  "contract_id": "f8af758a55edc653",
+  "filename": "URI-Student-Internship-Agreement-Template-.pdf",
+  "file_hash": "f8af758a55edc6539086b30e5d2a1826b40ca20f5c412fa8ea980f920ea21d8b",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "9.3 No Compensation. The parties understand and agree that neither party, nor any Intern, will be entitled to\ncompensation hereunder for its participation in the Program. No Intern will be considered an employee of either the\nUniversity or Host as a result of participation in the Program, and neither the University nor Host will be responsible for\nWorker\u2019s Compensation coverage with respect to any Intern.",
+        "evidence": {
+          "value": 408,
+          "confidence": 0.7,
+          "source_text": "termination.\n9.3 No Compensation. The parties understand and agree that neither party, nor any Intern, will be en",
+          "page_number": 6,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "designated as Confidential Information by such party and not generally known by third parties. Confidential Information\nincludes, but is not limited to, the following types of information and other information of a similar nature (whether or\nnot reduced to writing): the existence and terms of this Agreement; patient, customer, employee and student records,\nincluding names, addresses, telephone numbers, and other information related to patients, customers, employees, and\nstudents; marketing techniques and materials; marketing and development plans and procedures; and financial\ninformation, all of which it considers trade secret.",
+        "evidence": {
+          "value": 635,
+          "confidence": 0.7,
+          "source_text": "proprietary information. \u201cConfidential Information\u201d shall mean material or information proprietary to either party or\ndesignated as Confidential Information by such party and not generally known by third parties. Confi",
+          "page_number": 5,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "8.1 Definition. Each party may in some cases (at the discretion of the disclosing party, when it is considered necessary or\nappropriate to help ensure the success of the internship arrangement) be given access to the other party\u2019s confidential and\nproprietary information. \u201cConfidential Information\u201d shall mean material or information proprietary to either party or\ndesignated as Confidential Information by such party and not generally known by third parties. Confidential Information\nincludes, but is not limited to, the following types of information and other information of a similar nature (whether or\nnot reduced to writing): the existence and terms of this Agreement; patient, customer, employee and student records,\nincluding names, addresses, telephone numbers, and other information related to patients, customers, employees, and\nstudents; marketing techniques and materials; marketing and development plans and procedures; and financial\ninformation, all of which it considers trade secret.",
+        "evidence": {
+          "value": 1001,
+          "confidence": 0.7,
+          "source_text": "CONFIDENTIALITY\n8.1 Definition. Each party may in some cases (at the discretion of the disclosing party, when it is ",
+          "page_number": 5,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 24
+}

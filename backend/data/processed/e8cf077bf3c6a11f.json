@@ -1,0 +1,78 @@
+{
+  "contract_id": "e8cf077bf3c6a11f",
+  "filename": "CONSULTANCY_AGREEMENT.pdf",
+  "file_hash": "e8cf077bf3c6a11f3a1a7919c84b1590e5ddddd51bfb636a9631acf5ab7aaae8",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "Either Party may terminate this Agreement by issuing a written notice of termination to the other Party [___] days\nin advance of such intended termination. The Consultant shall not be liable to refund any amount in respect of\nthe Advisory Equity or part thereof, or transfer any part of the Advisory Equity to the Company upon earlier\ntermination of this Agreement, provided that such termination was not for reasons of breach or default on part\nof the Consultant.",
+        "evidence": {
+          "value": 464,
+          "confidence": 0.7,
+          "source_text": "Termination\nEither Party may terminate this Agreement by issuing a written notice of termination to the other Pa",
+          "page_number": 3,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "The Deliverables shall be deemed to be \u2018work for hire\u2019 and all Intellectual Property Rights therein shall vest solely\nwith the Company upon creation. To the extent that any right, title or interest in the Deliverables is not vested\nwith the Company by operation of law or by contract, each Consultant hereby irrevocably and perpetually assigns,\ntransfers and conveys, to the Company any and all of such Consultant\u2019s worldwide, right, title and interest, and to\nPage 1\n\nConsultancy Agreement Template (India) | OS v.1 | November 2016\nthe Intellectual Property Rights, in such Deliverables. Each Consultant shall provide such further assurances, take\nsuch action, and execute such further documents and instruments as the Company may reasonably request in order\nto carry out the purposes of this Clause 4.",
+        "evidence": {
+          "value": 803,
+          "confidence": 0.7,
+          "source_text": "Intellectual Property Rights\nThe Deliverables shall be deemed to be \u2018work for hire\u2019 and all Intellectual Property Rights therein ",
+          "page_number": 1,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "Each Party understands and acknowledges that it may receive Confidential Information (\u201cReceiving Party\u201d) of\nthe other Party (\u201cDisclosing Party\u201d) during the term of this Agreement. The Receiving Party shall not disclose\nthe Disclosing Party\u2019s Confidential Information to a third party without the Disclosing Party\u2019s prior written\nconsent. Further, the Receiving Party shall only share Confidential Information with such of its employees and\nrepresentatives who have a need to know the Confidential Information in relation to the Receiving Party\u2019s",
+        "evidence": {
+          "value": 545,
+          "confidence": 0.7,
+          "source_text": "Confidentiality\nEach Party understands and acknowledges that it may receive Confidential Information (\u201cReceiving Par",
+          "page_number": 2,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 24
+}

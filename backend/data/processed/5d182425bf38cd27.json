@@ -1,0 +1,58 @@
+{
+  "contract_id": "5d182425bf38cd27",
+  "filename": "1656923539_Advt. for the Post of Young Professional (ARM) at NIS Patiala.pdf",
+  "file_hash": "5d182425bf38cd274f6707ec8e404ea378bd6ca29ec85f3a1bd2714571845e4a",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "confidentiality": {
+        "text": "a) Selected persons will not be allowed to publish a book or a compilation of articles or",
+        "evidence": {
+          "value": 89,
+          "confidence": 0.7,
+          "source_text": "Confidentiality\na) Selected persons will not be allowed to publish a book or a compilation of articles or",
+          "page_number": null,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 49
+}

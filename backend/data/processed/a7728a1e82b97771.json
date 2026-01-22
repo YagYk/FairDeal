@@ -1,0 +1,68 @@
+{
+  "contract_id": "a7728a1e82b97771",
+  "filename": "413925039-DOC-20180410-WA0015-1.pdf",
+  "file_hash": "a7728a1e82b97771952fee6785546b30686489fd4ab3d9669f36e4017028c3b5",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "11.1 Termination of this Agreement shall not affect the rights and liabilities of either Party, which have\naccrued under this Agreement prior to termination. The rights and obligations shall survive on any expiration",
+        "evidence": {
+          "value": 216,
+          "confidence": 0.7,
+          "source_text": "TERMINATION\n11.1 Termination of this Agreement shall not affect the rights and liabilities of either Party, whic",
+          "page_number": 6,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "It is recognised that all the information regarding the Company\u2019s business, practices and policies,\nincluding manuals and other rules and procedures, which may exist from time to time, are valuable, special and\nunique assets of the Company and are confidential. The Employee hereby undertakes that during the term\nof this agreement, he/she will not disclose any of the foregoing or other information/ correspondence of the\nCompany or any part thereof to which he/she may have access/ knowledge during his employment with the\nCompany (including the contents of this Agreement) to any person, firm, Company, association or any entity\nfor any reason or purpose whatsoever, save as required by law or orders) of the court or with the express\nwritten consent of the Company.",
+        "evidence": {
+          "value": 769,
+          "confidence": 0.7,
+          "source_text": "CONFIDENTIALITY\nIt is recognised that all the information regarding the Company\u2019s business, practices and policies,\n",
+          "page_number": 3,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 52
+}

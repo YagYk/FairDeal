@@ -1,0 +1,58 @@
+{
+  "contract_id": "4dc345cca7da8bba",
+  "filename": "Engagement_one_consultant.pdf",
+  "file_hash": "4dc345cca7da8bba20a57c8235dc97e36b551281518c32fb5bb1e331105d7a1e",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "The Ministry retains the right to terminate the contract at any time without giving.any\nnotice and ilso without assigning any reasons. Some of the situations under which\nthe Ministry may terminate the contract are:-\n(i)\nThe Consultant is unable to address the assigned work.\n(ii) Ouatlty of the assigned work is not to the satisfaction of the Department.\n(iii) The Consultant is found lacking in honesty and integrity.\n(iv) ln case of joining any regular incumbent to the post.\nkq,{",
+        "evidence": {
+          "value": 482,
+          "confidence": 0.7,
+          "source_text": "Termination of Agreement\nThe Ministry retains the right to terminate the contract at any time without giving.any\nnotice and i",
+          "page_number": null,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 29
+}

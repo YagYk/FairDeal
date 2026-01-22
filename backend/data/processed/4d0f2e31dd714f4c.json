@@ -1,0 +1,47 @@
+{
+  "contract_id": "4d0f2e31dd714f4c",
+  "filename": "tsg_minutes_2425.pdf",
+  "file_hash": "4d0f2e31dd714f4c99e0cae8d55d687d4eaeb2eff7043fa2b5acf0c6a98e38ff",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 8524000.0,
+      "confidence": 0.9,
+      "source_text": "085.24 lakhs",
+      "page_number": 2,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {}
+  },
+  "num_chunks": 26
+}

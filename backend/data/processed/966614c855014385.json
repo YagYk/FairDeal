@@ -1,0 +1,78 @@
+{
+  "contract_id": "966614c855014385",
+  "filename": "2022_Mechanical_591.pdf",
+  "file_hash": "966614c8550143850179daea6f4ce1776a1157ae6f022b0ba0508ca1743a3250",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 200000.0,
+      "confidence": 0.9,
+      "source_text": "2lac",
+      "page_number": 6,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": 75000.0,
+      "confidence": 0.9,
+      "source_text": "liquidated damages of up to Rs. 75,000",
+      "page_number": 4,
+      "method": "regex"
+    },
+    "non_compete_months": {
+      "value": 12,
+      "confidence": 0.9,
+      "source_text": "non-compete agreements that would prevent\nyou from working without limitation for the Company.\n7. Assignment of Intellectual Property\nIn connection with your employment and during the term of your employment, upon conception or creation, you shall\ndisclose and assign to Wipro as its exclusive property, all inventions, ideas, concepts, discoveries, techniques, and\nimprovements (including, without limitation, legal documents, training materials, computer software and associated\nmaterials) developed or conceived by you solely or jointly with others (whether or not during business hours), and shall\ncomply with the Policies of Wipro in relation to Intellectual Property.\n8. Non-Compete\nIn the course of your employment with the Company you will be providing services to customers or clients of the\nCompany during which process you will be handling sensitive information including but not limited to key customers of\nthe Company, competitor information, customer sensitive information (\u2018Confidential Information\u2019). You acknowledge\nand recognize that Confidential Information available to you, if leaked, would cause irreparable harm to the Company\nand its protection is of utmost importance to the Company. You confirm that for a period of six (6) months after\nseparation of your employment from the Company (irrespective of the circumstances of or the reason for the\nseparation), you will not accept any offer of employment from a customer or client with whom you have interacted or\nworked in a professional capacity representing the Company during the six (6) months preceding the date of\nseparation.\n9. General:\nThis offer of appointment is subject to the precondition that you have not provided us with any false declaration and/or\ndocumentation or willfully suppressed any material information. If at any point of time, it is brought to our notice that\nyou have submitted fabricated documentation or made false representation or willfully suppressed material\ninformation, you shall be liable to be removed from service with immediate effect and the Company reserves its right to\ninitiate appropriate action as per applicable policy and /or enforce remedies available to us under law.\nPlease note that you are required to inform us if there are any agreements, oral or written, which you have entered into\nand which may relate to or affect your commitments under this employment contract.\na. You acknowledge that you have understood the terms of this employment contract and that you are aware that\nthe specific performance of the terms of this employment contract may be enforced legally, if required. In this\nconnection, if any of the provisions of this letter of appointment are declared or found to be void or\nunenforceable due to any reason whatsoever, the remaining provisions of this letter shall continue in full force\nand effect.\nb. These employment terms supersede and replace any existing agreement or understanding, if any, between the\nCompany and you on the same subject matter.\nc. You warrant that you are not prevented by any court or by any other administrative or judicial authority or order\nfrom providing the services required under this employment contract. In the event that you are not a citizen of\nthe country of posting, you should have a valid work permit to work in the country of posting.\nd. Your appointment shall be treated as withdrawn in case:\ni. You have not scored minimum aggregate marks of 60% in your 10 th Standard or equivalent\neducation.\nii. You have not scored minimum aggregate marks of 60% in your 12 th Standard or equivalent\neducation.\niii. For Graduates: You have not scored minimum aggregate marks of 60% in your graduation.\niv. For Post Graduates: You have not scored minimum aggregate marks of 60% in your\ngraduation and 60% in post-graduation.\nv. You have any pending backlogs/ arrears on the date of appointment.\nPlease note that at any stage, whether during your online test and/or interview process or upon joining the\nCompany, if it is brought to our notice that you have indulged in malpractices or used illegal means to clear\nyour online assessment, the Company shall withdraw or revoke the offer with immediate effect and we reserve\nour rights to take suitable action against you as we may deem fit.\nhttps://wipro.icims.com/forms?module=Forms&action=showForm&view=htm&form=Elite_Offer_letter_template_2022&user=24486793&item=67\u2026 3/11\n\n5/1/22, 4:18 PM https://wipro.icims.com/forms?module=Forms&action=showForm&view=htm&form=Elite_Offer_letter_template_2022&user=24\u2026\n10. Training Agreement:\nAs part of your smooth transition from campus to corporate, the Company shall be providing you extensive training\nthrough learning interventions from the time of your selection to on-boarding. You shall be provided an opportunity to\nlearn in Pre-Joining programs, Self-directed learning modules, MOOCs, in-classroom learning, on-the-job training, Top\nGear modules, and / or customer specific tools and technology learning. Through this extensive training the Company\nmakes significant investment for your project readiness and successful journey in the projects. In consideration of the\nCompany reposing confidence in you and providing you with the opportunity to undergo the training as detailed above\nand in consideration of the company bearing all the costs in connection with the training besides paying you normal\nsalary and benefits, you solemnly agree to complete the training and continue your employment with the company for\na period of at least 12 months",
+      "page_number": 3,
+      "method": "regex"
+    },
+    "probation_months": {
+      "value": 12,
+      "confidence": 0.9,
+      "source_text": "probation for a period of 12 months",
+      "page_number": 1,
+      "method": "regex"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "ANNEXURE \u2013 VI\nVariable Pay - A BRIEF OVERVIEW\nVariable Pay Policy Summary & Computation:\nhttps://wipro.icims.com/forms?module=Forms&action=showForm&view=htm&form=Elite_Offer_letter_template_2022&user=24486793&item=67\u2026 7/11\n\n5/1/22, 4:18 PM https://wipro.icims.com/forms?module=Forms&action=showForm&view=htm&form=Elite_Offer_letter_template_2022&user=24\u2026\nVariable Pay is a variable component in your salary stack which would be paid out on a quarterly basis. It would be\nlinked to the following parameters:\nFor employees joining in billable roles, variable pay will be linked to Individual billability, i.e. the number of days\nemployee is billed in a quarter. This factor is applicable only for employees joining in billable roles in Bands Team\nRainbow, A1, A2, A3, B1, B2 and B3 and who have variable pay as part of their salary stack.\nFor employees joining in above Bands in Support roles and central functions, and who have variable pay as part of\ntheir salary stack, variable pay will be linked to company\u2019s financial parameters. Financial metrics is linked based on\nspecific role for each employee in each quarter, as per the respective financial year policy.\nThe Variable Pay program may be changed / altered or modified in part or full thereof from time to time, at the sole\ndiscretion of the management. It is mandatory for you to complete the quarter for which the Variable Pay applies i.e.",
+        "evidence": {
+          "value": 1399,
+          "confidence": 0.7,
+          "source_text": "termination of my employment with the Company.\nANNEXURE \u2013 VI\nVariable Pay - A BRIEF OVERVIEW\nVariable Pay Policy Summary & Computation:\nhttps://wip",
+          "page_number": 7,
+          "method": "regex"
+        }
+      },
+      "non_compete": {
+        "text": "In the course of your employment with the Company you will be providing services to customers or clients of the",
+        "evidence": {
+          "value": 111,
+          "confidence": 0.7,
+          "source_text": "Non-Compete\nIn the course of your employment with the Company you will be providing services to customers or cli",
+          "page_number": 3,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "a. In consideration of the opportunities, training and access to new techniques and know-how that will be made\navailable to you, you will be required to comply with the Confidentiality Policy of the Company. Therefore,",
+        "evidence": {
+          "value": 218,
+          "confidence": 0.7,
+          "source_text": "Confidentiality\na. In consideration of the opportunities, training and access to new techniques and know-how that wi",
+          "page_number": null,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 104
+}

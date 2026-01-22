@@ -1,0 +1,47 @@
+{
+  "contract_id": "c95fb1021db4a9bb",
+  "filename": "advcpvnew.pdf",
+  "file_hash": "c95fb1021db4a9bb6ac08309478437d6311835dab3e320c5b45ab4c4cd02cb3d",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 1800000.0,
+      "confidence": 0.9,
+      "source_text": "18 lakh",
+      "page_number": 3,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {}
+  },
+  "num_chunks": 26
+}

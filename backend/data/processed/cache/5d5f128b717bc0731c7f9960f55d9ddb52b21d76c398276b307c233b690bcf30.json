@@ -1,0 +1,77 @@
+{
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 606000.0,
+      "confidence": 0.9,
+      "source_text": "6.06 LPA",
+      "page_number": 1,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {}
+  },
+  "benchmark": {
+    "percentile_salary": null,
+    "cohort_size": 0,
+    "filters_used": {},
+    "broaden_steps": [],
+    "market_mean": 0.0,
+    "market_median": 0.0,
+    "market_p25": 0.0,
+    "market_p75": 0.0,
+    "warning": "Salary data missing in market dataset"
+  },
+  "scoring": {
+    "safety_score": 100.0,
+    "market_fairness_score": 50.0,
+    "overall_score": 80.0,
+    "score_formula": "overall = (0.6 * SafetyScore[100]) + (0.4 * MarketFairnessScore[50])",
+    "breakdown": []
+  },
+  "rag": {
+    "evidence_by_clause_type": {},
+    "drift_by_clause_type": []
+  },
+  "narration": null,
+  "timings": {
+    "parse_ms": 684.076500008814,
+    "extract_ms": 38.646799977868795,
+    "benchmark_ms": 0.5361000075936317,
+    "rag_ms": 0.004499976057559252,
+    "total_ms": 7123.08240000857
+  },
+  "cache": {
+    "hit": false,
+    "key": "5d5f128b717bc0731c7f9960f55d9ddb52b21d76c398276b307c233b690bcf30"
+  }
+}

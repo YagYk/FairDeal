@@ -1,0 +1,58 @@
+{
+  "contract_id": "5e070c08f577a02d",
+  "filename": "DCCLGQLEv.pdf",
+  "file_hash": "5e070c08f577a02dae5415905613e6cfa50136670f0834440bac1eab38e74ce9",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "o Maternity leave to lady casual labourers as admissible to regular Group 'D' (erstwhile)\nemployees was to be allowed.\no 50% of the service rendered under temporary status would be counted for the purpose\nof retirement benefits after their regularisation.\no After rendering three years' continuous service after conferment of temporary status,\nthe casual labourers would be treated on par with temporary (erstwhile) Group 'D'\nemployees for the purpose of contribution to the General Provident Fund, and would\nalso further be eligible for the grant of Festival Advance/Flood Advance on the same\nconditions as are applicable to temporary erstwhile Group 'D' employees, provided\nthey furnish two sureties from permanent Government servants of their Department.\no Until they are regularized, they would be entitled to Productivity Linked Bonus/Adhoc\nbonus only at the rates as applicable to casual labourers.",
+        "evidence": {
+          "value": 904,
+          "confidence": 0.7,
+          "source_text": "termination of service for any reason or on their quitting service.\no Maternity leave to lady casual labourers as admissible to regular Group 'D' (erstwhile)\nemployees ",
+          "page_number": 3,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 52
+}

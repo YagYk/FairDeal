@@ -1,0 +1,68 @@
+{
+  "contract_id": "42417c5bdee8b02c",
+  "filename": "Request-for-Information_Expression-of-Interest_Indore-1.pdf",
+  "file_hash": "42417c5bdee8b02c7c64c5dfc04517a32e289474eae24d5696ef348047be523d",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": 7.0,
+      "confidence": 0.9,
+      "source_text": "liquidated damages, other provisions of this\nagreement notwithstanding.\nLast updated: June 15, 2021\n\n20. HARASSMENT: Vital Strategies India does not tolerate harassment, sexual exploitation, or abuse of\nany kind by its workforce or those it works with. The Independent Contractor has an anti-harassment,\npreventing sexual exploitation and abuse, and child abuse protection policy in place or agrees to abide\nby the provisions of Vital Strategies India\u2019 aforementioned policies, which can be provided by the\nContract Manager.\n21. AMENDMENT, MODIFICATION, WAIVER: This Agreement may only be amended or supplemented\nby an agreement in writing signed by the Parties. No waiver by any Party of any of the provisions of\nthis Agreement shall be effective unless set forth in writing and signed by the Party so waiving. No\nwaiver shall operate or be construed as relieving the other Party of any of its obligations under this\nAgreement unless expressly stated. Not exercising a right under this Agreement or only partially\nexercising a right under this Agreement shall not be construed as a waiver of that right.\n22. GOVERNING LAW, JURISDICTION, VENUE: This Agreement shall be governed by, interpreted, and\nconstrued in accordance with the applicable laws of India. The Parties consent to the exclusive\njurisdiction of the courts in [New Delhi, India] for the purpose of any legal proceeding relating to or\narising under this Agreement. Prior to any legal proceeding, the Parties agree to attempt amicable\nsettlement of any dispute through a meeting between officers or other authorized representatives of\neach party. In the event the dispute is not amicably resolved within 45 (forty-five) days, then such\ndispute or difference shall be referred to and finally resolved by arbitration in accordance with the\nArbitration and Conciliation Act, 1996 and the rules made thereunder. The seat of the arbitration shall\nbe [Delhi, India]. The Tribunal shall consist of sole arbitrator to be mutually appointed by the Parties.\nThe language of the arbitration shall be English. Subject to the provisions of this paragraph 22, the\nParties shall have the right to approach the courts in New Delhi, India.\n23. COMPLIANCE: The Independent Contractor will not enter into transactions with or provide any support\nto any individuals, entities, or groups subject to U.S. Treasury Office of Foreign Assets Control\n(\u201cOFAC\u201d) sanctions. The Independent Contractor will comply with the Foreign Corrupt Practices Act of\n1977, as amended (\u201cFCPA\u201d) and all applicable international and local country anti-bribery and anti-\ncorruption laws.\n24. LOBBYING: The Independent Contractor shall not engage in political campaigning or lobbying, as\ndefined in Section 4911 of the U.S. Internal Revenue Code, under this agreement.\n25. INSURANCE: The Independent Contractor shall maintain appropriate and adequate insurance to cover\nthe activities to be performed under this agreement with responsible and reputable insurance\ncompanies, in such amounts and covering such risks, as is usually carried by companies and\nindividuals engaged in similar activities contracted to under this agreement. If the total value of this\nagreement is INR 7",
+      "page_number": null,
+      "method": "regex"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "December 1, 2022\nSite of work (City) : Indore\nSite of work (Country): India\nProject Overview:",
+        "evidence": {
+          "value": 93,
+          "confidence": 0.7,
+          "source_text": "Termination Date\nDecember 1, 2022\nSite of work (City) : Indore\nSite of work (Country): India\nProject Overview:",
+          "page_number": null,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "16.1 Both Parties shall treat as confidential, for this Agreement period and thereafter, any non-public\ninformation to which either Party becomes privy to as a result of acting under this Agreement. The\nParties shall not disclose any Confidential Information (defined hereinafter) to any other person\nor party, which is not participating in this Agreement. The Parties shall keep the Confidential",
+        "evidence": {
+          "value": 396,
+          "confidence": 0.7,
+          "source_text": "CONFIDENTIALITY\n16.1 Both Parties shall treat as confidential, for this Agreement period and thereafter, any non-pub",
+          "page_number": 12,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 63
+}

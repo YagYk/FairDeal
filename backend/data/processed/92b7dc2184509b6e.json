@@ -1,0 +1,68 @@
+{
+  "contract_id": "92b7dc2184509b6e",
+  "filename": "ESFB-TermsCondition-ID.pdf",
+  "file_hash": "92b7dc2184509b6e6d055e253fef8f995e1af6aaf54239addbb207954402f76d",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "You may resign from the directorship of the Bank by giving a notice in writing to the Bank\nstating the reasons for resignation. The resignation shall take effect from the date on which\nthe notice is received by the Bank or the date, if any, specified by you in the notice, whichever\nis later.",
+        "evidence": {
+          "value": 292,
+          "confidence": 0.7,
+          "source_text": "Resignation or Termination\nYou may resign from the directorship of the Bank by giving a notice in writing to the Bank\nstating t",
+          "page_number": 3,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "You will follow the highest standards of confidentiality. You shall not disclose to any person\nor Bank (either during the course of the tenure or at any time after resignation), any",
+        "evidence": {
+          "value": 181,
+          "confidence": 0.7,
+          "source_text": "Confidentiality\nYou will follow the highest standards of confidentiality. You shall not disclose to any person\nor Ba",
+          "page_number": 2,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 32
+}

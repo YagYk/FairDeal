@@ -1,0 +1,47 @@
+{
+  "contract_id": "e5957f576aa8b9a5",
+  "filename": "advertisement_MER_AAt.pdf",
+  "file_hash": "e5957f576aa8b9a5498424ba5519b9eaa0b6b1e85f9cecb4cb9f4e7414d8ea1e",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 1000000.0,
+      "confidence": 0.9,
+      "source_text": "10 lakh",
+      "page_number": 2,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {}
+  },
+  "num_chunks": 32
+}

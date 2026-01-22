@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic-settings
+orjson
+python-multipart
+pdfplumber
+python-docx
+pandas
+numpy
+sentence-transformers
+chromadb
+httpx
+tenacity
+google-generativeai

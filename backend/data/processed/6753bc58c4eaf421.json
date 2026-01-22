@@ -1,0 +1,58 @@
+{
+  "contract_id": "6753bc58c4eaf421",
+  "filename": "1.sorting-hat.pdf",
+  "file_hash": "6753bc58c4eaf421c4db223fd71dfcb3944de9a675fbd9fad47511d68f790f35",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "3.1 Termination at will: Either Party can terminate this Agreement by giving the other Party a prior\nwritten notice of 7(seven) days with or without providing any reason for such termination.",
+        "evidence": {
+          "value": 191,
+          "confidence": 0.7,
+          "source_text": "TERMINATION & EFFECT OF TERMINATION\n3.1 Termination at will: Either Party can terminate this Agreement by giving the other Party a prior",
+          "page_number": 2,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 44
+}

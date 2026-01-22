@@ -1,0 +1,68 @@
+{
+  "contract_id": "99dea1a53e2f86ad",
+  "filename": "Gouranga Sau.pdf",
+  "file_hash": "99dea1a53e2f86adfe4d1ed42b45982badf7dbb9e26f6e1d67fc6dddfafcdcf8",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "PERSOLKELLY available at law.\n(h) The Employees acknowledges that they have no right to participate in Client\u2019s employee\nbenefit plans (unless if specifically requested or permitted by the Client which shall be informed to\nthe Employee by PERSOLKELLY).\n(i) The Employee understands that it shall be solely liable for any death, injury, loss or damage\ncaused to the Client (including any damage or destruction by Employee to electronic devices,",
+        "evidence": {
+          "value": 443,
+          "confidence": 0.7,
+          "source_text": "termination of employment of the Employee by PERSOLKELLY in addition to the other rights of\nPERSOLKELLY available at law.\n(h) The Employees acknowledges that they have no right to participate ",
+          "page_number": 2,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "(a) The Employee must keep confidential all trade secrets and information which comes to his or",
+        "evidence": {
+          "value": 95,
+          "confidence": 0.7,
+          "source_text": "CONFIDENTIALITY\n(a) The Employee must keep confidential all trade secrets and information which comes to his or",
+          "page_number": 6,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 34
+}

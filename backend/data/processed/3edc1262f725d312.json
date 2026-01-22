@@ -1,0 +1,58 @@
+{
+  "contract_id": "3edc1262f725d312",
+  "filename": "Notice-of-Termination-(India).pdf",
+  "file_hash": "3edc1262f725d312da538086c007ab307920814d584ffdb964829dd949449252",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 120000.0,
+      "confidence": 0.9,
+      "source_text": "INR10,000 per month",
+      "page_number": 2,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": 30,
+      "confidence": 0.9,
+      "source_text": "notice period is 30 days",
+      "page_number": 9,
+      "method": "regex"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "PILON is a statutory payment and should be made as a lump sum (Section 25F, ID Act; see also the notice period provisions\nunder the state-specific Shops and Establishments Acts).",
+        "evidence": {
+          "value": 178,
+          "confidence": 0.7,
+          "source_text": "termination payments (excluding gratuity) should be made by the end of the next working day.\nPILON is a statutory payment and should be made as a lump sum (Section 25F, ID Act; see also the not",
+          "page_number": 6,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 34
+}

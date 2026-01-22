@@ -1,0 +1,58 @@
+{
+  "contract_id": "468ec48896f68095",
+  "filename": "DRUVA_mca_professional_services.pdf",
+  "file_hash": "468ec48896f68095849d721714822fc8bbf95e72cecfb6e39917177f55494ce2",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "a. Termination. This Agreement may only be terminated by a party upon written notice to the other party (i) if the other\nparty breaches a material term of this Agreement that is uncured within 30 days (or, in the case of non-payment, 15 days)\nafter delivery of notice of such breach, or (ii) if the other party becomes the subject of a petition in bankruptcy or any\nother proceeding relating to insolvency, receivership, liquidation or assignment for the benefit of creditors not dismissed\nwithin 30 days.\nb. Fees. Upon expiration of this Agreement, Customer will pay Druva, directly or through the reseller with which Customer\ncontracted, any unpaid amounts that are owed to Druva for the Term. Upon termination of this Agreement based on\nCustomer\u2019s breach (following any applicable cure period), Customer will pay Druva any unpaid amounts that would\nhave been owed to Druva for the remainder of the then-current Term if such early termination had not occurred as\nwell as any other amounts owed to Druva under this Agreement, without limiting Druva\u2019s other rights and remedies.\nUpon termination of this Agreement based on Druva\u2019s breach (following any applicable cure period), Druva will refund\nCustomer, directly or through the reseller with which Customer contracted, any amounts pre-paid pursuant to this\nAgreement for the remaining full calendar months in the then-current Term.\nc. Effect. Upon expiration or termination of this Agreement, Customer will immediately cease all use of the Documentation\nand delete (or, at Druva\u2019s request, return) all Documentation and any Druva confidential information in its possession\nor control, and Druva\u2019s obligation to provide the Professional Services will immediately cease.\nd. Sections 3, 4, 5, 6, 7 and 8 will survive any expiration or termination of this Agreement.",
+        "evidence": {
+          "value": 1814,
+          "confidence": 0.7,
+          "source_text": "Termination\na. Termination. This Agreement may only be terminated by a party upon written notice to the other pa",
+          "page_number": 4,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 45
+}

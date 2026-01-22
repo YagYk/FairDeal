@@ -1,0 +1,47 @@
+{
+  "contract_id": "ee3e2b56f99a3fbe",
+  "filename": "Nitin_Sharma 8-6.pdf",
+  "file_hash": "ee3e2b56f99a3fbe2574c1d20b15fa377585e5afaecf428f33ede2f1787df428",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": 4500.0,
+      "confidence": 0.9,
+      "source_text": "payment of price 20RS (INR) per form (if you achieved cut-off\nabove1350).The Independent Contractor shall raise invoice after completion of work with\nthe data. The Client will pay each bill within maximum 5 international working days, from\nthe date of issue of Quality Check report. The Invoice can be raised through e-mail.\nQ.C. report will be provided in 72 Hrs. International Working Days from the date of\nsubmission.\n\uf076 Payouts: Company will provide workload of 1500 FORMS 10 days. This MOU has been\nsigned for 1 system.\n\uf076 TAT: you have 10 days (include holidays) to complete the work and Independent\nContractor has to send it to company. The COMPANY shall give an accuracy report\nwithin 72 hrs. For the New Work, after submissions as per technical specifications which\nare included in this agreement with accuracy parameters\n\uf076 Extension: If you want Extra days to complete the project than you need to pay\nextension amount to the company.\n\uf076 Legal Matter: In the event of any dispute or difference arising between the parties\nhereto relating to or arising out of this Agreement, including the implementation,\nexecution, interpretation, rectification, validity, enforceability, termination or rescission\nthereof, including the rights, obligations or liabilities of the parties hereto, the same will\nbe adjudicated and determined by arbitration. The Indian Arbitration & Conciliation Act,\n1996 or any statutory amendment or re-enactment thereof in force in India, shall\ngovern the reference. Both parties shall appoint their respective arbitrator, and both\narbitrators thus appointed should appoint the third Arbitrator who shall function as the\npresiding Arbitrator. The venue of arbitration shall be Aurangabad, MAHARASHTRA. The\nCourts in the city of Aurangabad shall have exclusive jurisdiction to entertain try and\ndetermine the same.\n\uf076 Termination Clauses: - If you fail to submit data on time or, If fails to give accuracy in\noutput files. Company reserves the right to terminate the agreement with immediate\neffect. And Frontech will not be responsible for any further data and payment to the\nIndependent Contractor. If company found that there are multiple logins of a single I.D.,\nThe company will not be responsible for the corruption of the data in both online and\noffline modules. And your I.D. will get terminated without any intimation. If we find any 2\nlogin/ logout together, 2 IP address without login/ logout, browser upgrade/ degrade\nwithout login / logout then ID will be terminate without any prior intimation.\nThis agreement is valid for 11 months.\nAGREE TO PAY CONFIRMATION\nAt the booking time No initial payment is required to pay ,but you must have to pay Rs.\n4500/- amount for utility and maintenance on following grounds.\n\n(A) In the matter of fact failure, not submitted or succeed company is entitled to receive\namount by any cost. If you achieve the accuracy which mentioned above, then Utility charges\nwill be deduct from your work payment and if you fail to achieve accuracy in given timeline,\nthen also you have to pay as a liability which describe above.\n(B) This charges related to service, development and maintenance cost of the platform where\nyou working online. If you deny paying the said amount then company will take this matter\nlegally & all the legal expenses will be bear by your side, company is not liable for the same.\nRequired Accuracy by the company:\nYou must have to provide 90% accuracy in form filling work for 1500 forms in 10 days.\nViz Cut off forms are 1350 (In Total) \u2013for full payment\nBelow cut off \u2013 you are not qualified for payment & id will be terminating",
+      "page_number": 2,
+      "method": "regex"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {}
+  },
+  "num_chunks": 8
+}

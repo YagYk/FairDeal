@@ -1,0 +1,88 @@
+{
+  "contract_id": "5b74129ad0131d12",
+  "filename": "EMPLOYMENT_AGREEMENT (3).pdf",
+  "file_hash": "5b74129ad0131d12f2c52e4a12313ed166126920c2f0a1b8f908d8764094d6f1",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "This Agreement and the employment of the Employee with the Company may be terminated by the Company,\nwithout Cause by giving the Employee 2 (two) months\u2019 notice in writing or payment of 2 (two) months\u2019 salary in\nlieu of such notice.",
+        "evidence": {
+          "value": 232,
+          "confidence": 0.7,
+          "source_text": "TERMINATION\nThis Agreement and the employment of the Employee with the Company may be terminated by the Company,",
+          "page_number": 5,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "The Employee\u2019s obligations with respect to Intellectual Property shall be as set forth in the Confidentiality and\nIntellectual Property Assignment Agreement.",
+        "evidence": {
+          "value": 157,
+          "confidence": 0.7,
+          "source_text": "INTELLECTUAL PROPERTY RIGHTS\nThe Employee\u2019s obligations with respect to Intellectual Property shall be as set forth in the Confid",
+          "page_number": 4,
+          "method": "regex"
+        }
+      },
+      "non_compete": {
+        "text": "8.1 The Employee covenants and agrees that during the course of his employment starting from the Effective Date the\nEmployee shall not:\n(a) carry on or participate (whether as a partner, shareholder, principal, agent, director, employee or consultant)\nin any business and/ or activity which is the same as or substantially similar to the Business, including in\nthe business of any Competitor, other than through the Company;\n(b) render any services to a Competitor or enter into employment with any of the Competitors;\n(c) solicit or influence or attempt to influence any client, customer or other Person to direct its purchase of\nthe products and/or services of the Company to itself or any Competitor; and/or\n(d) solicit or attempt to influence any Person, employed or engaged by the Company (whether as an employee\nconsultant, advisor or distributor or in any other manner) to terminate or otherwise cease such employment",
+        "evidence": {
+          "value": 924,
+          "confidence": 0.7,
+          "source_text": "NON COMPETE AND NON SOLICIT\n8.1 The Employee covenants and agrees that during the course of his employment starting from the Eff",
+          "page_number": 4,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "The Employee shall have executed a separate confidentiality and intellectual property assignment agreement with\nthe Company which sets forth the confidentiality obligations of the Employee towards the Company.",
+        "evidence": {
+          "value": 209,
+          "confidence": 0.7,
+          "source_text": "CONFIDENTIALITY\nThe Employee shall have executed a separate confidentiality and intellectual property assignment agr",
+          "page_number": 5,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 28
+}

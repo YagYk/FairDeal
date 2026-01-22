@@ -1,0 +1,68 @@
+{
+  "contract_id": "239d67dbe766d2c0",
+  "filename": "Template-Contracts-of-Employment.pdf",
+  "file_hash": "239d67dbe766d2c0ad3276a749ba6d16e0160908b288de58883d3dab9ae0e24c",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": 11,
+      "confidence": 0.9,
+      "source_text": "Probation:\nYou will be employed on probation for ___ months/weeks.\nThe company reserves the right to extend the probation on an exceptional basis if it is deemed that\nthe extension would be in the interest of the employee. In any case it will not exceed a period of 11\nmonths",
+      "page_number": 3,
+      "method": "regex"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "company and in the event of such a termination you will receive ___ months/weeks\u2019 notice and not\nthe notice period provided for in the clause entitled \u201cTermination\u201d below.\nLikewise, where you intend to resign from your employment during your probationary period you\nwill be required to give the company ___ months/weeks\u2019 notice in writing.\nHours of work and rest:\nYour normal working hours will be from ___ to ___ Monday to Friday/Saturday. The organisation\nreserves the right to alter these working hours from time to time.\nYour rest arrangements will be given in line with the Organisation of Working Time Act 1997 and\nwill be as follows [include details of rest breaks]...\nWhere you do not get an opportunity to take your break(s), please inform your manager in writing\nwithin seven days and an alternative break period will be assigned.",
+        "evidence": {
+          "value": 840,
+          "confidence": 0.7,
+          "source_text": "Termination of this agreement within the probationary period shall be at the discretion of the\ncompany and in the event of such a termination you will receive ___ months/weeks\u2019 notice and not\nthe",
+          "page_number": 3,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "Every effort is taken by the organisation to ensure that clients\u2019 affairs are treated with absolute\nconfidentiality, and you should note the following provisions in particular: -\nYou will be expected to keep all information concerning the organisation, its customers, third\nparties, and any other connected organisation with whom you are involved as an employee of this\norganisation, absolutely confidential. Any deliberate breach of confidence will be regarded as a\nmatter justifying summary dismissal. This requirement for confidentiality extends beyond your\nperiod of employment.\nYou will deliver to the organisation, on termination of your employment, or at any time it may so\nrequest, all documents, notes, records, manuals, programmes or any other materials or property\nbelonging to the organisation or any organisation within the _______ group or relating to customers\nand/or third parties, which you may then possess or have under your control. You may not, without\nthe organisation\u2019s consent, keep copies of same.\nYou may not remove from the organisation\u2019s premises at any time, without proper advance\nauthorisation, any document or other property which belongs to the organisation or contains or\nrefers to any confidential information relating to the organisation, its customers, third parties or\nany organisation within the ______ group. You will return to the organisation, prior to termination\nof your employment, any documents or other organisation property that subsequently comes into\nyour possession or procurement in the future.\nExclusivity of Service:\n[Note: an employer can only impose an incompatibility restriction where it is proportionate and\nbased on objective grounds. Details of the incompatibility restriction and the objective grounds on",
+        "evidence": {
+          "value": 1766,
+          "confidence": 0.7,
+          "source_text": "Confidentiality and standards\nEvery effort is taken by the organisation to ensure that clients\u2019 affairs are treated with absolute\n",
+          "page_number": null,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 20
+}

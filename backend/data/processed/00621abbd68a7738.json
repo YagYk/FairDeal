@@ -1,0 +1,68 @@
+{
+  "contract_id": "00621abbd68a7738",
+  "filename": "AGREEMENT_FOR_MAN_POWER.pdf",
+  "file_hash": "00621abbd68a7738c1fa9616201f81ca8a9ce6d22b66583cbf15df785f66a5f2",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 1000000.0,
+      "confidence": 0.9,
+      "source_text": "10 lac",
+      "page_number": 23,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "sixty (60) days\u201f shall be given in the case of termination on account\nof the event referred to in (e).\n(a) If the Service Provider does not remedy a failure in the\nperformance of its obligation(s) under the Contract, within\ntwenty (20) days after being notified or within any further",
+        "evidence": {
+          "value": 283,
+          "confidence": 0.7,
+          "source_text": "termination, to the Service Provider; provided a written notice of\nsixty (60) days\u201f shall be given in the case of termination on account\nof the event referred to in (e",
+          "page_number": 10,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "Arbitration and Indemnity obligations; and (iv) any other right\nwhich a Party may have under the Applicable Law.",
+        "evidence": {
+          "value": 112,
+          "confidence": 0.7,
+          "source_text": "confidentiality set forth in Clause 3.3 hereof, and (iii) Recourse to\nArbitration and Indemnity obligations; and (iv) any other right\nwhich a Party may have under the App",
+          "page_number": 12,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 121
+}

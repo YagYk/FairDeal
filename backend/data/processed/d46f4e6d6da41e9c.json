@@ -1,0 +1,58 @@
+{
+  "contract_id": "d46f4e6d6da41e9c",
+  "filename": "Fix-term-contract-workers.pdf",
+  "file_hash": "d46f4e6d6da41e9ce4f8204b15a394c3a2317a0b9f1aca3707b283c2fede434d",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "Either party to this contract may serve a written notice to the other party to terminate the\nservice without assigning reasons. During the probationary period, the notice period to be\nserved by either party shall be [period]. After confirmation, the notice period to be served\nshall be [period].",
+        "evidence": {
+          "value": 295,
+          "confidence": 0.7,
+          "source_text": "Termination Notice\nEither party to this contract may serve a written notice to the other party to terminate the\nservice",
+          "page_number": 1,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 6
+}

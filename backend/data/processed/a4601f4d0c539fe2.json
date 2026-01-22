@@ -1,0 +1,68 @@
+{
+  "contract_id": "a4601f4d0c539fe2",
+  "filename": "online-master-professional-services-agreement-final-ver1-1-2025.pdf",
+  "file_hash": "a4601f4d0c539fe2dcb7c9da602e96de5d75a063747074635d73e38b3de1c130",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": 13.0,
+      "confidence": 0.9,
+      "source_text": "bond or other security. Such\nremedies shall not be deemed to be a party\u2019s exclusive remedy for breach of this\nAgreement but shall be in addition to all other remedies that may be available at law or\nequity.\n13. General.\n13.1 Nonsolicitation. During the term of this Agreement and for a period of one (1) year\nthereafter, the Customer agrees that it will not directly or indirectly solicit for employment\nor hire the services of any employee or personnel of GEP that is involved in the\nperformance of the services outlined in this Agreement, without the express written consent\nof GEP. Notwithstanding the aforesaid, the restrictions set forth in this clause shall not\napply if the solicitation is a result of general advertising, public solicitations, or job postings\nthat are not specifically targeted at GEP's or its Affiliates\u2019 employees or personnel.\n13.2 Excused Performance. GEP\u2019s failure to perform its obligations under this Agreement\n(including meeting any milestones or service levels) shall be excused if and to the extent\nsuch non-performance is caused by the failure by Customer or its contractor to perform\nCustomer\u2019s Responsibilities as set forth under Schedule \u2018A\u2019 to this Agreement or as set\nforth in an applicable Statement of Work.\n13.3 Publicity. On signing this Agreement Customer agrees that GEP may use Customer\u2019s or\nits Affiliates\u2019 name and/or logo on GEP\u2019s website and/or in GEP\u2019s informational brochures\nin a listing of customers. In addition, Customer agrees to allow a press release upon\nexecution of this Agreement, such press release to be approved in advance and prior to\nrelease by Customer. Notwithstanding the foregoing, any other use by GEP of Customer\u2019s\nor its Affiliates name and/or logo is subject to the prior written approval of Customer.\n13.4 Audit. GEP will allow the Customer, no more than once during any twelve-month period, to\naudit documents or other business records that GEP maintains, relating to the performance\nof GEP\u2019s obligations under this Agreement or other applicable legal requirements. The\nCustomer may appoint an independent third party, who is not a direct competitor to GEP,\nto perform such audits under this Agreement. GEP shall maintain accurate and complete\ndocuments and other business records in accordance with generally accepted accounting\nprinciples (GAAP) that enable GEP to demonstrate compliance with this Agreement.\nCustomer and its representatives (including such third parties) shall not have access, nor\nshall they seek access to confidential information of GEP\u2019s other customers. The Parties\nwill bear their respective costs and expenses associated with any of the foregoing. The\nresults of an audit shall be GEP\u2019s Confidential Information. If an audit discloses that\nCustomer has paid GEP for any charges not properly incurred or has overpaid, GEP shall\nGEP Master Professional Services Agreement (Online Version) Ver.1.1 2025\n\npromptly refund to Customer the amount of overpayment and/or improperly incurred\ncharges.\n13.5 Independent Contractors. Nothing contained in this Agreement will be deemed or\nconstrued as creating a joint venture or partnership between the parties. Except as\nexpressly set forth in this Agreement, no party is by virtue of this Agreement authorized as\nan agent, employee or legal representative of the other party, and the relationship of the\nparties is, and at all times will continue to be, that of independent contractors.\n13",
+      "page_number": 8,
+      "method": "regex"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "amount due and Customer fails to make such payment during the thirty (30) days cure\nperiod. In the event of any termination of this Agreement, GEP shall be entitled to all fees\ndue for Services, performed prior to the termination up to and including the date of\ntermination unless otherwise agreed by the parties and, if GEP\u2019s expenses are to be\nreimbursed pursuant to this Agreement, reimbursement of expenses incurred prior to\ntermination of this Agreement. Upon termination of this Agreement, GEP shall immediately\ncease work and transfer to Customer all Work Product, if any, developed by GEP up to the\ndate of termination.",
+        "evidence": {
+          "value": 627,
+          "confidence": 0.7,
+          "source_text": "termination. GEP may terminate this Agreement upon written notice of a failure to pay the\namount due and Customer fails to make such payment during the thirty (30) days cure\nperiod. In the e",
+          "page_number": 3,
+          "method": "regex"
+        }
+      },
+      "confidentiality": {
+        "text": "7.1 Confidential Information means any and all technical and non-technical information,\nincluding trade secrets, know-how and proprietary information, firmware, designs,\nschematics, techniques, plans, financial information, passwords and security procedures,\nany and all information relating to pricing, policies, practices and procedures, and\ninformation regarding financials (including a party\u2019s financial and accounting reports) , audit\nreports, present or future products, sales, employees, investors or affiliates, parents or",
+        "evidence": {
+          "value": 530,
+          "confidence": 0.7,
+          "source_text": "Confidentiality; Proprietary Rights; Data Security and Privacy\n7.1 Confidential Information means any and all technical and non-technical information,\nincluding tr",
+          "page_number": 3,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 42
+}

@@ -1,0 +1,168 @@
+[
+  {
+    "scenario": "Scenario A: Service-Based (Toxic)",
+    "description": "Low salary, 2y bond, 90d notice, 6d work week",
+    "score": 55,
+    "grade": "BELOW AVERAGE",
+    "breakdown": {
+      "salary": {
+        "score": 48.33333333333333,
+        "weight": 0.33684210526315794
+      },
+      "notice": {
+        "score": 27.5,
+        "weight": 0.12631578947368421
+      },
+      "benefits": {
+        "score": 73.0,
+        "weight": 0.2105263157894737
+      },
+      "clauses": {
+        "score": 68.0,
+        "weight": 0.12631578947368421
+      },
+      "legal": {
+        "score": 85.0,
+        "weight": 0.2
+      }
+    },
+    "violations": [
+      "No gratuity clause: -15"
+    ],
+    "risk_factors": [
+      "Long non-compete (12mo): -20",
+      "Training bond (24mo): -12"
+    ],
+    "badges": [
+      "\u26a0\ufe0f SERVICE TRAP"
+    ]
+  },
+  {
+    "scenario": "Scenario B: Product-Based (Ideal)",
+    "description": "High salary, no bond, 30d notice, good benefits",
+    "score": 98,
+    "grade": "EXCEPTIONAL",
+    "breakdown": {
+      "salary": {
+        "score": 91.66666666666667,
+        "weight": 0.35
+      },
+      "notice": {
+        "score": 81.76470588235294,
+        "weight": 0.2
+      },
+      "benefits": {
+        "score": 100.0,
+        "weight": 0.2
+      },
+      "clauses": {
+        "score": 100.0,
+        "weight": 0.15
+      },
+      "legal": {
+        "score": 100.0,
+        "weight": 0.1
+      }
+    },
+    "violations": [],
+    "risk_factors": [],
+    "badges": []
+  },
+  {
+    "scenario": "Scenario C: No Notice Period (Ambiguous)",
+    "description": "Notice info missing used, standard salary",
+    "score": 78,
+    "grade": "GOOD",
+    "breakdown": {
+      "salary": {
+        "score": 70.0,
+        "weight": 0.35
+      },
+      "notice": {
+        "score": 50.0,
+        "weight": 0.2
+      },
+      "benefits": {
+        "score": 84.0,
+        "weight": 0.2
+      },
+      "clauses": {
+        "score": 100.0,
+        "weight": 0.15
+      },
+      "legal": {
+        "score": 100.0,
+        "weight": 0.1
+      }
+    },
+    "violations": [],
+    "risk_factors": [],
+    "badges": []
+  },
+  {
+    "scenario": "Scenario D: Zero Notice (Immediate)",
+    "description": "0 days notice (could be good or bad depending on context)",
+    "score": 101,
+    "grade": "EXCEPTIONAL",
+    "breakdown": {
+      "salary": {
+        "score": 76.0,
+        "weight": 0.3
+      },
+      "notice": {
+        "score": 105.0,
+        "weight": 0.25
+      },
+      "benefits": {
+        "score": 84.0,
+        "weight": 0.2
+      },
+      "clauses": {
+        "score": 100.0,
+        "weight": 0.2
+      },
+      "legal": {
+        "score": 100.0,
+        "weight": 0.1
+      }
+    },
+    "violations": [],
+    "risk_factors": [],
+    "badges": []
+  },
+  {
+    "scenario": "Scenario E: Bond Edge Case",
+    "description": "High salary but 1y bond (Retention bonus?)",
+    "score": 85,
+    "grade": "EXCELLENT",
+    "breakdown": {
+      "salary": {
+        "score": 95.0,
+        "weight": 0.35
+      },
+      "notice": {
+        "score": 70.0,
+        "weight": 0.2
+      },
+      "benefits": {
+        "score": 85.0,
+        "weight": 0.2
+      },
+      "clauses": {
+        "score": 73.0,
+        "weight": 0.15
+      },
+      "legal": {
+        "score": 100.0,
+        "weight": 0.1
+      }
+    },
+    "violations": [],
+    "risk_factors": [
+      "Standard non-compete (6mo): -12",
+      "Training bond (12mo): -5",
+      "High bond amount (>\u20b92L): -10"
+    ],
+    "badges": []
+  }
+]

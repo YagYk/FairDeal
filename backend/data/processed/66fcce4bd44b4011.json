@@ -1,0 +1,47 @@
+{
+  "contract_id": "66fcce4bd44b4011",
+  "filename": "advertisement-PSP-2026.pdf",
+  "file_hash": "66fcce4bd44b4011d4f2093ba4bbe8a91a9c99bfde9a07174973d82ed20689ed",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": 1000000.0,
+      "confidence": 0.9,
+      "source_text": "10 lakh",
+      "page_number": 2,
+      "method": "regex"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {}
+  },
+  "num_chunks": 34
+}

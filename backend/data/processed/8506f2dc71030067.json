@@ -1,0 +1,78 @@
+{
+  "contract_id": "8506f2dc71030067",
+  "filename": "CONFIDENTIALITY_IP_ASSIGNMENT_AGREEMENT.pdf",
+  "file_hash": "8506f2dc71030067e792cdd202e4c6284f77bc4038484f46e771a095834ee08c",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "7.2. Neither this Agreement nor any right granted hereunder shall be assignable or otherwise transferable by\nthe Employee.",
+        "evidence": {
+          "value": 122,
+          "confidence": 0.7,
+          "source_text": "termination of this Agreement.\n7.2. Neither this Agreement nor any right granted hereunder shall be assignable or otherwise transfe",
+          "page_number": 6,
+          "method": "regex"
+        }
+      },
+      "ip": {
+        "text": "3.1. The Company shall retain all rights, title and interest and Intellectual Property Rights in any Company\nIntellectual Property created, conceived, developed, contributed to or improved upon by the Employee\nduring the course of his Employment, shall vest with the Company upon such creation, conception,\ndevelopment, contribution or improvement. Notwithstanding anything to the contrary, no license with",
+        "evidence": {
+          "value": 406,
+          "confidence": 0.7,
+          "source_text": "INTELLECTUAL PROPERTY RIGHTS\n3.1. The Company shall retain all rights, title and interest and Intellectual Property Rights in any",
+          "page_number": 3,
+          "method": "regex"
+        }
+      },
+      "non_compete": {
+        "text": "the Employee shall have been in breach of the provisions of this Clause 4.",
+        "evidence": {
+          "value": 74,
+          "confidence": 0.7,
+          "source_text": "non-compete period referred to in this Clause 4 shall be extended by the length of time during which\nthe Employee shall have been in breach of the provisions of this Clause 4.",
+          "page_number": 4,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 27
+}

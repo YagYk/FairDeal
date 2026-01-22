@@ -1,0 +1,58 @@
+{
+  "contract_id": "4d705f7b6689c11e",
+  "filename": "Consultant_OnContract_basis_16012025.pdf",
+  "file_hash": "4d705f7b6689c11ecbf85c39adce1e66f514779ee77677f3ef01b5ffb2775b9a",
+  "extraction": {
+    "role": null,
+    "company_type": null,
+    "experience_level": null,
+    "ctc_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "notice_period_days": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "bond_amount_inr": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "non_compete_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "probation_months": {
+      "value": null,
+      "confidence": 0.0,
+      "source_text": null,
+      "page_number": null,
+      "method": "missing"
+    },
+    "extracted_clauses": {
+      "termination": {
+        "text": "TheDepartmentmayterminateacontracttowhichtheseTermsapplyif:\nl. The Consultant is unable to address the assigned works'\nll. Quallty of the assigned works is not to the satisfaction of th. e Department'\nlll. The Consultant-tiits in timely achievement of the milestones as flnally decided by the\nDePartment.\nlV. The Consultant is found lacking in honesty and integrity'\nV. The Departmenlreserves tne iigfrt to terminate the contract, without assigning any reason'\nvl. The consuttant shail hand overiheir identity/passport(s) and all office equipment, etc. to the\ndepartment ano suOmit a No Demand Certificate on completion of their tenure/ termination of\ncontract.",
+        "evidence": {
+          "value": 661,
+          "confidence": 0.7,
+          "source_text": "TERMINATION OF AGBEEMENT\nTheDepartmentmayterminateacontracttowhichtheseTermsapplyif:\nl. The Consultant is unable to address t",
+          "page_number": null,
+          "method": "regex"
+        }
+      }
+    }
+  },
+  "num_chunks": 47
+}
