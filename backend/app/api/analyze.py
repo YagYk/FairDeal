@@ -2,7 +2,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+import re
 import time
+import traceback
 from functools import lru_cache
 from typing import Dict, Any, Optional, List
 
@@ -11,6 +14,7 @@ from fastapi import APIRouter, File, UploadFile, Form, HTTPException
 from ..logging_config import get_logger
 from ..models.schemas import (
     AnalyzeResponse,
+    CacheInfo,
     Context,
     Timings,
     ExtractionMethod,
@@ -19,6 +23,8 @@ from ..models.schemas import (
     CohortInfo,
     NarrationResult,
     EvidenceChunk,
+    ClauseDriftResult,
+    RAGResult,
     ScoreResult,
     ScoreBreakdownItem,
     DeterminismInfo,
@@ -61,6 +67,12 @@ def get_llm_service() -> LLMService:
     """Cached LLMService."""
     log.info("Initializing LLMService (singleton)")
     return LLMService()
+
+def clear_service_caches():
+    """Clear all service caches - useful for testing or after code changes."""
+    get_benchmark_service.cache_clear()
+    get_rag_service.cache_clear()
+    get_llm_service.cache_clear()
 
 def _get_file_hash(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()[:16]
@@ -110,25 +122,6 @@ async def analyze_contract(
     
     MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
     
-    MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
-    
-    # Check actual size
-    # We read the content to get the accurate size. 
-    # Since FastAPI/Starlette UploadFile has already handled the upload, 
-    # this does not incur extra network cost, just memory/disk IO.
-    content = await file.read()
-    file_size = len(content)
-    await file.seek(0)
-    
-    # log.info(f"DEBUG: Calculated file size via read/len: {file_size}")
-    
-    if file_size > MAX_FILE_SIZE:
-        log.error(f"File upload rejected: {file.filename} size {file_size} exceeds 10MB limit")
-        raise HTTPException(
-            status_code=413, 
-            detail=f"File too large ({file_size} bytes). Maximum allowed is 10MB."
-        )
-    
     try:
         try:
             ctx_dict: Dict[str, Any] = json.loads(context)
@@ -136,13 +129,40 @@ async def analyze_contract(
         except Exception as exc:
             raise HTTPException(status_code=400, detail=f"Invalid context JSON: {exc}")
 
+        # Read file content once
         content = await file.read()
+        file_size = len(content)
+        
+        # Check file size
+        if file_size > MAX_FILE_SIZE:
+            log.error(f"File upload rejected: {file.filename} size {file_size} exceeds 10MB limit")
+            raise HTTPException(
+                status_code=413, 
+                detail=f"File too large ({file_size} bytes). Maximum allowed is 10MB."
+            )
         if not content:
             raise HTTPException(status_code=400, detail="Empty file")
 
         file_hash = _get_file_hash(content)
         
+        # Build context-aware cache key: same file + different context = different analysis
+        context_suffix = f"_{ctx.role}_{ctx.experience_level}_{ctx.company_type.value}"
+        cache_key = file_hash + hashlib.sha256(context_suffix.encode()).hexdigest()[:8]
+        
         # Initialize services (using singletons for heavy services)
+        cache_service = CacheService()  # Lightweight
+
+        # ═══════════════════════════════════════════════════════
+        # CACHE CHECK: Return cached result if available
+        # ═══════════════════════════════════════════════════════
+        cached = cache_service.get(cache_key)
+        if cached is not None:
+            log.info(f"Cache HIT for cache_key={cache_key}")
+            cached.cache = CacheInfo(hit=True, key=cache_key)
+            return cached
+
+        log.info(f"Cache MISS for cache_key={cache_key} - running full pipeline")
+
         parser = ParserService()  # Lightweight, per-request is fine
         rule_extractor = RuleExtractionService()  # Lightweight
         llm = get_llm_service()  # SINGLETON: avoids re-init
@@ -151,9 +171,8 @@ async def analyze_contract(
         scorer = PsychologicalScoringEngine()  # Lightweight
         rag = get_rag_service()  # SINGLETON: ChromaDB + embedders loaded once
         evidence_service = EvidenceService(rag)
-        red_flag_service = RedFlagService()  # Lightweight
+        red_flag_service = RedFlagService(benchmarker=benchmarker)  # Share benchmarker — avoid loading market data twice
         negotiation_service = NegotiationService()  # Lightweight
-        cache_service = CacheService()  # Lightweight
 
         # ═══════════════════════════════════════════════════════
         # STAGE 1: PARSE (with automatic OCR for scanned PDFs)
@@ -174,12 +193,26 @@ async def analyze_contract(
         extraction = rule_extractor.extract(parsed)
         log.info(f"Regex extraction results: ctc={extraction.ctc_inr.value if extraction.ctc_inr else None}, notice={extraction.notice_period_days.value if extraction.notice_period_days else None}, bond={extraction.bond_amount_inr.value if extraction.bond_amount_inr else None}, probation={extraction.probation_months.value if extraction.probation_months else None}, non_compete={extraction.non_compete_months.value if extraction.non_compete_months else None}")
         
-        # Only call LLM if SALARY is missing (the most critical field)
-        # Other fields (bond, probation, non_compete) are optional and shouldn't waste API quota
+        # Call LLM if ANY critical field is missing — extract_all extracts everything at once
         salary_missing = not (extraction.ctc_inr and extraction.ctc_inr.value)
+        notice_missing = not (extraction.notice_period_days and extraction.notice_period_days.value)
+        bond_missing = not (extraction.bond_amount_inr and extraction.bond_amount_inr.value is not None)
+        probation_missing = not (extraction.probation_months and extraction.probation_months.value is not None)
+        nc_missing = not (extraction.non_compete_months and extraction.non_compete_months.value is not None)
         
-        if salary_missing:
-            log.info("Salary missing after regex. Using LLM extraction for comprehensive analysis...")
+        if salary_missing or notice_missing or bond_missing or probation_missing or nc_missing:
+            missing_fields = []
+            if salary_missing:
+                missing_fields.append("salary")
+            if notice_missing:
+                missing_fields.append("notice_period")
+            if bond_missing:
+                missing_fields.append("bond")
+            if probation_missing:
+                missing_fields.append("probation")
+            if nc_missing:
+                missing_fields.append("non_compete")
+            log.info(f"Fields missing after regex: {missing_fields}. Using LLM extraction...")
             
             try:
                 # Use the comprehensive extract_all method which extracts ALL fields at once
@@ -218,9 +251,62 @@ async def analyze_contract(
         # Final extraction logging
         log.info(f"Final extraction: ctc={extraction.ctc_inr.value if extraction.ctc_inr else None}, notice={extraction.notice_period_days.value if extraction.notice_period_days else None}, bond={extraction.bond_amount_inr.value if extraction.bond_amount_inr else None}, probation={extraction.probation_months.value if extraction.probation_months else None}, non_compete={extraction.non_compete_months.value if extraction.non_compete_months else None}")
 
+        # SANITIZATION: Ensure numeric fields are actually numbers for the UI and benchmarking
+        def _sanitize_numeric(val: Any) -> float | None:
+            if val is None: return None
+            if isinstance(val, (int, float)):
+                try:
+                    f = float(val)
+                    if math.isnan(f) or math.isinf(f):
+                        return None
+                    return f
+                except (ValueError, TypeError):
+                    return None
+            if isinstance(val, str):
+                # Handle cases like "18,00,000" or "Rs. 50000"
+                clean = re.sub(r"[^\d.]", "", val)
+                try:
+                    f = float(clean) if clean else None
+                    if f is not None and (math.isnan(f) or math.isinf(f)):
+                        return None
+                    return f
+                except ValueError:
+                    return None
+            return None
+
+        if extraction.ctc_inr and extraction.ctc_inr.value is not None:
+            extraction.ctc_inr.value = _sanitize_numeric(extraction.ctc_inr.value)
+        if extraction.notice_period_days and extraction.notice_period_days.value is not None:
+            extraction.notice_period_days.value = _sanitize_numeric(extraction.notice_period_days.value)
+        if extraction.bond_amount_inr and extraction.bond_amount_inr.value is not None:
+            extraction.bond_amount_inr.value = _sanitize_numeric(extraction.bond_amount_inr.value)
+        if extraction.probation_months and extraction.probation_months.value is not None:
+            extraction.probation_months.value = _sanitize_numeric(extraction.probation_months.value)
+        if extraction.non_compete_months and extraction.non_compete_months.value is not None:
+            extraction.non_compete_months.value = _sanitize_numeric(extraction.non_compete_months.value)
+
+        # SALARY SANITY CHECK: Catch obviously wrong values
+        # Annual CTC in India ranges from ~1L (100,000) to ~10Cr (100,000,000) for most jobs
+        if extraction.ctc_inr and extraction.ctc_inr.value is not None:
+            sal_val = extraction.ctc_inr.value
+            if sal_val < 10000:
+                # Likely a monthly salary mistaken for annual, or in LPA
+                if sal_val < 200:
+                    # Probably in LPA (e.g., 12 means 12 LPA)
+                    log.warning(f"Salary sanity: {sal_val} looks like LPA, converting to INR")
+                    extraction.ctc_inr.value = sal_val * 100000
+                else:
+                    # Probably monthly
+                    log.warning(f"Salary sanity: {sal_val} looks monthly, annualizing")
+                    extraction.ctc_inr.value = sal_val * 12
+            elif sal_val > 500_000_000:
+                # Over 50 Crore - almost certainly garbage
+                log.warning(f"Salary sanity: {sal_val} is unreasonably high, discarding")
+                extraction.ctc_inr.value = None
+
         t_extract = time.perf_counter() - t0
 
-        # Build contract metadata using final extraction results
+        # Build contract metadata using final sanitized extraction results
         salary = extraction.ctc_inr.value if extraction.ctc_inr else None
         notice = extraction.notice_period_days.value if extraction.notice_period_days else None
 
@@ -258,8 +344,6 @@ async def analyze_contract(
                 location=loc,
                 industry=ctx.industry
             )
-        else:
-            log.warning("Salary extraction failed - skipping benchmarking and using fallback scoring defaults.")
             
             if benchmark and benchmark.percentile_salary is not None:
                 percentiles["salary"] = PercentileResult(
@@ -281,15 +365,19 @@ async def analyze_contract(
                     filters_removed=[],
                     cohort_size=benchmark.cohort_size,
                     broaden_steps=benchmark.broaden_steps,
-                    min_n=30,
-                    confidence_note=f"Cohort size ({benchmark.cohort_size}) {'exceeds' if benchmark.cohort_size >= 30 else 'below'} minimum threshold."
+                    min_n=5,
+                    confidence_note=f"Cohort of {benchmark.cohort_size} records ({'strong' if benchmark.cohort_size >= 30 else 'limited'} statistical confidence)."
                 )
+        else:
+            log.warning("Salary extraction failed - skipping benchmarking and using fallback scoring defaults.")
         
         # Compute notice percentile
         if notice:
             notice_percentile = benchmarker.compute_notice_percentile(
                 notice_days=int(notice),
-                company_type=ctx.company_type.value
+                company_type=ctx.company_type.value,
+                role=ctx.role,
+                yoe=ctx.experience_level,
             )
             
             if notice_percentile is not None:
@@ -328,41 +416,43 @@ async def analyze_contract(
         # Extract training bond details if available
         training_bond = (extraction.bond_amount_inr.value is not None and extraction.bond_amount_inr.value > 0) if extraction.bond_amount_inr else False
         training_bond_amount = (extraction.bond_amount_inr.value or 0) if extraction.bond_amount_inr else 0
-        # Defaulting to 24 months for bond if present but duration unknown (standard assumption)
-        training_bond_months = 24 if training_bond else 0
+        # Default to 12 months for bond if present but duration unknown (reasonable mid-point)
+        training_bond_months = 12 if training_bond else 0
         
-        # Defaults for fields not yet in ContractExtractionResult
-        # TODO: Update extraction to capture these explicitly
-        has_provident_fund = False
-        mentions_gratuity = False
+        # ── Detect PF and Gratuity from both benefits list AND full contract text ──
+        # Status: 'present', 'absent', or 'unknown'
+        pf_found = False
+        gratuity_found = False
         
-        # Simple keyword search fallback for immediate "un-vagueing"
-        full_text_lower = " ".join([b.lower() for b in extraction.benefits]).lower() # Search in benefits first
-
+        # Check benefits list first
         for b in extraction.benefits:
             b_lower = b.lower()
-            if "provident" in b_lower or "pf" in b_lower:
-                has_provident_fund = True
+            if "provident" in b_lower or "pf" in b_lower or "epf" in b_lower:
+                pf_found = True
             if "gratuity" in b_lower:
-                mentions_gratuity = True
+                gratuity_found = True
+        
+        # Also search the full parsed text (PF is often in salary breakdowns, not benefits)
+        full_text_lower = parsed.full_text.lower() if parsed.full_text else ""
+        if not pf_found and full_text_lower:
+            pf_keywords = ["provident fund", "pf contribution", "epf", "employee provident", "employer pf"]
+            if any(kw in full_text_lower for kw in pf_keywords):
+                pf_found = True
+        if not gratuity_found and full_text_lower:
+            gratuity_keywords = ["gratuity", "payment of gratuity"]
+            if any(kw in full_text_lower for kw in gratuity_keywords):
+                gratuity_found = True
+        
+        # Determine status: if we searched text and didn't find it, mark as 'absent' only
+        # if the text is substantial enough (>500 chars) to reasonably expect to find it
+        text_is_substantial = len(full_text_lower) > 500
+        pf_status = "present" if pf_found else ("absent" if text_is_substantial else "unknown")
+        gratuity_status = "present" if gratuity_found else ("absent" if text_is_substantial else "unknown")
+        log.info(f"PF status: {pf_status}, Gratuity status: {gratuity_status}")
                 
-        # Sanitize numeric fields - extraction might return strings like "18,00,000"
-        def _sanitize(val: Any) -> float:
-            if val is None: return 0.0
-            if isinstance(val, (int, float)): return float(val)
-            if isinstance(val, str):
-                clean = val.replace(',', '').replace('_', '').strip()
-                # Handle "18 Lakhs" etc simply by taking first number? 
-                # Assuming RuleExtractionService returns digits + punctuation mostly
-                try:
-                    return float(clean)
-                except ValueError:
-                    return 0.0
-            return 0.0
-
-        salary_val = _sanitize(salary)
-        notice_val = _sanitize(notice)
-        bond_val = _sanitize(extraction.bond_amount_inr.value if extraction.bond_amount_inr else 0)
+        salary_val = (extraction.ctc_inr.value or 0.0) if extraction.ctc_inr else 0.0
+        notice_val = (extraction.notice_period_days.value or 0.0) if extraction.notice_period_days else 0.0
+        bond_val = (extraction.bond_amount_inr.value or 0.0) if extraction.bond_amount_inr else 0.0
 
         try:
             psych_result = scorer.compute_score(
@@ -371,7 +461,7 @@ async def analyze_contract(
                 benefits_count=extraction.benefits_count,
                 benefits_list=extraction.benefits,
                 non_compete=bool(extraction.non_compete_months and extraction.non_compete_months.value),
-                non_compete_months=int(_sanitize(extraction.non_compete_months.value)) if extraction.non_compete_months else 0,
+                non_compete_months=int(extraction.non_compete_months.value or 0) if extraction.non_compete_months else 0,
                 role_level="entry" if ctx.experience_level <= 2 else "senior" if ctx.experience_level > 5 else "mid",
                 industry=ctx.industry,
                 # Kwargs for additional context
@@ -380,23 +470,21 @@ async def analyze_contract(
                 training_bond=training_bond,
                 training_bond_amount=bond_val,
                 training_bond_months=training_bond_months,
-                has_provident_fund=has_provident_fund,
-                mentions_gratuity=mentions_gratuity,
-                # Defaults for others
-                garden_leave=False, 
+                pf_status=pf_status,
+                gratuity_status=gratuity_status,
+                # Text-based detection for clause features
+                garden_leave=bool(re.search(r'garden\s*leave', full_text_lower)),
                 probation_months=(extraction.probation_months.value or 0) if extraction.probation_months else 0,
-                termination_without_cause=False,
-                unlimited_deductions=False,
-                working_hours_per_week=40, # Assume standard
+                termination_without_cause=bool(re.search(r'terminat(?:e|ion)\s*(?:without\s*(?:cause|reason)|at\s*(?:its|company)\s*discretion|for\s*convenience)', full_text_lower)),
+                unlimited_deductions=bool(re.search(r'(?:unlimited|uncapped|any\s*amount)\s*(?:deduction|recovery|set[- ]?off)', full_text_lower)),
+                working_hours_per_week=40,  # Standard assumed unless explicitly stated
                 has_equity=any('equity' in b.lower() or 'esop' in b.lower() for b in extraction.benefits),
-                has_legal_violations=False # Will be re-calculated inside, but we can hint if we found RedFlags in stage 4? 
-                # Actually scorer calculates its own legal score now.
+                has_legal_violations=bool(red_flags and any(rf.severity.value == 'critical' for rf in red_flags))
             )
         except Exception as e:
-            print(f"CRITICAL ERROR IN SCORER: {e}")
-            import traceback
-            traceback.print_exc()
-            raise e
+            log.error(f"CRITICAL ERROR IN SCORER: {e}")
+            log.error(traceback.format_exc())
+            raise
         
         # Map PsychScoreResult to ScoreResult structure for response
         breakdown_items = []
@@ -411,14 +499,32 @@ async def analyze_contract(
                 reason=f"{key.capitalize()} Check: Scored {points:.0f}/100 (Weight: {weight*100:.0f}%)"
             ))
 
+        # ── Compute real safety score from risk factors ──
+        safety = 100.0
+        # Penalise for each risk factor detected
+        safety -= len(psych_result.risk_factors) * 8
+        # Penalise for legal violations
+        safety -= len(psych_result.legal_violations) * 12
+        # Penalise for red flags by severity
+        for rf in red_flags:
+            if rf.severity.value == "critical":
+                safety -= 12
+            elif rf.severity.value == "high":
+                safety -= 8
+            elif rf.severity.value == "medium":
+                safety -= 5
+            else:
+                safety -= 2
+        safety = max(0.0, min(100.0, safety))
+
         scoring = ScoreResult(
             overall_score=float(psych_result.score),
             grade=psych_result.grade,
             score_confidence=psych_result.confidence,
             score_formula=f"Psychological v3.0: {psych_result.score}/100",
             breakdown=breakdown_items,
-            safety_score=100.0, # Deprecated but required
-            market_fairness_score=float(psych_result.raw_score), # Using raw score as fairness proxy
+            safety_score=safety,
+            market_fairness_score=float(psych_result.raw_score),
             badges=psych_result.badges,
             risk_factors=psych_result.risk_factors,
             legal_violations=psych_result.legal_violations
@@ -450,21 +556,32 @@ async def analyze_contract(
         # STAGE 7: RAG EVIDENCE
         # ═══════════════════════════════════════════════════════
         t0 = time.perf_counter()
-        evidence_map, drift_results = evidence_service.collect_evidence_and_drift(extraction)
-        
-        # Flatten evidence for top-level display
+        evidence_map: Dict[str, List[EvidenceChunk]] = {}
+        drift_results: List[ClauseDriftResult] = []
         all_evidence: List[EvidenceChunk] = []
-        for chunks in evidence_map.values():
-            all_evidence.extend(chunks[:3])  # Top 3 from each clause type
+        
+        try:
+            evidence_map, drift_results = evidence_service.collect_evidence_and_drift(extraction)
+            
+            # Flatten evidence for top-level display
+            for chunks in evidence_map.values():
+                all_evidence.extend(chunks[:3])  # Top 3 from each clause type
+        except Exception as rag_error:
+            log.error(f"RAG evidence collection failed (non-fatal): {rag_error}")
+            log.error(f"RAG error type: {type(rag_error).__name__}")
+            log.error(f"RAG traceback: {traceback.format_exc()}")
+            # Continue with empty evidence - analysis can proceed without RAG
         
         t_rag = time.perf_counter() - t0
 
         # ═══════════════════════════════════════════════════════
-        # STAGE 8: NARRATION
+        # STAGE 8: NARRATION (with deterministic fallback)
         # ═══════════════════════════════════════════════════════
         t0 = time.perf_counter()
         narration_result = None
+        narration_model = "deterministic"
         
+        # Try LLM narration first
         narration_text = await llm.narrate({
             "role": extraction.role.value if extraction.role and extraction.role.value else ctx.role,
             "score": scoring.overall_score,
@@ -479,12 +596,58 @@ async def analyze_contract(
         })
         
         if narration_text:
-            narration_result = NarrationResult(
-                summary=narration_text,
-                confidence=0.88,
-                model="gemini-1.5-flash",
-                tokens=len(narration_text.split()) * 2  # Rough estimate
-            )
+            narration_model = llm.model or "gemini"
+        else:
+            # ── Deterministic fallback verdict ──
+            log.info("LLM narration unavailable — generating deterministic verdict")
+            role_name = (extraction.role.value if extraction.role and extraction.role.value else ctx.role) or "this role"
+            score_val = scoring.overall_score
+            grade_val = scoring.grade
+            
+            # Build salary context
+            sal_context = ""
+            if salary and benchmark and benchmark.percentile_salary is not None:
+                pct = benchmark.percentile_salary
+                if pct >= 75:
+                    sal_context = f"The offered CTC of ₹{salary:,.0f} places you in the top quartile of comparable contracts"
+                elif pct >= 40:
+                    sal_context = f"The offered CTC of ₹{salary:,.0f} is within the competitive range for comparable roles"
+                elif pct >= 10:
+                    sal_context = f"The offered CTC of ₹{salary:,.0f} falls below the median for comparable contracts"
+                else:
+                    sal_context = f"The offered CTC of ₹{salary:,.0f} is significantly below market rates for similar positions"
+            elif salary:
+                sal_context = f"The offered CTC is ₹{salary:,.0f}"
+            
+            # Build risk context
+            risk_context = ""
+            if len(red_flags) >= 3:
+                risk_context = f"with {len(red_flags)} risk factors that warrant careful review"
+            elif len(red_flags) > 0:
+                top_flag = red_flags[0].rule if red_flags else ""
+                risk_context = f"with {len(red_flags)} flagged concern{'s' if len(red_flags) > 1 else ''} including {top_flag}"
+            else:
+                risk_context = "with no major risks identified"
+            
+            # Build favorable context
+            fav_context = ""
+            if len(favorable_terms) > 0:
+                fav_context = f" The contract includes {len(favorable_terms)} favorable term{'s' if len(favorable_terms) > 1 else ''} working in your favor."
+            
+            # Build notice context
+            notice_bit = ""
+            if notice:
+                notice_bit = f" Notice period is {int(notice)} days."
+            
+            # Assemble the verdict
+            narration_text = f"This {role_name} offer scores {score_val:.0f}/100 ({grade_val}). {sal_context}, {risk_context}.{fav_context}{notice_bit}"
+        
+        narration_result = NarrationResult(
+            summary=narration_text,
+            confidence=0.88 if narration_model != "deterministic" else 0.95,
+            model=narration_model,
+            tokens=len(narration_text.split()) * 2
+        )
         
         t_narration = time.perf_counter() - t0
 
@@ -521,24 +684,33 @@ async def analyze_contract(
             
             # RAG
             benchmark=benchmark,
-            rag={
-                "evidence_by_clause_type": {k: [e.model_dump() for e in v] for k, v in evidence_map.items()},
-                "drift_by_clause_type": [d.model_dump() for d in drift_results]
-            },
+            rag=RAGResult(
+                evidence_by_clause_type={k: [e.model_dump() for e in v] for k, v in evidence_map.items()},
+                drift_by_clause_type=[d.model_dump() for d in drift_results],
+            ),
             evidence=all_evidence[:10],  # Top 10 evidence chunks
-            
+
             # Narration
             narration=narration_result,
-            
+
             # Meta
-        timings=timings,
-        cache={"hit": False, "key": file_hash},
-        determinism=DeterminismInfo(
-            extraction="hybrid" if salary_missing else "deterministic",
-            scoring="deterministic",
-            narration="non-deterministic" if narration_result else "deterministic"
+            timings=timings,
+            cache=CacheInfo(hit=False, key=file_hash),
+            determinism=DeterminismInfo(
+                extraction="hybrid" if salary_missing else "deterministic",
+                scoring="deterministic",
+                narration="non-deterministic" if narration_model != "deterministic" else "deterministic"
+            )
         )
-    )
+
+        # ═══════════════════════════════════════════════════════
+        # PERSIST CACHE: Store result for future identical uploads
+        # ═══════════════════════════════════════════════════════
+        try:
+            cache_service.set(cache_key, response)
+            log.info(f"Cached analysis for cache_key={cache_key}")
+        except Exception as cache_err:
+            log.warning(f"Failed to cache result: {cache_err}")
 
         return response
     
@@ -546,8 +718,7 @@ async def analyze_contract(
         raise
     except Exception as e:
         log.error(f"FATAL ERROR in analyze_contract: {str(e)}")
-        # Return structured error directly or let global handler catch it
-        # Letting global handler catch it ensures consistent formatting
-        raise e
+        log.error(traceback.format_exc())
+        raise
 
 

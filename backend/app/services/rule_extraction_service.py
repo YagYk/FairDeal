@@ -29,7 +29,7 @@ class RuleExtractionService:
             # Remove commas and other non-numeric chars except dot
             clean = re.sub(r"[^\d.]", "", s)
             return float(clean) if clean else None
-        except:
+        except (ValueError, TypeError):
             return None
 
     def _safe_int(self, s: str | None) -> int | None:
@@ -38,7 +38,7 @@ class RuleExtractionService:
         try:
             clean = re.sub(r"[^\d]", "", s)
             return int(clean) if clean else None
-        except:
+        except (ValueError, TypeError):
             return None
 
     def extract(self, parsed: ParsedDocument) -> ContractExtractionResult:
@@ -54,6 +54,34 @@ class RuleExtractionService:
         result.probation_months = self._extract_field(text, parsed, "probation_months", self._extract_probation_logic)
         result.role = self._extract_field(text, parsed, "role", self._extract_role_logic)
         result.company_type = self._extract_field(text, parsed, "company_type", self._extract_company_logic)
+
+        # ── Post-process bond: negative sentinel means "N months of salary" ──
+        salary_val = result.ctc_inr.value if result.ctc_inr else None
+        bond_val = result.bond_amount_inr.value if result.bond_amount_inr else None
+        bond_source = result.bond_amount_inr.source_text if result.bond_amount_inr else ""
+        
+        if bond_val is not None and bond_val < 0:
+            # Negative sentinel: -N means N months of salary
+            months = abs(bond_val)
+            if salary_val and salary_val > 0:
+                monthly = salary_val / 12.0
+                actual_bond = months * monthly
+                log.info(f"Bond is {months:.0f} months salary → ₹{actual_bond:.0f} (CTC={salary_val})")
+                result.bond_amount_inr.value = actual_bond
+            else:
+                # Can't calculate without salary — clear the bond
+                log.warning(f"Bond expressed as {months:.0f} months salary but CTC unknown — clearing")
+                result.bond_amount_inr = ExtractedField(
+                    value=None, confidence=0.0, method=ExtractionMethod.missing
+                )
+        
+        # ── Cross-validation: bond must NOT equal salary ──
+        bond_val = result.bond_amount_inr.value if result.bond_amount_inr else None
+        if salary_val and bond_val and abs(salary_val - bond_val) < 1.0:
+            log.warning(f"Bond ({bond_val}) == Salary ({salary_val}) — clearing bogus bond extraction")
+            result.bond_amount_inr = ExtractedField(
+                value=None, confidence=0.0, method=ExtractionMethod.missing
+            )
 
         # Stage 3 Requirement: Benefits Engine (regex-first, 12+ categories)
         result.benefits, result.benefits_count = self._extract_benefits(text)
@@ -140,7 +168,6 @@ class RuleExtractionService:
         text_lower = text.lower()
         
         # 1. LPA patterns (HIGHEST PRIORITY - most common in Indian contracts)
-        # Matches: "20 LPA", "20.5 LPA", "Rs. 20 LPA", "₹20 lpa", "20 lakhs per annum"
         lpa_patterns = [
             r"(?:₹|rs\.?|inr)?[\s]*([0-9]+(?:\.[0-9]+)?)\s*(?:/-)?[\s]*(?:lpa|l\.p\.a\.)",
             r"(?:₹|rs\.?|inr)?[\s]*([0-9]+(?:\.[0-9]+)?)\s*(?:lakhs?|lacs?|lac)\s*(?:per\s*annum|p\.?\s*a\.?|annual(?:ly)?)",
@@ -154,18 +181,30 @@ class RuleExtractionService:
             match = re.search(p, text_lower, flags=re.I)
             if match:
                 lpa_value = self._safe_float(match.group(1))
-                if lpa_value and 1 <= lpa_value <= 500:  # Sanity check: 1 LPA to 500 LPA (5 CR)
+                if lpa_value and 1 <= lpa_value <= 500:
+                    start_idx = max(0, match.start() - 50)
+                    end_idx = min(len(text_lower), match.end() + 50)
+                    context_window = text_lower[start_idx:end_idx]
+                    
+                    exclusion_keywords = [
+                        "gratuity", "insurance", "mediclaim", "coverage", "maximum", "limit", "cap", 
+                        "sum assured", "benefit up to", "variable pay", "performance bonus"
+                    ]
+                    
+                    if any(kw in context_window for kw in exclusion_keywords):
+                        log.info(f"Ignored LPA match '{match.group(0)}' due to context keywords")
+                        continue
+
                     annual_inr = lpa_value * 100000
-                    log.info(f"Found LPA salary: {lpa_value} LPA = {annual_inr} INR from pattern: {match.group(0)}")
+                    log.info(f"Found LPA salary: {lpa_value} LPA = {annual_inr} INR from: {match.group(0)}")
                     return annual_inr, match.group(0)
         
         # 2. Explicit CTC/Annual mentions with large numbers (already in INR)
-        # Matches: "Total CTC: ₹20,00,000", "Annual CTC Rs. 2000000", "CTC offered: 18,50,000"
         ctc_patterns = [
             r"(?:total|annual|gross|fixed)?\s*ctc\s*(?:offered|is|:|-|–)?\s*(?:₹|rs\.?|inr)?[\s]*([0-9,]+(?:\.[0-9]+)?)(?:\s*(?:inr|rs\.?|/-))?",
             r"cost\s*to\s*company\s*(?:is|:|-|–)?\s*(?:₹|rs\.?|inr)?[\s]*([0-9,]+(?:\.[0-9]+)?)(?:\s*(?:inr|rs\.?|/-))?",
             r"(?:annual|yearly)\s*(?:salary|compensation|package)\s*(?:is|:|-|–)?\s*(?:₹|rs\.?|inr)?[\s]*([0-9,]+(?:\.[0-9]+)?)(?:\s*(?:inr|rs\.?|/-))?",
-            r"(?:salary|ctc)\s+is\s+(?:₹|rs\.?|inr)?[\s]*([0-9,]+(?:\.[0-9]+)?)(?:\s*(?:inr|rs\.?|/-))?",  # Contextual: "Salary is 18,00,000"
+            r"(?:salary|ctc)\s+is\s+(?:₹|rs\.?|inr)?[\s]*([0-9,]+(?:\.[0-9]+)?)(?:\s*(?:inr|rs\.?|/-))?",
         ]
         
         for p in ctc_patterns:
@@ -173,45 +212,41 @@ class RuleExtractionService:
             if match:
                 amt = self._safe_float(match.group(1))
                 if amt:
-                    # Check if it's already in INR (> 100000) or needs conversion
-                    if amt > 100000:  # Already annual INR
-                        log.info(f"Found annual CTC: {amt} INR from pattern: {match.group(0)}")
+                    if amt > 100000:
+                        log.info(f"Found annual CTC: {amt} INR from: {match.group(0)}")
                         return amt, match.group(0)
-                    elif 1 <= amt <= 500:  # Likely LPA
+                    elif 1 <= amt <= 500:
                         annual_inr = amt * 100000
                         log.info(f"Found LPA-style CTC: {amt} LPA = {annual_inr} INR")
                         return annual_inr, match.group(0)
         
         # 3. Monthly salary patterns (convert to annual)
-        # Matches: "₹50,000 per month", "monthly salary: Rs. 75000", "60000/month"
         monthly_patterns = [
             r"(?:₹|rs\.?|inr)?[\s]*([0-9,]+(?:\.[0-9]+)?)\s*(?:per\s*month|monthly|p\.?\s*m\.?|/\s*month)",
             r"monthly\s*(?:salary|ctc|compensation|pay)\s*(?:is|:|-|–)?\s*(?:₹|rs\.?|inr)?[\s]*([0-9,]+(?:\.[0-9]+)?)",
+            r"cost\s*to\s*company\s*(?:per\s*month|monthly)\s*(?:₹|rs\.?|inr)?[\s]*([0-9,]+(?:\.[0-9]+)?)",
         ]
         
         for p in monthly_patterns:
             match = re.search(p, text_lower, flags=re.I)
             if match:
                 monthly = self._safe_float(match.group(1))
-                if monthly and 10000 <= monthly <= 1000000:  # Sanity: 10K to 10L monthly
+                if monthly and 10000 <= monthly <= 1000000:
                     annual = monthly * 12
                     log.info(f"Found monthly salary: {monthly}/month = {annual}/year from: {match.group(0)}")
                     return annual, match.group(0)
         
         # 4. Large INR amounts with currency symbols (fallback)
-        # 4. Large INR amounts with currency symbols (fallback)
-        # Matches: "₹18,50,000", "Rs. 2000000/-", "INR 1500000", "15,00,000 INR"
         inr_patterns = [
             r"(?:₹|rs\.?|inr)[\s]*([0-9,]{6,})(?:\s*/-|\s*per\s*annum|p\.a\.)?",
-            r"([0-9,]{6,})\s*(?:inr|rs\.?)(?:\s*/-|\s*per\s*annum|p\.a\.)?", # Suffix fallback
+            r"([0-9,]{6,})\s*(?:inr|rs\.?)(?:\s*/-|\s*per\s*annum|p\.a\.)?",
         ]
         
         for p in inr_patterns:
             match = re.search(p, text_lower, flags=re.I)
             if match:
                 amt = self._safe_float(match.group(1))
-                if amt and amt > 100000:  # Must be at least 1 lakh
-                    # Check context - avoid matching gratuity/insurance caps
+                if amt and amt > 100000:
                     context = text_lower[max(0, match.start()-50):min(len(text_lower), match.end()+20)]
                     if not any(x in context for x in ['gratuity', 'insurance', 'maximum', 'limit', 'cap', 'coverage']):
                         log.info(f"Found INR amount: {amt} from: {match.group(0)}")
@@ -224,7 +259,6 @@ class RuleExtractionService:
             var = self._safe_float(fv_match.group(2))
             if fixed:
                 total = fixed + (var or 0)
-                # If total is small, assume monthly
                 if total < 200000:
                     total *= 12
                 log.info(f"Found Fixed+Variable: {fixed}+{var} = {total}")
@@ -233,104 +267,277 @@ class RuleExtractionService:
         log.warning("No salary found in text")
         return None, None
 
+    # ──────────────────────────────────────────────────────────────────
+    #  NOTICE PERIOD
+    # ──────────────────────────────────────────────────────────────────
+
     def _extract_notice_logic(self, text: str) -> Tuple[int | None, str | None]:
         """
         Extract notice period in days.
-        Handles: "notice period is 30 days", "60 days notice", "3 months notice", 
-        "two months", "one month notice", etc.
+        Handles hyphenated forms (one-month), various quote styles, and many phrasing variants.
         """
         log.info("Starting notice period extraction...")
         text_lower = text.lower()
-        
-        # Word-to-number mapping for common cases
+
+        # ── Pre-process: normalize hyphens between number-words and units ──
+        # "one-month" → "one month", "three-months'" → "three months'"
+        # This handles the extremely common Indian contract hyphenation
+        _unit_words = r"(?:month|week|day|calendar)"
+        text_norm = re.sub(
+            rf"(\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|thirty|sixty|ninety|\d+))\s*[-–—]\s*({_unit_words})",
+            r"\1 \2",
+            text_lower,
+            flags=re.I
+        )
+
         word_nums = {
             "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
             "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
             "eleven": 11, "twelve": 12, "fifteen": 15, "thirty": 30,
-            "sixty": 60, "ninety": 90
+            "sixty": 60, "ninety": 90,
         }
-        
-        # Numeric patterns (highest priority)
-        patterns = [
-            r"notice\s*period\s*(?:is|of|shall\s*be|will\s*be|:|-|–)?\s*(\d{1,3})\s*(days?|weeks?|months?|calendar\s*months?)",
-            r"(\d{1,3})\s*(days?|weeks?|months?|calendar\s*months?)\s*(?:'?s?\s*)?notice\s*period",
-            r"(\d{1,3})\s*(days?|weeks?|months?)\s*(?:'?s?\s*)?notice",
-            r"notice\s*of\s*(\d{1,3})\s*(days?|weeks?|months?)",
-            r"resignation.*?notice\s*(?:period)?\s*(?:is|of|shall\s*be)?\s*(\d{1,3})\s*(days?|weeks?|months?)",
-            r"termination.*?notice\s*(?:period)?\s*(?:is|of|shall\s*be)?\s*(\d{1,3})\s*(days?|weeks?|months?)",
-            r"serve\s*(?:a)?\s*(\d{1,3})\s*(days?|weeks?|months?)\s*notice",
-        ]
 
-        for p in patterns:
-            m = re.search(p, text_lower, flags=re.I | re.S)
+        def _to_days(val: int, unit: str) -> int | None:
+            unit = unit.lower().strip()
+            days = val
+            if "week" in unit:
+                days = val * 7
+            elif "month" in unit or "calendar" in unit:
+                days = val * 30
+            return int(days) if 1 <= days <= 365 else None
+
+        # Helper: try to parse a raw token as int or word-number
+        def _parse_num(raw: str) -> int | None:
+            raw = raw.strip().lower()
+            if raw in word_nums:
+                return word_nums[raw]
+            v = self._safe_int(raw)
+            return v if v and v > 0 else None
+
+        # All apostrophe/quote variants
+        _Q = r"['\u2018\u2019\u0027`\u00B4]"
+        # Separator between number and unit: space, hyphen, or nothing
+        _S = r"[\s\-]*"
+
+        # ── 1. Explicit "notice period" phrasing ──
+        explicit_patterns = [
+            rf"notice\s*period\s*(?:is|of|shall\s*be|will\s*be|:|-|–)?\s*(\w+){_S}(days?|weeks?|months?|calendar\s*months?)",
+        ]
+        for p in explicit_patterns:
+            m = re.search(p, text_norm, flags=re.I | re.S)
             if m:
-                value = self._safe_int(m.group(1))
-                unit = (m.group(2) or "").lower()
-                if value is None or value <= 0:
+                val = _parse_num(m.group(1))
+                if val:
+                    days = _to_days(val, m.group(2))
+                    if days:
+                        log.info(f"Found notice period (explicit): {val} {m.group(2)} = {days} days from: {m.group(0)}")
+                        return days, m.group(0)
+
+        # ── 2. "giving X month(s)' [written/advance/prior] notice" ──
+        giving_patterns = [
+            rf"(?:by\s+)?giving\s+(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*(?:written\s+|advance\s+|prior\s+)*notice",
+            rf"(?:by\s+)?provid(?:e|ing)\s+(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*(?:written\s+|advance\s+|prior\s+)*notice",
+            rf"serve\s+(?:a\s+)?(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*(?:written\s+|advance\s+|prior\s+)*notice",
+        ]
+        for p in giving_patterns:
+            m = re.search(p, text_norm, flags=re.I | re.S)
+            if m:
+                val = _parse_num(m.group(1))
+                if val:
+                    days = _to_days(val, m.group(2))
+                    if days:
+                        log.info(f"Found notice period (giving): {val} {m.group(2)} = {days} days from: {m.group(0)}")
+                        return days, m.group(0)
+
+        # ── 3. "X month(s)['] [written] notice" (generic) ──
+        generic_patterns = [
+            rf"(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*(?:written\s+|advance\s+|prior\s+)*notice(?:\s+period)?",
+            rf"(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*notice\s+(?:in\s+writing)",
+        ]
+        _generic_exclusions = ["probation", "bond", "training", "gratuity", "leave", "insurance", "maternity", "paternity"]
+        for p in generic_patterns:
+            m = re.search(p, text_norm, flags=re.I | re.S)
+            if m:
+                # Context-check: reject if nearby text mentions unrelated clauses
+                ctx_start = max(0, m.start() - 80)
+                ctx_end = min(len(text_norm), m.end() + 80)
+                ctx_window = text_norm[ctx_start:ctx_end]
+                if any(kw in ctx_window for kw in _generic_exclusions):
+                    log.info(f"Ignored generic notice match due to context exclusion: {m.group(0)[:60]}")
                     continue
+                val = _parse_num(m.group(1))
+                if val:
+                    days = _to_days(val, m.group(2))
+                    if days:
+                        log.info(f"Found notice period (generic): {val} {m.group(2)} = {days} days from: {m.group(0)}")
+                        return days, m.group(0)
 
-                days = value
-                if "week" in unit:
-                    days = value * 7
-                elif "month" in unit:
-                    days = value * 30
-
-                if 1 <= days <= 365:  # Sanity check
-                    log.info(f"Found notice period: {value} {unit} = {days} days from: {m.group(0)}")
-                    return int(days), m.group(0)
-        
-        # Word-based patterns (e.g., "three months notice")
-        word_patterns = [
-            r"notice\s*period\s*(?:is|of|shall\s*be|:)?\s*(\w+)\s*(days?|weeks?|months?)",
-            r"(\w+)\s*(days?|weeks?|months?)\s*(?:'?s?\s*)?notice",
+        # ── 4. "notice of X days/months" ──
+        of_patterns = [
+            rf"notice\s*of\s*(\w+){_S}(days?|weeks?|months?)",
+            rf"advance\s*(?:written\s+)?notice\s*of\s*(\w+){_S}(days?|weeks?|months?)",
         ]
-        
-        for p in word_patterns:
-            m = re.search(p, text_lower, flags=re.I | re.S)
+        for p in of_patterns:
+            m = re.search(p, text_norm, flags=re.I | re.S)
             if m:
-                word = m.group(1).lower()
-                unit = (m.group(2) or "").lower()
-                if word in word_nums:
-                    value = word_nums[word]
-                    days = value
-                    if "week" in unit:
-                        days = value * 7
-                    elif "month" in unit:
-                        days = value * 30
-                    
-                    if 1 <= days <= 365:
-                        log.info(f"Found word-based notice: {word} {unit} = {days} days")
-                        return int(days), m.group(0)
-        
+                val = _parse_num(m.group(1))
+                if val:
+                    days = _to_days(val, m.group(2))
+                    if days:
+                        log.info(f"Found notice period (of): {val} {m.group(2)} = {days} days from: {m.group(0)}")
+                        return days, m.group(0)
+
+        # ── 5. Broader termination/resignation-section scan ──
+        termination_patterns = [
+            rf"terminat(?:ion|e|able).{{0,250}}?(?:giving|provide|serve)\s+(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*(?:written\s+|advance\s+|prior\s+)*notice",
+            rf"resign(?:ation|ing)?.{{0,200}}?(?:giving|provide)\s+(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*(?:written\s+|advance\s+|prior\s+)*notice",
+            # Also catch: "terminable ... X month notice" without giving/provide
+            rf"terminat(?:ion|e|able).{{0,250}}?(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*(?:written\s+|advance\s+|prior\s+)*notice",
+        ]
+        for p in termination_patterns:
+            m = re.search(p, text_norm, flags=re.I | re.S)
+            if m:
+                val = _parse_num(m.group(1))
+                if val:
+                    days = _to_days(val, m.group(2))
+                    if days:
+                        log.info(f"Found notice period (termination): {val} {m.group(2)} = {days} days from: {m.group(0)[:80]}")
+                        return days, m.group(0)
+
+        # ── 6. "salary in lieu of notice" / "in lieu of the notice period" ──
+        lieu_patterns = [
+            rf"(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?\s*(?:salary|pay|compensation).{{0,30}}?in\s*lieu\s*(?:of)?\s*(?:the\s*)?notice",
+            rf"in\s*lieu\s*(?:of)?\s*(?:the\s*)?notice\s*(?:period)?.{{0,40}}?(\w+){_S}(months?|weeks?|days?)",
+        ]
+        for p in lieu_patterns:
+            m = re.search(p, text_norm, flags=re.I | re.S)
+            if m:
+                val = _parse_num(m.group(1))
+                if val:
+                    days = _to_days(val, m.group(2))
+                    if days:
+                        log.info(f"Found notice period (lieu): {val} {m.group(2)} = {days} days from: {m.group(0)[:80]}")
+                        return days, m.group(0)
+
+        # ── 7. Last resort: scan for ANY "X month/day" near "notice" within 80 chars ──
+        last_resort = re.finditer(rf"(\w+){_S}(months?|weeks?|days?)(?:{_Q}?s?)?", text_norm)
+        for m in last_resort:
+            val = _parse_num(m.group(1))
+            if val is None:
+                continue
+            # Check if "notice" appears within 80 chars before or after
+            start = max(0, m.start() - 80)
+            end = min(len(text_norm), m.end() + 80)
+            window = text_norm[start:end]
+            if "notice" in window:
+                # Make sure this isn't a probation, bond, leave or insurance mention
+                if any(kw in window for kw in ["probation", "bond", "training", "gratuity", "leave", "insurance", "maternity", "paternity"]):
+                    continue
+                days = _to_days(val, m.group(2))
+                if days:
+                    log.info(f"Found notice period (proximity): {val} {m.group(2)} = {days} days from window: {window[:80]}")
+                    return days, m.group(0)
+
         log.warning("No notice period found in text")
         return None, None
 
+    # ──────────────────────────────────────────────────────────────────
+    #  BOND EXTRACTION (tightened to avoid salary leakage)
+    # ──────────────────────────────────────────────────────────────────
+
     def _extract_bond_logic(self, text: str) -> Tuple[float | None, str | None]:
         """
-        Extract training bond / service bond amount in INR.
-        Handles: "bond of Rs. 1,00,000", "training cost: ₹50000", "liquidated damages", etc.
+        Extract training bond / service bond / service agreement penalty amount in INR.
+        Handles:
+          - "service bond of Rs. 1,00,000"
+          - "training bond amount: ₹50,000"
+          - "liquidated damages of Rs 2,00,000"
+          - "penalty of 3 months gross salary" (relative to CTC)
+          - "liable to pay Rs. 75,000 if you leave before 2 years"
+          - "service agreement of 2 years" (duration-only, no explicit amount)
         """
         log.info("Starting bond extraction...")
         text_lower = text.lower()
         
-        # Patterns for bond detection
-        patterns = [
-            r"(?:service\s*)?bond.*?(?:₹|rs\.?|inr)\s*([0-9,]+)",
-            r"training\s*(?:bond|cost|fee).*?(?:₹|rs\.?|inr)\s*([0-9,]+)",
-            r"liquidated\s*damages.*?(?:₹|rs\.?|inr)\s*([0-9,]+)",
-            r"(?:pay|reimburse|recover).*?(?:₹|rs\.?|inr)\s*([0-9,]+).*?(?:leaving|resigning|terminating|breach)",
-            r"recovery\s*(?:of)?\s*(?:₹|rs\.?|inr)\s*([0-9,]+)",
-            r"(?:₹|rs\.?|inr)\s*([0-9,]+).*?(?:bond|training\s*cost|service\s*agreement)",
+        # Currency prefix pattern
+        _CUR = r"(?:₹|rs\.?\s*|inr\.?\s*)"
+
+        # ── Phase 1: Bond keyword BEFORE the amount (high confidence) ──
+        bond_before_patterns = [
+            # "service bond of Rs. 1,00,000"
+            rf"(?:service\s*)?bond\s*(?:of|amount|:|-|–|is|for)?\s*{_CUR}([0-9,]+(?:\.\d+)?)",
+            # "training bond of Rs. 50000"
+            rf"training\s*(?:bond|cost|fee|amount)\s*(?:of|amount|:|-|–|is|for)?\s*{_CUR}([0-9,]+(?:\.\d+)?)",
+            # "liquidated damages of Rs. 2,00,000"
+            rf"liquidated\s*damages\s*(?:of|amount|:|-|–|is)?\s*{_CUR}([0-9,]+(?:\.\d+)?)",
+            # "penalty of Rs. 1,00,000"
+            rf"penalty\s*(?:of|amount|:|-|–)?\s*{_CUR}([0-9,]+(?:\.\d+)?)",
+            # "recovery of Rs 50000"
+            rf"recovery\s*(?:of)?\s*{_CUR}([0-9,]+(?:\.\d+)?)",
+            # "pay Rs. 1,00,000 as bond/penalty/damages"
+            rf"(?:pay|refund|reimburse)\s*{_CUR}([0-9,]+(?:\.\d+)?)\s*(?:as|towards|by way of)\s*(?:bond|penalty|damages|compensation)",
+            # "bond/penalty amount is Rs. 50000"
+            rf"(?:bond|penalty|damages)\s*(?:amount)?\s*(?:shall\s*be|is|of|=|:)\s*{_CUR}([0-9,]+(?:\.\d+)?)",
         ]
-        
-        for p in patterns:
+
+        for p in bond_before_patterns:
             match = re.search(p, text_lower, flags=re.I | re.S)
             if match:
                 amount = self._safe_float(match.group(1))
                 if amount and amount > 0:
-                    log.info(f"Found bond: {amount} from: {match.group(0)[:50]}...")
+                    log.info(f"Found bond (keyword-first): {amount} from: {match.group(0)[:80]}")
                     return amount, match.group(0)
-        
+
+        # ── Phase 2: Amount THEN bond keyword within 150 chars (medium confidence) ──
+        amount_then_bond_patterns = [
+            rf"{_CUR}([0-9,]+(?:\.\d+)?).{{0,150}}?(?:bond|training\s*cost|liquidated\s*damages|penalty|service\s*agreement\s*(?:breach|violation))",
+            r"(?:pay|reimburse|recover|forfeit|liable).{0,100}?(?:₹|rs\.?|inr)\s*([0-9,]+(?:\.\d+)?).{0,80}?(?:leaving|resigning|breach|before\s*(?:complet|expir))",
+        ]
+
+        for p in amount_then_bond_patterns:
+            match = re.search(p, text_lower, flags=re.I | re.S)
+            if match:
+                amount = self._safe_float(match.group(1))
+                if amount and amount > 0:
+                    log.info(f"Found bond (amount-then-keyword): {amount} from: {match.group(0)[:80]}")
+                    return amount, match.group(0)
+
+        # ── Phase 3: Service agreement / minimum service period with amount ──
+        # "minimum service period of 2 years, failing which you shall pay Rs. 1,00,000"
+        # "service agreement... pay... Rs. 50,000"
+        service_agreement_patterns = [
+            rf"(?:service\s*agreement|minimum\s*service\s*(?:period|commitment|tenure)).{{0,200}}?{_CUR}([0-9,]+(?:\.\d+)?)",
+            rf"(?:agree\s*to\s*serve|commit\s*to\s*serve|undertake\s*to\s*serve).{{0,200}}?{_CUR}([0-9,]+(?:\.\d+)?)",
+            rf"(?:leave|resign|separate).{{0,60}}?(?:before|prior|within).{{0,80}}?(?:pay|liable|forfeit|reimburse).{{0,60}}?{_CUR}([0-9,]+(?:\.\d+)?)",
+        ]
+
+        for p in service_agreement_patterns:
+            match = re.search(p, text_lower, flags=re.I | re.S)
+            if match:
+                amount = self._safe_float(match.group(1))
+                if amount and amount > 0:
+                    log.info(f"Found bond (service-agreement): {amount} from: {match.group(0)[:80]}")
+                    return amount, match.group(0)
+
+        # ── Phase 4: Bond amount expressed as months of salary ──
+        # "penalty of 3 months gross salary", "pay 2 months CTC"
+        # Returns NEGATIVE value to signal "X months of salary" — the caller
+        # (extract()) will multiply by actual salary/12 if known.
+        salary_bond_patterns = [
+            r"(?:bond|penalty|damages|forfeit|pay|reimburse|liable).{0,60}?(\d+)\s*months?\s*(?:of\s*)?(?:gross|basic|net|ctc|salary|pay|compensation)",
+            r"(\d+)\s*months?\s*(?:of\s*)?(?:gross|basic|net|ctc|salary|pay|compensation).{0,60}?(?:bond|penalty|damages|forfeit)",
+        ]
+
+        for p in salary_bond_patterns:
+            match = re.search(p, text_lower, flags=re.I | re.S)
+            if match:
+                months = self._safe_int(match.group(1))
+                if months and 1 <= months <= 24:
+                    log.info(f"Found bond as salary multiple: {months} months salary from: {match.group(0)[:80]}")
+                    # Negative sentinel: -N means "N months of salary".
+                    # extract() post-processing will convert to INR using actual CTC.
+                    return float(-months), match.group(0)
+
         log.info("No bond found in text")
         return None, None
 
@@ -358,7 +565,7 @@ class RuleExtractionService:
                 months = value
                 if "year" in unit:
                     months = value * 12
-                if 1 <= months <= 60:  # Sanity check: 1 month to 5 years
+                if 1 <= months <= 60:
                     log.info(f"Found non-compete: {value} {unit} = {months} months")
                     return months, match.group(0)
         
@@ -378,7 +585,14 @@ class RuleExtractionService:
             r"trial\s+period\s*(?:of|is)?\s*(\d+)\s*(months?|weeks?)",
             r"confirmation\s+after\s*(\d+)\s*(months?|weeks?)",
         ]
-        
+
+        # Also handle word-based: "probation for a period of six months"
+        word_nums = {
+            "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+            "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+            "eleven": 11, "twelve": 12,
+        }
+
         for p in patterns:
             match = re.search(p, text_lower, flags=re.I | re.S)
             if match:
@@ -393,7 +607,23 @@ class RuleExtractionService:
                     months = max(1, round(value / 30))
                 log.info(f"Found probation: {value} {unit} = {months} months from: {match.group(0)}")
                 return months, match.group(0)
-        
+
+        # Word-based probation: "probation for a period of six months"
+        word_patterns = [
+            r"probation(?:ary)?\s*(?:period)?\s*(?:of|is|for\s*(?:a\s*)?(?:period\s*of\s*)?)?\s*(\w+)\s*(months?|weeks?)",
+        ]
+        for p in word_patterns:
+            match = re.search(p, text_lower, flags=re.I | re.S)
+            if match:
+                word = match.group(1).lower()
+                if word in word_nums:
+                    months = word_nums[word]
+                    unit = match.group(2).lower()
+                    if "week" in unit:
+                        months = max(1, round(months / 4))
+                    log.info(f"Found probation (word): {word} = {months} months from: {match.group(0)}")
+                    return months, match.group(0)
+
         log.warning("No probation period found in text")
         return None, None
         
@@ -414,18 +644,36 @@ class RuleExtractionService:
         return None, None
 
     def _extract_company_logic(self, text: str) -> Tuple[str | None, str | None]:
-        # Look for "Welcome to <Company>" or "between <Company> and ..."
-        # Prioritize patterns with common legal suffixes.
+        """Extract company name from contract text."""
+        # Legal suffix pattern — anchors the company name match
+        _SUFFIX = r"(?:Private\s+Limited|Pvt\.?\s*Ltd\.?|Limited|Ltd\.?|Inc\.?|LLP|Corporation|Corp\.?|Group|Technologies|Solutions|Infosystems|Consulting)"
+        
+        # Phase 1: Look for company name with a known legal/business suffix
         patterns = [
-            r"(?:welcome\s+to|joining)\s+([A-Z][a-zA-Z0-9\s.,&]+?(?:Private\s+Limited|Pvt\.?\s*Ltd\.?|Limited|Ltd\.?|Inc\.?|LLP|Group))",
-            r"between\s+([A-Z][a-zA-Z0-9\s.,&]+?(?:Private\s+Limited|Pvt\.?\s*Ltd\.?|Limited|Ltd\.?|Inc\.?|LLP))\s+and",
-            r"offer\s+from\s+([A-Z][a-zA-Z0-9\s.,&]+?(?:Private\s+Limited|Pvt\.?\s*Ltd\.?|Limited|Ltd\.?|Inc\.?|LLP))",
+            rf"(?:welcome\s+to|offer\s+from|behalf\s+of|employee\s+of|employed\s+(?:by|with))\s+([A-Z][A-Za-z0-9\s.,&]{{1,60}}?{_SUFFIX})",
+            rf"between\s+([A-Z][A-Za-z0-9\s.,&]{{1,60}}?{_SUFFIX})\s+(?:and|\()",
+            rf"([A-Z][A-Za-z0-9\s.,&]{{1,50}}?{_SUFFIX})\s*(?:\(|,)?\s*(?:herein|here\s*in|the\s+company|the\s+employer)",
         ]
         for p in patterns:
-            match = re.search(p, text, flags=re.I)
+            match = re.search(p, text)  # Case-SENSITIVE: company names start with uppercase
             if match:
-                company = match.group(1).strip()
-                return company, match.group(0)
+                company = match.group(1).strip().rstrip('.,')
+                if len(company) <= 80:
+                    return company, match.group(0)
+        
+        # Phase 2: Look for known big company names directly
+        known_companies = [
+            "HCL Technologies", "HCL", "Wipro", "Infosys", "TCS",
+            "Tata Consultancy Services", "Cognizant", "Tech Mahindra",
+            "Accenture", "Capgemini", "Deloitte", "Google", "Microsoft",
+            "Amazon", "Flipkart", "Zomato", "Swiggy", "Paytm", "Reliance",
+            "HDFC", "ICICI", "Byju", "Zoho", "Freshworks", "Ola", "PhonePe",
+        ]
+        text_lower = text.lower()
+        for name in known_companies:
+            if name.lower() in text_lower:
+                return name, f"Found company: {name}"
+        
         return None, None
 
     def _extract_clause_block(self, text: str, clause_type: str) -> Tuple[str | None, str | None]:
@@ -436,16 +684,13 @@ class RuleExtractionService:
             "confidentiality": ["confidentiality", "non-disclosure", "secret information"],
         }
         
-        # Simple heuristic: look for heading and then a block of text
         for kw in keywords.get(clause_type, []):
-            # Regex to find heading followed by paragraphs
-            # Captures till next capitalized heading or double newline
             pattern = rf"(?i)(?:^|\n)(?:\d+\.|\*|\-)?\s*({re.escape(kw)}[^\n:]*)(?::|\n)(.*?)(?=\n\s*\d+\.|\n\s*[A-Z][A-Z\s]+\n|\n\n\n|$)"
             match = re.search(pattern, text, flags=re.S)
             if match:
                 title = match.group(1)
                 content = match.group(2).strip()
-                if len(content) > 50: # avoids mini matches
+                if len(content) > 50:
                     return content, title + "\n" + content[:100]
         
         return None, None

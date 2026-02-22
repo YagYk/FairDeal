@@ -39,6 +39,7 @@ class BenchmarkService:
 
     # Role category normalization for market datasets that use `role_category`
     ROLE_CATEGORY_ALIASES = {
+        # SDE / Engineering roles
         "sde": "sde",
         "sde-1": "sde",
         "sde-2": "sde",
@@ -46,22 +47,74 @@ class BenchmarkService:
         "sde2": "sde",
         "software engineer": "sde",
         "software development engineer": "sde",
+        "software developer": "sde",
         "developer": "sde",
         "backend": "sde",
+        "backend developer": "sde",
+        "backend engineer": "sde",
         "frontend": "sde",
+        "frontend developer": "sde",
+        "frontend engineer": "sde",
         "fullstack": "sde",
         "full stack": "sde",
+        "fullstack developer": "sde",
+        "full stack developer": "sde",
+        "web developer": "sde",
+        "application developer": "sde",
         "junior": "sde",
         "entry": "sde",
         "fresher": "sde",
+        "data engineer": "sde",
+        "devops engineer": "sde",
+        "cloud engineer": "sde",
+        "qa engineer": "sde",
+        "test engineer": "sde",
+        # Service company roles
+        "service engineer": "service_engineer",
+        "system engineer": "service_engineer",
+        "systems engineer": "service_engineer",
+        "project engineer": "service_engineer",
+        "associate engineer": "service_engineer",
+        "associate software engineer": "service_engineer",
+        "graduate engineer trainee": "service_engineer",
+        "get": "service_engineer",
+        "programmer analyst": "service_engineer",
+        "programmer analyst trainee": "service_engineer",
+        "trainee": "service_engineer",
+        "associate consultant": "service_engineer",
+        "technology analyst": "service_engineer",
+        "assistant systems engineer": "service_engineer",
+        # Analyst roles
         "analyst": "analyst",
         "data analyst": "analyst",
         "business analyst": "analyst",
+        "research analyst": "analyst",
+        "data scientist": "analyst",
+        # Other roles
         "operations": "operations",
+        "operations executive": "operations",
+        "operations manager": "operations",
         "marketing": "marketing",
+        "marketing executive": "marketing",
+        "marketing manager": "marketing",
+        "digital marketing": "marketing",
+        "content writer": "marketing",
         "finance": "finance",
+        "financial analyst": "finance",
+        "accounts": "finance",
+        "accountant": "finance",
         "hr": "hr",
         "human resources": "hr",
+        "hr executive": "hr",
+        "hr manager": "hr",
+        "recruiter": "hr",
+        # Sales
+        "sales": "marketing",  # Map sales to marketing as closest category
+        "sales associate": "marketing",
+        "sales executive": "marketing",
+        "sales manager": "marketing",
+        "business development": "marketing",
+        "bde": "marketing",
     }
 
     def __init__(self) -> None:
@@ -188,10 +241,18 @@ class BenchmarkService:
         return None, None
 
     def _normalize_role_category(self, role: str) -> Optional[str]:
+        """Try to map the role to a known category. Tries exact match, then partial."""
         r = (role or "").lower().strip()
         if not r:
             return None
-        return self.ROLE_CATEGORY_ALIASES.get(r, None)
+        # Exact match first
+        if r in self.ROLE_CATEGORY_ALIASES:
+            return self.ROLE_CATEGORY_ALIASES[r]
+        # Try partial: check if any alias key is contained in the role string
+        for alias, category in self.ROLE_CATEGORY_ALIASES.items():
+            if alias in r or r in alias:
+                return category
+        return None
 
     def compare_salary(
         self, 
@@ -260,26 +321,27 @@ class BenchmarkService:
                     curr_df = curr_df[role_mask]
                     filters_used["role_text_tokens"] = tokens
                 else:
-                    return self._empty_result(
-                        f"Insufficient market data for role: '{role}'",
-                        filters=filters_used,
-                        steps=broaden_steps + ["role_not_found_in_market_data"]
-                    )
+                    # Try partial match (any token instead of all)
+                    partial_mask = role_text.apply(lambda x: any(t in x for t in tokens))
+                    if int(partial_mask.sum()) >= 5:
+                        curr_df = curr_df[partial_mask]
+                        filters_used["role_text_partial"] = tokens
+                        broaden_steps.append("broadened_role_partial_match")
+                    else:
+                        # Fall back to ALL data rather than returning empty
+                        log.warning(f"Benchmark: Role '{role}' not found in market data, using full dataset as fallback")
+                        broaden_steps.append("broadened_to_all_roles")
             else:
-                return self._empty_result(
-                    f"Invalid role name: '{role}'",
-                    filters=filters_used,
-                    steps=broaden_steps + ["invalid_role_name"]
-                )
+                log.warning(f"Benchmark: Invalid role name '{role}', using full dataset as fallback")
+                broaden_steps.append("broadened_to_all_roles")
         
         # At this point, curr_df SHOULD be filtered by role. 
         # If it's still the full dataset (neither category nor text matched but didn't return), that's an error.
         if "role_category" not in filters_used and "role_text_tokens" not in filters_used:
-             return self._empty_result(
-                f"Could not identify role cohort for '{role}'",
-                filters=filters_used,
-                steps=broaden_steps + ["no_role_match"]
-            )
+            log.warning(f"Benchmark: Could not identify role cohort for '{role}'. Broadening to all roles.")
+            broaden_steps.append("broadened_to_all_roles")
+            # We don't return here, we proceed with the full dataset (curr_df) 
+            # and other filters (company_type, location, etc.)
 
         # Step 1: Company type filter (skip if dataset doesn't support it)
         if company_type and "company_type" in curr_df.columns:
@@ -365,10 +427,13 @@ class BenchmarkService:
     def compute_notice_percentile(
         self,
         notice_days: int,
-        company_type: str
+        company_type: str,
+        role: Optional[str] = None,
+        yoe: Optional[float] = None,
     ) -> Optional[float]:
         """
         Compute percentile for notice period.
+        Filters by company_type, role category, and experience for a fair comparison.
         Lower notice = lower percentile = BETTER for candidate.
         """
         if self._df.empty:
@@ -377,15 +442,33 @@ class BenchmarkService:
         notice_col = self._find_col(["notice_period_days", "notice_days", "notice_period"])
         if not notice_col:
             return None
-            
-        # Filter by company type (if possible)
-        if "company_type" in self._df.columns:
-            cohort = self._df[self._df["company_type"].fillna("").astype(str).str.lower() == company_type.lower()]
-        else:
-            cohort = self._df
-        
+
+        cohort = self._df
+
+        # Filter by company type
+        if company_type and "company_type" in cohort.columns:
+            ct_mask = cohort["company_type"].fillna("").astype(str).str.lower().str.strip() == company_type.lower()
+            if int(ct_mask.sum()) >= 5:
+                cohort = cohort[ct_mask]
+
+        # Filter by role category (same logic as compare_salary)
+        if role and "role_category" in cohort.columns:
+            role_cat = self._normalize_role_category(role)
+            if role_cat:
+                role_mask = cohort["role_category"].fillna("").astype(str).str.lower().str.strip() == role_cat
+                if int(role_mask.sum()) >= 5:
+                    cohort = cohort[role_mask]
+
+        # Filter by experience (±2 years window)
+        if yoe is not None:
+            exp_col = self._find_col(["yoe", "experience_years", "experience"])
+            if exp_col and exp_col in cohort.columns:
+                exp_mask = (cohort[exp_col] >= yoe - 2) & (cohort[exp_col] <= yoe + 2)
+                if int(exp_mask.sum()) >= 5:
+                    cohort = cohort[exp_mask]
+
         if len(cohort) < 5:
-            cohort = self._df  # Use all data if cohort too small
+            cohort = self._df  # Fall back to full dataset
             
         notices = cohort[notice_col].dropna().to_numpy()
         if notices.size == 0:

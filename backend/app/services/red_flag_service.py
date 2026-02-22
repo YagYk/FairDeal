@@ -21,9 +21,12 @@ class RedFlagService:
     Based on market standards and legal best practices.
     """
 
-    def __init__(self) -> None:
-        from .benchmark_service import BenchmarkService
-        self.benchmarker = BenchmarkService()
+    def __init__(self, benchmarker=None) -> None:
+        if benchmarker is not None:
+            self.benchmarker = benchmarker
+        else:
+            from .benchmark_service import BenchmarkService
+            self.benchmarker = BenchmarkService()
 
     def analyze(
         self,
@@ -293,7 +296,16 @@ class RedFlagService:
         # ═══════════════════════════════════════════════════════
         # BENEFITS FLAGS
         # ═══════════════════════════════════════════════════════
-        if benefits_count >= 4:
+        if benefits_count >= 6:
+            favorable_terms.append(FavorableTerm(
+                id="BENEFITS_GENEROUS",
+                term="Generous Benefits Package",
+                explanation=f"You have {benefits_count} identified benefits, which is significantly above the market average of 4.",
+                value=str(benefits_count),
+                impact_score=10.0,
+                market_context="Top 10% of contracts offer 6+ distinct benefits."
+            ))
+        elif benefits_count >= 4:
             favorable_terms.append(FavorableTerm(
                 id="BENEFITS_EXCELLENT",
                 term="Comprehensive Benefits Package",
@@ -313,17 +325,6 @@ class RedFlagService:
                 impact_score=-8.0,
                 market_context="Standard packages include health insurance, PF, and paid leave at minimum.",
                 recommendation="Request health insurance coverage for family, and confirm PF contributions."
-            ))
-
-        # BENEFITS FAVORABLE TERMS
-        if benefits_count >= 6:
-            favorable_terms.append(FavorableTerm(
-                id="BENEFITS_GENEROUS",
-                term="Generous Benefits Package",
-                explanation=f"You have {benefits_count} identified benefits, which is significantly above the market average of 4.",
-                value=str(benefits_count),
-                impact_score=10.0,
-                market_context="Top 10% of contracts offer 6+ distinct benefits."
             ))
 
         # Sort by impact

@@ -58,6 +58,12 @@ class NegotiationService:
             salary_negotiable = context.get("salary_negotiable", True)
             company_type = context.get("company_type", "unknown")
 
+        # Auto-detect service company from extracted company name
+        company_name = context.get("company_name", "") if context else ""
+        if company_name and any(sc in company_name.lower() for sc in SERVICE_COMPANIES):
+            salary_negotiable = False
+            log.info(f"Auto-detected service company '{company_name}' — salary negotiation skipped")
+
         # ═══════════════════════════════════════════════════════
         # NON-COMPETE NEGOTIATION (Always relevant)
         # ═══════════════════════════════════════════════════════

@@ -97,10 +97,18 @@ class PsychologicalScoringEngine:
         final_score = self._calibrate(adjusted_score)
         grade = self._get_grade(final_score)
         
+        # ═══════════════════════════════════════════════════════
+        # STEP 5: COMPUTE CONFIDENCE (based on data completeness)
+        # ═══════════════════════════════════════════════════════
+        confidence = self._compute_confidence(
+            salary_percentile, notice_percentile,
+            benefits_count, non_compete, kwargs
+        )
+        
         return PsychScoreResult(
             score=round(final_score),
             grade=grade,
-            confidence=0.95,
+            confidence=confidence,
             breakdown={
                 "salary": {"score": salary_score, "weight": weights['salary']},
                 "notice": {"score": notice_score, "weight": weights['notice']},
@@ -145,7 +153,7 @@ class PsychologicalScoringEngine:
             return 50.0
         
         if percentile <= 10:
-            return 95 + (10 - percentile)
+            return min(100.0, 95 + (10 - percentile) * 0.5)
         elif percentile <= 25:
             return 85 + (25 - percentile) / 1.5
         elif percentile <= 50:
@@ -270,16 +278,18 @@ class PsychologicalScoringEngine:
             score -= 30
             violations.append("Notice >90 days (likely illegal): -30")
         
-        if not data.get('has_provident_fund'):
-             # PF is standard for most formal employment in India.
-             # Removed arbitrary 21LPA threshold as per requirement.
-             score -= 25
-             violations.append("Missing mandatory PF: -25")
+        # PF check: only penalize if we KNOW PF is absent (explicit False)
+        # When pf_status is 'unknown' (couldn't determine), don't penalize
+        pf_status = data.get('pf_status', 'unknown')
+        if pf_status == 'absent':
+            score -= 25
+            violations.append("Missing mandatory PF: -25")
         
-        # Gratuity check - Only penalize if explicitly absent
-        if data.get('gratuity_status') == 'absent':
-             score -= 15
-             violations.append("No gratuity clause: -15")
+        # Gratuity check: only penalize if explicitly absent
+        gratuity_status = data.get('gratuity_status', 'unknown')
+        if gratuity_status == 'absent':
+            score -= 15
+            violations.append("No gratuity clause: -15")
 
         if data.get('working_hours_per_week', 0) > 48:
             score -= 20
@@ -322,7 +332,7 @@ class PsychologicalScoringEngine:
         
         if has_violations:
             weights['legal'] = 0.20
-            # Normalize others
+            # Normalize others to fill remaining 0.8
             remaining = 0.8
             current_sum = sum(v for k, v in weights.items() if k != 'legal')
             if current_sum > 0:
@@ -330,6 +340,12 @@ class PsychologicalScoringEngine:
                 for key in weights:
                     if key != 'legal':
                         weights[key] *= factor
+        
+        # ALWAYS normalize weights to sum to exactly 1.0
+        total = sum(weights.values())
+        if total > 0 and abs(total - 1.0) > 0.001:
+            for key in weights:
+                weights[key] /= total
         
         return weights
     
@@ -360,7 +376,9 @@ class PsychologicalScoringEngine:
             badges.append("🚀 STARTUP ROCKET")
             
         # Standard MNC
-        if 40 <= s_p <= 60 and 30 <= (data.get('notice_period_days') or 0) <= 60 and ben_cnt >= 3:
+        raw_notice = data.get('notice_period_days')
+        notice_in_range = raw_notice is not None and 30 <= raw_notice <= 60
+        if 40 <= s_p <= 60 and notice_in_range and ben_cnt >= 3:
             multiplier *= 1.02
             badges.append("🏢 Standard MNC Package")
             
@@ -384,18 +402,59 @@ class PsychologicalScoringEngine:
         return multiplier, badges
     
     def _calibrate(self, raw_score: float) -> float:
-        """Psychological calibration"""
+        """Psychological calibration — compress extremes, expand mid-range.
+        Top scores are harder to reach (compressed), bottom scores are softened.
+        Always clamped to [0, 100]."""
         if raw_score >= 85:
-            # Compress top range
-            return 85 + (raw_score - 85) * 1.5
+            # Compress top range — makes truly exceptional contracts rare
+            result = 85 + (raw_score - 85) * 0.6
         elif raw_score >= 70:
-            return 70 + (raw_score - 70) * 1.2
+            # Slightly compress upper-good range
+            result = 70 + (raw_score - 70) * 0.85
         elif raw_score >= 50:
-            return raw_score
+            result = raw_score
         elif raw_score >= 30:
-            return 30 + (raw_score - 30) * 0.9
+            result = 30 + (raw_score - 30) * 0.9
         else:
-            return raw_score * 0.8
+            result = raw_score * 0.8
+        return max(0.0, min(100.0, result))
+    
+    def _compute_confidence(self, sal_pct, not_pct, ben_cnt, non_comp, data) -> float:
+        """
+        Confidence score based on how much real data we have vs defaults.
+        Each piece of real data adds to confidence. Defaults reduce it.
+        """
+        confidence = 0.50  # Base confidence for having a parsed document
+        
+        # Salary benchmark is the most important signal
+        if sal_pct is not None:
+            confidence += 0.20
+        
+        # Notice percentile adds reliability
+        if not_pct is not None:
+            confidence += 0.10
+        
+        # Benefits detected
+        if ben_cnt > 0:
+            confidence += 0.05
+        
+        # Contract terms detected (non-compete, bond)
+        if non_comp:
+            confidence += 0.03  # At least we know about non-compete
+        if data.get('training_bond') is not None:
+            confidence += 0.02
+        
+        # PF/gratuity status known
+        if data.get('pf_status') != 'unknown':
+            confidence += 0.05
+        if data.get('gratuity_status') != 'unknown':
+            confidence += 0.03
+        
+        # Salary value extracted (even without benchmark)
+        if (data.get('salary_in_inr') or 0) > 0:
+            confidence += 0.02
+        
+        return min(0.98, confidence)
     
     def _get_grade(self, score: float) -> str:
         if score >= 90:
@@ -405,10 +464,12 @@ class PsychologicalScoringEngine:
         elif score >= 70:
             return "GOOD"
         elif score >= 60:
-            return "AVERAGE"
+            return "FAIR"
         elif score >= 50:
-            return "BELOW AVERAGE"
+            return "AVERAGE"
         elif score >= 40:
+            return "BELOW AVERAGE"
+        elif score >= 30:
             return "POOR"
         else:
             return "CRITICAL"
