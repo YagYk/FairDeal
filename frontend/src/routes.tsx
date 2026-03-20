@@ -5,6 +5,7 @@ import { ResultsPage } from './pages/ResultsPage';
 import { KBExplorerPage } from './pages/KBExplorerPage';
 import { KBContractPage } from './pages/KBContractPage';
 import { KBSearchPage } from './pages/KBSearchPage';
+import { EvaluationPage } from './pages/EvaluationPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { NotFound } from './pages/NotFound';
 
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
             { path: 'kb', element: <KBExplorerPage /> },
             { path: 'kb/contracts/:contractId', element: <KBContractPage /> },
             { path: 'kb/search', element: <KBSearchPage /> },
+            { path: 'evaluation', element: <EvaluationPage /> },
             { path: 'settings', element: <SettingsPage /> },
             { path: '*', element: <NotFound /> },
         ],

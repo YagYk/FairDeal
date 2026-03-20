@@ -5,7 +5,8 @@ import {
     Search,
     Settings,
     ShieldCheck,
-    LayoutDashboard
+    LayoutDashboard,
+    FlaskConical
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -13,6 +14,7 @@ const navItems = [
     { name: 'Analyze', icon: LayoutDashboard, href: '/' },
     { name: 'Knowledge Base', icon: Database, href: '/kb' },
     { name: 'Search', icon: Search, href: '/kb/search' },
+    { name: 'Validation', icon: FlaskConical, href: '/evaluation' },
     { name: 'Settings', icon: Settings, href: '/settings' },
 ];
 

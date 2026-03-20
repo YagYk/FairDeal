@@ -6,7 +6,7 @@ import time
 
 from .config import settings
 from .logging_config import configure_logging, get_logger
-from .api import analyze, kb_admin
+from .api import analyze, kb_admin, evaluate
 
 
 configure_logging()
@@ -129,4 +129,5 @@ async def on_shutdown() -> None:
 
 app.include_router(analyze.router, prefix="/api")
 app.include_router(kb_admin.router, prefix="/api/kb")
+app.include_router(evaluate.router, prefix="/api/evaluate")
 
