@@ -47,8 +47,7 @@ backend/data/processed/*
 !backend/data/processed/.gitkeep
 backend/data/market_data/*
 !backend/data/market_data/.gitkeep
-backend/data/contracts_raw/*
-!backend/data/contracts_raw/.gitkeep
+backend/data/contracts_raw/.gitkeep
 backend/data/market_intelligence/*
 !backend/data/market_intelligence/.gitkeep
 
@@ -60,8 +59,8 @@ analysis_result_*.json
 scoring_report.json
 temp_*
 
-# Word documents (non-code artifacts)
-*.docx
+# Word documents (non-code artifacts at root)
+/*.docx
 
 # Logs
 *.log
