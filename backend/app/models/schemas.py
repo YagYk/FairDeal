@@ -200,39 +200,53 @@ class Timings(BaseModel):
 
 class DeterminismInfo(BaseModel):
     scoring: str = "deterministic"
-    extraction: str = "hybrid" # hybrid, deterministic, or stochastic
+    extraction: str = "hybrid"  # hybrid, deterministic, or stochastic
     narration: str = "non-deterministic"
+
+
+class RAGResult(BaseModel):
+    """Typed RAG evidence payload."""
+    evidence_by_clause_type: Dict[str, List[Dict[str, Any]]] = {}
+    drift_by_clause_type: List[Dict[str, Any]] = []
+
+
+class CacheInfo(BaseModel):
+    """Cache hit/miss metadata."""
+    hit: bool = False
+    key: str = ""
+
+
 class AnalyzeResponse(BaseModel):
     # Core
     extraction: ContractExtractionResult
     contract_metadata: ContractMetadata = ContractMetadata()
-    
+
     # Scoring
     score: float
     grade: str
     scoring: ScoreResult
-    
+
     # Percentiles
     percentiles: Dict[str, PercentileResult] = {}
     cohort: Optional[CohortInfo] = None
-    
+
     # Intelligence
     red_flags: List[RedFlag] = []
     favorable_terms: List[FavorableTerm] = []
     negotiation_points: List[NegotiationPoint] = []
-    
+
     # RAG Evidence
     benchmark: Optional[BenchmarkResult] = None
-    rag: Dict[str, Any] = {}
+    rag: RAGResult = RAGResult()
     evidence: List[EvidenceChunk] = []
-    
+
     # Narration
     narration: Optional[NarrationResult] = None
-    
+
     # Meta
     timings: Timings
-    cache: Dict[str, Any] = {}
-    determinism: DeterminismInfo = DeterminismInfo() # Default to optimistic
+    cache: CacheInfo = CacheInfo()
+    determinism: DeterminismInfo = DeterminismInfo()
 
 
 # KB Admin Models

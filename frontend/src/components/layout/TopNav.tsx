@@ -3,10 +3,9 @@ import { Button } from '../ui/Button';
 
 export const TopNav = () => {
     return (
-        <header className="fixed inset-x-0 top-0 z-30 h-16 border-b border-white/5 bg-slate-950/50 backdrop-blur-xl">
+        <header className="fixed top-0 right-0 left-64 z-30 h-16 border-b border-white/5 bg-[#050505]/80 backdrop-blur-xl">
             <div className="flex h-full items-center justify-between px-6">
-                <div className="flex items-center space-x-4 ml-64">
-                    {/* ml-64 to compensate for sidebar */}
+                <div className="flex items-center space-x-4">
                     <div className="relative w-96 group">
                         <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 group-focus-within:text-gold transition-colors" />
                         <input

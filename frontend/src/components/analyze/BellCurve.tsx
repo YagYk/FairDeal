@@ -18,11 +18,11 @@ export const BellCurve = ({ percentile, label }: BellCurveProps) => {
 
     const pathData = `M 0 100 ${points.map(p => `L ${p.x} ${100 - p.y}`).join(' ')} L 100 100 Z`;
 
-    // Percentile marker position
-    const markerX = percentile;
+    // Percentile marker position — clamp to [2, 98] so the marker + label stay visible
+    const markerX = Math.max(2, Math.min(98, percentile));
 
     return (
-        <div className="relative w-full h-48 mt-8">
+        <div className="relative w-full h-36 mt-4">
             <svg viewBox="0 0 100 105" className="w-full h-full overflow-visible">
                 <defs>
                     <linearGradient id="curveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -63,7 +63,7 @@ export const BellCurve = ({ percentile, label }: BellCurveProps) => {
                     <foreignObject x={markerX - 15} y="-25" width="30" height="20">
                         <div className="flex flex-col items-center">
                             <span className="text-[6px] font-black text-gold uppercase tracking-tighter bg-black/60 px-1 rounded-sm border border-gold/20">
-                                You: {percentile}%
+                                You: {percentile <= 0 ? '<1' : percentile >= 100 ? '>99' : Math.round(percentile)}%
                             </span>
                             <div className="w-[1px] h-2 bg-gold/50" />
                         </div>

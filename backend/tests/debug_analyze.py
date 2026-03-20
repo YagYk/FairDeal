@@ -1,11 +1,11 @@
 
-import requests
 import json
-import time
+from fastapi.testclient import TestClient
+from app.main import app
+
+client = TestClient(app)
 
 def test_analyze():
-    url = "http://127.0.0.1:8005/api/analyze"
-    
     # Mock context
     context = {
         "role": "mid",
@@ -25,8 +25,8 @@ def test_analyze():
     }
 
     try:
-        print(f"Sending request to {url}...")
-        resp = requests.post(url, files=files, data=data) 
+        print(f"Sending request to /api/analyze...")
+        resp = client.post("/api/analyze", files=files, data=data) 
         print(f"Status Code: {resp.status_code}")
         if resp.status_code != 200:
             print("Response Text:", resp.text)
@@ -35,7 +35,7 @@ def test_analyze():
             # Check determinism
             data = resp.json()
             print(f"Determinism: {data.get('determinism')}")
-            print(json.dumps(data, indent=2))
+            # print(json.dumps(data, indent=2)) # Reduce noise, just confirm success
     except Exception as e:
         print(f"Request failed: {e}")
 

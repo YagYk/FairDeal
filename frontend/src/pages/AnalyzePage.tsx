@@ -69,11 +69,11 @@ export const AnalyzePage = () => {
     };
 
     return (
-        <div className="relative min-h-screen pt-24 pb-12 px-4 overflow-hidden">
+        <div className="relative pb-12 overflow-hidden">
             {/* Background elements */}
-            <div className="fixed inset-0 animated-grid pointer-events-none opacity-20" />
-            <div className="fixed top-1/4 -left-1/4 w-1/2 h-1/2 bg-gold/5 blur-[120px] rounded-full pointer-events-none" />
-            <div className="fixed bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-amber/5 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute inset-0 animated-grid pointer-events-none opacity-20" />
+            <div className="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-gold/5 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-amber/5 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="relative z-10 w-full max-w-4xl mx-auto space-y-12">
                 {/* Header Section */}

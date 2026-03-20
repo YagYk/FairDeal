@@ -41,7 +41,7 @@ export const Tabs = ({
 export const TabsList = ({ children, className }: { children: React.ReactNode; className?: string }) => (
     <div
         className={cn(
-            'inline-flex h-10 items-center justify-center rounded-lg bg-slate-100 p-1 text-slate-500',
+            'inline-flex h-10 items-center justify-center rounded-lg bg-white/5 p-1 text-slate-500 border border-white/5',
             className
         )}
     >
@@ -65,8 +65,8 @@ export const TabsTrigger = ({
         <button
             onClick={() => context?.onValueChange(value)}
             className={cn(
-                'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:pointer-events-none disabled:opacity-50',
-                isActive ? 'bg-white text-slate-900 shadow-sm' : 'hover:bg-white/50 hover:text-slate-700',
+                'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 disabled:pointer-events-none disabled:opacity-50',
+                isActive ? 'bg-white/10 text-white shadow-sm' : 'hover:bg-white/5 hover:text-slate-300',
                 className
             )}
         >

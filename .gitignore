@@ -23,18 +23,45 @@ wheels/
 .pytest_cache/
 .coverage
 htmlcov/
-.venv
+.venv/
 venv/
 
 # Environment Variables
 .env
 
-# Data
-backend/data/market_data.json
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Data & caches
+backend/data/chroma/
+backend/data/processed/*
+!backend/data/processed/.gitkeep
+backend/data/market_data/*
+!backend/data/market_data/.gitkeep
 backend/data/contracts_raw/*
 !backend/data/contracts_raw/.gitkeep
 backend/data/market_intelligence/*
 !backend/data/market_intelligence/.gitkeep
+
+# Test PDFs (binary files)
+test examples/
+
+# Analysis outputs & temp files
+analysis_result_*.json
+scoring_report.json
+temp_*
+
+# Word documents (non-code artifacts)
+*.docx
 
 # Logs
 *.log

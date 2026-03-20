@@ -13,23 +13,23 @@ export const TimingsPanel = ({ timings }: TimingsPanelProps) => {
         { label: 'Parsing', ms: timings.parse_ms, color: 'bg-blue-400' },
         { label: 'Extraction', ms: timings.extract_ms, color: 'bg-indigo-400' },
         { label: 'Benchmark', ms: timings.benchmark_ms, color: 'bg-cyan-400' },
-        { label: 'RAG / Evidence', ms: timings.rag_ms, color: 'bg-brand-400' },
+        { label: 'RAG / Evidence', ms: timings.rag_ms, color: 'bg-gold' },
     ];
 
     const total = timings.total_ms || steps.reduce((acc, s) => acc + s.ms, 0);
 
     return (
-        <Card className="shadow-sm border-none ring-1 ring-slate-100 bg-slate-50/50">
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl">
             <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2 text-slate-500">
                         <Clock className="h-4 w-4" />
                         <span className="text-xs font-bold uppercase tracking-widest">Processing Latency</span>
                     </div>
-                    <span className="text-sm font-bold text-slate-900">{formatMs(total)}</span>
+                    <span className="text-sm font-bold text-white">{formatMs(total)}</span>
                 </div>
 
-                <div className="flex h-2 w-full overflow-hidden rounded-full bg-slate-200">
+                <div className="flex h-2 w-full overflow-hidden rounded-full bg-white/5">
                     {steps.map((step, i) => (
                         <div
                             key={i}
@@ -43,8 +43,8 @@ export const TimingsPanel = ({ timings }: TimingsPanelProps) => {
                 <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
                     {steps.map((step, i) => (
                         <div key={i} className="flex flex-col">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{step.label}</span>
-                            <span className="text-sm font-semibold text-slate-700">{formatMs(step.ms)}</span>
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">{step.label}</span>
+                            <span className="text-sm font-semibold text-slate-300">{formatMs(step.ms)}</span>
                         </div>
                     ))}
                 </div>

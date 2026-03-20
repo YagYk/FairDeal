@@ -21,6 +21,9 @@ log = get_logger("service.rag")
 class RAGService:
     def __init__(self) -> None:
         self.enabled = True
+        self._chroma_error_count = 0
+        self._max_chroma_errors = 3  # Disable after 3 consecutive errors
+        
         try:
             self.collection = get_collection()
             from sentence_transformers import SentenceTransformer
@@ -32,89 +35,66 @@ class RAGService:
             self._embedder = None
             # Do not return here, let it proceed seamlessly with enabled=False
 
-        self._seed_gold_clauses()
-
-    def _seed_gold_clauses(self) -> None:
-        """
-        Seeds/Updates gold standard clauses into Chroma.
-        Uses a fixed contract_id='gold' for identification.
-        """
-        if not self.enabled:
-            return
-
-        # Check if already seeded
-        try:
-            res = self.collection.get(where={"contract_id": "gold"})
-            if res and res.get("ids") and len(res["ids"]) >= 5:
-                # Already seeded, skip unless we want to force refresh
-                return
-        except:
-            pass
-
-        gold_sources = [
-            (ClauseType.termination, "Either party may terminate the employment by giving 30 days' notice in writing or by paying 30 days' salary in lieu thereof."),
-            (ClauseType.ip, "Employee agrees that all inventions, improvements, and copyrightable works made by Employee during employment shall be the sole property of the Company."),
-            (ClauseType.non_compete, "Employee shall not, for a period of 6 months following termination, engage in any business that competes with the Company within the relevant territory."),
-            (ClauseType.confidentiality, "Employee shall maintain strict confidentiality regarding all proprietary information and trade secrets of the Company during and after employment."),
-            (ClauseType.compensation, "The Employee's Total Cost to Company (CTC) shall be as specified in the compensation annexure, subject to applicable statutory deductions.")
-        ]
-
-        ids = []
-        docs = []
-        metas = []
-        for i, (ctype, text) in enumerate(gold_sources):
-            ids.append(f"gold_{ctype.value}")
-            docs.append(text)
-            metas.append({
-                "contract_id": "gold",
-                "clause_type": ctype.value,
-                "is_gold": True,
-                "label": f"Standard {ctype.value.capitalize()} Clause"
-            })
-
-        embeddings = self._embedder.encode(docs, normalize_embeddings=True).tolist()
-        self.collection.add(ids=ids, documents=docs, embeddings=embeddings, metadatas=metas)
-        log.info("Seeded gold clauses into Chroma")
-
-    def query_gold_clause(self, clause_type: ClauseType) -> Optional[str]:
-        """
-        Retrieve the gold standard text for a given clause type.
-        """
-        if not self.enabled:
-            return None
-        
-        res = self.collection.get(where={"contract_id": "gold", "clause_type": clause_type.value})
-        if res and res.get("documents"):
-            return res["documents"][0]
-        return None
+        # self._seed_gold_clauses()  # REMOVED
 
     def find_similar_clauses(
         self, 
         query_text: str, 
         clause_type: ClauseType, 
         top_k: int = 3,
-        include_gold: bool = False
     ) -> List[Tuple[str, float, Dict]]:
         """
         Find similar clauses in the KB.
         """
         if not self.enabled:
             return []
+        
+        # Early exit if we've hit too many errors
+        if self._chroma_error_count >= self._max_chroma_errors:
+            return []
 
         emb = self._embedder.encode([query_text], normalize_embeddings=True).tolist()
         
-        # Use simple where clause - ChromaDB is very strict about operators
-        where = {"clause_type": clause_type.value}
+        # We only filter by clause_type now. This is simple and reliable.
+        use_where = False 
+        res = None
         
         try:
+            where_clause = {"clause_type": clause_type.value}
+            
             res = self.collection.query(
                 query_embeddings=emb,
-                n_results=top_k * 2 if not include_gold else top_k,  # Fetch extra to filter
-                where=where,
+                n_results=top_k * 2, # Fetch more to account for any internal filtering
+                where=where_clause,
                 include=["documents", "metadatas", "distances"]
             )
+            # Reset error count on success
+            self._chroma_error_count = 0
+            use_where = True
+            
         except Exception as e:
-            log.error(f"ChromaDB query failed: {e}")
+            error_msg = str(e)
+            log.warning(f"ChromaDB where clause failed, using fallback (no where clause): {error_msg}")
+            
+            try:
+                # Fallback: fetch without where clause
+                res = self.collection.query(
+                    query_embeddings=emb,
+                    n_results=top_k * 5, 
+                    where=None,  # No where clause - fetch all and filter in Python
+                    include=["documents", "metadatas", "distances"]
+                )
+                use_where = False
+            except Exception as final_e:
+                self._chroma_error_count += 1
+                log.error(f"ChromaDB query failed completely: {final_e}")
+                
+                if self._chroma_error_count >= self._max_chroma_errors:
+                    log.error(f"RAG disabled after {self._chroma_error_count} consecutive ChromaDB errors")
+                    self.enabled = False
+                return []
+        
+        if res is None:
             return []
 
         results = []
@@ -123,10 +103,18 @@ class RAGService:
         distances = res.get("distances", [[]])[0]
 
         for doc, meta, dist in zip(docs, metas, distances):
+            # Python-side filtering:
+            # 1. Filter by clause_type (if we didn't use where clause)
+            if not use_where and meta.get("clause_type") != clause_type.value:
+                continue
+            
             # cosine similarity = 1 - distance/2 if using squared l2, 
             # but chroma cosine distance is 1 - cosine_similarity
             similarity = 1.0 - dist
             results.append((doc, float(similarity), meta))
+            
+            if len(results) >= top_k:
+                break
         
         return results
 
@@ -235,7 +223,7 @@ class RAGService:
         if not self.enabled or not self.collection:
             return []
         
-        results = self.find_similar_clauses(query, clause_type or ClauseType.general, top_k=top_k, include_gold=True)
+        results = self.find_similar_clauses(query, clause_type or ClauseType.general, top_k=top_k)
         
         out = []
         for doc, sim, meta in results:
@@ -262,5 +250,11 @@ class RAGService:
         )
 
     def collection_count(self) -> int:
-        return int(self.collection.count()) if self.collection else 0
+        if not self.enabled or not self.collection:
+            return 0
+        try:
+            return int(self.collection.count())
+        except Exception as e:
+            log.error(f"Error getting collection count: {e}")
+            return 0
 

@@ -19,7 +19,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
                     <select
                         ref={ref}
                         className={cn(
-                            'flex h-10 w-full appearance-none rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-50',
+                            'flex h-10 w-full appearance-none rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold/30 disabled:cursor-not-allowed disabled:opacity-50',
                             error && 'border-red-500 focus-visible:ring-red-500',
                             className
                         )}
@@ -27,13 +27,13 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
                     >
                         {children}
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
                         <svg className="h-4 w-4 fill-current" viewBox="0 0 20 20">
                             <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
                         </svg>
                     </div>
                 </div>
-                {error && <p className="text-xs text-red-500">{error}</p>}
+                {error && <p className="text-xs text-red-400">{error}</p>}
             </div>
         );
     }

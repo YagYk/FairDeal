@@ -1,61 +1,91 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
+import { Shield, AlertTriangle, CheckCircle, HelpCircle } from 'lucide-react';
 
-interface ClauseHeatmapProps {
-    score: number;
+interface ClauseData {
     label: string;
-    clauses: {
-        type: string;
-        risk: 'low' | 'medium' | 'high';
-        score: number;
-    }[];
+    status: 'safe' | 'caution' | 'risk' | 'danger' | 'unknown';
+    detail: string;
+    impact: number; // 0-100, higher = safer
 }
 
-export const ClauseHeatmap = ({ score, clauses }: ClauseHeatmapProps) => {
+interface ClauseHeatmapProps {
+    clauses: ClauseData[];
+}
+
+const STATUS_CONFIG = {
+    safe: { color: 'bg-emerald-500', border: 'border-emerald-500/30', text: 'text-emerald-400', glow: 'bg-emerald-500', label: 'Safe', icon: CheckCircle },
+    caution: { color: 'bg-amber-500', border: 'border-amber-500/30', text: 'text-amber-400', glow: 'bg-amber-500', label: 'Caution', icon: AlertTriangle },
+    risk: { color: 'bg-orange-500', border: 'border-orange-500/30', text: 'text-orange-400', glow: 'bg-orange-500', label: 'Risk', icon: AlertTriangle },
+    danger: { color: 'bg-red-500', border: 'border-red-500/30', text: 'text-red-400', glow: 'bg-red-500', label: 'Danger', icon: Shield },
+    unknown: { color: 'bg-slate-500', border: 'border-slate-500/20', text: 'text-slate-500', glow: 'bg-slate-500', label: 'N/A', icon: HelpCircle },
+};
+
+export const ClauseHeatmap = ({ clauses }: ClauseHeatmapProps) => {
+    // Compute overall risk score from clauses (excluding unknowns)
+    const knownClauses = clauses.filter(c => c.status !== 'unknown');
+    const overallScore = knownClauses.length > 0
+        ? Math.round(knownClauses.reduce((sum, c) => sum + c.impact, 0) / knownClauses.length)
+        : 0;
+
+    const overallStatus = overallScore >= 80 ? 'safe' : overallScore >= 60 ? 'caution' : overallScore >= 40 ? 'risk' : 'danger';
+    const overallConfig = STATUS_CONFIG[overallStatus];
+
     return (
         <div className="space-y-4">
-            <div className="flex justify-between items-end mb-2">
-                <h4 className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Risk Heatmap</h4>
-                <span className="text-2xl font-serif italic text-white">{score}/100</span>
+            {/* Overall Score Header */}
+            <div className="flex justify-between items-center">
+                <div>
+                    <h4 className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">Risk Heatmap</h4>
+                    <p className="text-[10px] text-slate-600 mt-0.5">{knownClauses.length} clauses analyzed</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className={cn("w-2 h-2 rounded-full", overallConfig.color)} />
+                    <span className={cn("text-xl font-serif font-bold", overallConfig.text)}>{overallScore}</span>
+                    <span className="text-xs text-slate-600">/100</span>
+                </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-2">
-                {clauses.map((clause, idx) => (
-                    <motion.div
-                        key={clause.type}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: idx * 0.1 }}
-                        className={cn(
-                            "relative aspect-square rounded-xl p-3 flex flex-col justify-between overflow-hidden border",
-                            clause.risk === 'low' ? "bg-emerald-500/10 border-emerald-500/20" :
-                                clause.risk === 'medium' ? "bg-amber-500/10 border-amber-500/20" :
-                                    "bg-red-500/10 border-red-500/20"
-                        )}
-                    >
-                        <div className={cn(
-                            "absolute top-0 right-0 w-8 h-8 opacity-20 blur-xl rounded-full",
-                            clause.risk === 'low' ? "bg-emerald-500" :
-                                clause.risk === 'medium' ? "bg-amber-500" :
-                                    "bg-red-500"
-                        )} />
+            {/* Clause Grid */}
+            <div className="space-y-2.5">
+                {clauses.map((clause, idx) => {
+                    const cfg = STATUS_CONFIG[clause.status];
+                    return (
+                        <motion.div
+                            key={clause.label}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.06 }}
+                            className={cn(
+                                "relative rounded-lg border p-3 flex items-center gap-3 overflow-hidden",
+                                "bg-white/[0.02]", cfg.border
+                            )}
+                        >
+                            {/* Risk bar (background fill showing impact) */}
+                            <div
+                                className={cn("absolute inset-0 opacity-[0.06]", cfg.color)}
+                                style={{ width: `${clause.impact}%` }}
+                            />
 
-                        <span className="text-[8px] font-black uppercase tracking-widest text-slate-500 truncate">
-                            {clause.type.replace('_', ' ')}
-                        </span>
+                            {/* Status dot */}
+                            <div className={cn("w-2 h-2 rounded-full shrink-0 z-10", cfg.color)} />
 
-                        <div className="flex items-baseline gap-1">
-                            <span className="text-xl font-serif text-white">{clause.score}</span>
-                            <div className={cn(
-                                "w-1 h-1 rounded-full",
-                                clause.risk === 'low' ? "bg-emerald-400" :
-                                    clause.risk === 'medium' ? "bg-amber-400" :
-                                        "bg-red-400"
-                            )} />
-                        </div>
-                    </motion.div>
-                ))}
+                            {/* Label + Detail */}
+                            <div className="flex-1 min-w-0 z-10">
+                                <div className="flex items-center justify-between">
+                                    <span className="text-[11px] font-semibold text-white/90 truncate">
+                                        {clause.label}
+                                    </span>
+                                    <span className={cn("text-[10px] font-bold font-mono ml-2 shrink-0", cfg.text)}>
+                                        {clause.status === 'unknown' ? '—' : clause.impact}
+                                    </span>
+                                </div>
+                                <p className="text-[9px] text-slate-500 truncate mt-0.5">{clause.detail}</p>
+                            </div>
+                        </motion.div>
+                    );
+                })}
             </div>
         </div>
     );

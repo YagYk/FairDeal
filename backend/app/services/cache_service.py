@@ -30,7 +30,7 @@ class CacheService:
             return None
         
         try:
-            data = json.loads(cache_path.read_text())
+            data = json.loads(cache_path.read_text(encoding="utf-8"))
             return AnalyzeResponse(**data)
         except Exception as exc:
             log.error(f"Failed to read cache for {file_hash}: {exc}")
@@ -42,6 +42,6 @@ class CacheService:
         """
         cache_path = self.cache_dir / f"{file_hash}.json"
         try:
-            cache_path.write_text(response.model_dump_json(indent=2))
+            cache_path.write_text(response.model_dump_json(indent=2), encoding="utf-8")
         except Exception as exc:
             log.error(f"Failed to write cache for {file_hash}: {exc}")

@@ -61,7 +61,7 @@ export const KBContractPage = () => {
                     <div className="space-y-4">
                         {chunksLoading ? (
                             Array.from({ length: 3 }).map((_, i) => (
-                                <div key={i} className="h-32 w-full animate-pulse bg-slate-100 rounded-xl" />
+                                <div key={i} className="h-32 w-full animate-pulse bg-white/5 rounded-xl" />
                             ))
                         ) : chunks.map((chunk, i) => (
                             <ChunkViewer key={chunk.chunk_id} chunk={chunk} index={i} />

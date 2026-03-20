@@ -95,7 +95,14 @@ async def response_validation_exception_handler(request: Request, exc: ResponseV
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+        "http://localhost:5175",
+        "http://127.0.0.1:5175"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -104,7 +111,15 @@ app.add_middleware(
 
 @app.on_event("startup")
 async def on_startup() -> None:
-    log.info("Starting FairDeal backend")
+    log.info("Starting FairDeal backend - System Initializing")
+    # Clear service caches on startup to ensure fresh instances after code changes
+    try:
+        from .api.analyze import clear_service_caches
+        clear_service_caches()
+        log.info("Successfully cleared service caches (Benchmark, RAG, LLM) on startup")
+    except Exception as e:
+        log.error(f"FAILURE during cache clearing: {e}")
+        log.error(traceback.format_exc())
 
 
 @app.on_event("shutdown")

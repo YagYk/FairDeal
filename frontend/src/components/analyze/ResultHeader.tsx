@@ -24,10 +24,10 @@ export const ResultHeader = ({
     onCopySummary
 }: ResultHeaderProps) => {
     const getScoreLabel = (score: number) => {
-        if (score >= 80) return { label: 'Excellent', class: 'text-emerald-500 bg-emerald-50 border-emerald-100' };
-        if (score >= 60) return { label: 'Good', class: 'text-brand-500 bg-brand-50 border-brand-100' };
-        if (score >= 40) return { label: 'Average', class: 'text-amber-500 bg-amber-50 border-amber-100' };
-        return { label: 'Risky', class: 'text-red-500 bg-red-50 border-red-100' };
+        if (score >= 80) return { label: 'Excellent', color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' };
+        if (score >= 60) return { label: 'Good', color: 'text-gold', bg: 'bg-gold/10 border-gold/20' };
+        if (score >= 40) return { label: 'Average', color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20' };
+        return { label: 'Risky', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20' };
     };
 
     const scoreInfo = getScoreLabel(scoring.overall_score);
@@ -37,9 +37,9 @@ export const ResultHeader = ({
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <div className="flex items-center space-x-3 mb-2">
-                        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Analysis Report</h1>
+                        <h1 className="text-3xl font-serif font-bold text-white tracking-tight">Analysis Report</h1>
                         {cacheHit && (
-                            <Badge variant="secondary" className="bg-slate-100 text-slate-500 font-mono text-[10px] h-5">
+                            <Badge variant="secondary" className="font-mono text-[10px] h-5">
                                 <Sparkles className="h-3 w-3 mr-1" />
                                 CACHE HIT
                             </Badge>
@@ -52,15 +52,15 @@ export const ResultHeader = ({
                         )}
                     </div>
                     {(metadata?.role_title || metadata?.company_name) ? (
-                        <div className="flex items-center space-x-2 text-slate-600 text-sm font-medium mb-1">
+                        <div className="flex items-center space-x-2 text-slate-400 text-sm font-medium mb-1">
                             {metadata?.role_title && (
-                                <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-700 border border-slate-200">
+                                <span className="bg-white/5 px-2 py-0.5 rounded text-slate-300 border border-white/10">
                                     {metadata.role_title}
                                 </span>
                             )}
                             {metadata?.company_name && (
                                 <>
-                                    <span className="text-slate-300">•</span>
+                                    <span className="text-slate-600">•</span>
                                     <span>{metadata.company_name}</span>
                                 </>
                             )}
@@ -83,14 +83,14 @@ export const ResultHeader = ({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <Card className="md:col-span-2 p-6 border-none ring-1 ring-slate-200 shadow-premium flex items-center justify-between">
+                <Card className="md:col-span-2 p-6 border-white/5 bg-white/5 backdrop-blur-xl flex items-center justify-between">
                     <div className="space-y-1">
-                        <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Overall Score</span>
+                        <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">Overall Score</span>
                         <div className="flex items-baseline space-x-2">
-                            <span className="text-5xl font-black text-slate-900">{Math.round(scoring.overall_score)}</span>
-                            <span className="text-xl font-bold text-slate-400">/ 100</span>
+                            <span className="text-5xl font-black text-white">{Math.round(scoring.overall_score)}</span>
+                            <span className="text-xl font-bold text-slate-500">/ 100</span>
                         </div>
-                        <div className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold border mt-2", scoreInfo.class)}>
+                        <div className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-bold border mt-2", scoreInfo.bg, scoreInfo.color)}>
                             {scoreInfo.label}
                         </div>
                     </div>
@@ -98,9 +98,9 @@ export const ResultHeader = ({
                     <div className="hidden sm:block">
                         <div className="relative h-24 w-24">
                             <svg className="h-full w-full" viewBox="0 0 100 100">
-                                <circle className="text-slate-100" strokeWidth="10" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
+                                <circle className="text-white/5" strokeWidth="10" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" />
                                 <circle
-                                    className={cn("transition-all duration-1000 ease-out", scoreInfo.label === 'Excellent' ? 'text-emerald-500' : scoreInfo.label === 'Good' ? 'text-brand-500' : 'text-amber-500')}
+                                    className={cn("transition-all duration-1000 ease-out", scoreInfo.color)}
                                     strokeWidth="10" strokeDasharray="251.2" strokeDashoffset={251.2 - (scoring.overall_score / 100) * 251.2}
                                     strokeLinecap="round" stroke="currentColor" fill="transparent" r="40" cx="50" cy="50" transform="rotate(-90 50 50)"
                                 />
@@ -109,25 +109,25 @@ export const ResultHeader = ({
                     </div>
                 </Card>
 
-                <Card className="p-6 border-none ring-1 ring-slate-200 shadow-sm flex flex-col justify-center">
+                <Card className="p-6 border-white/5 bg-white/5 backdrop-blur-xl flex flex-col justify-center">
                     <div className="flex items-center space-x-2 mb-2">
-                        <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Safety Score</span>
+                        <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Safety Score</span>
                     </div>
-                    <span className="text-3xl font-bold text-slate-900">{Math.round(scoring.safety_score)}</span>
-                    <div className="mt-2 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-emerald-500" style={{ width: `${scoring.safety_score}%` }} />
+                    <span className="text-3xl font-bold text-white">{Math.round(scoring.safety_score)}</span>
+                    <div className="mt-2 h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-full bg-emerald-500/50 rounded-full" style={{ width: `${scoring.safety_score}%` }} />
                     </div>
                 </Card>
 
-                <Card className="p-6 border-none ring-1 ring-slate-200 shadow-sm flex flex-col justify-center">
+                <Card className="p-6 border-white/5 bg-white/5 backdrop-blur-xl flex flex-col justify-center">
                     <div className="flex items-center space-x-2 mb-2">
-                        <TrendingUp className="h-4 w-4 text-brand-500" />
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Market Fairness</span>
+                        <TrendingUp className="h-4 w-4 text-gold" />
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Market Fairness</span>
                     </div>
-                    <span className="text-3xl font-bold text-slate-900">{Math.round(scoring.market_fairness_score)}</span>
-                    <div className="mt-2 h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-brand-500" style={{ width: `${scoring.market_fairness_score}%` }} />
+                    <span className="text-3xl font-bold text-white">{Math.round(scoring.market_fairness_score)}</span>
+                    <div className="mt-2 h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-full bg-gold/50 rounded-full" style={{ width: `${scoring.market_fairness_score}%` }} />
                     </div>
                 </Card>
             </div>

@@ -23,25 +23,25 @@ export const ExtractionPanel = ({ extraction, compact }: ExtractionPanelProps) =
     ];
 
     return (
-        <Card className="shadow-premium border-none ring-1 ring-slate-200">
-            <CardHeader className="pb-4 border-b">
-                <CardTitle className="flex items-center space-x-2">
-                    <FileText className="h-5 w-5 text-brand-500" />
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl overflow-hidden">
+            <CardHeader className="pb-4 border-b border-white/5">
+                <CardTitle className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                    <FileText className="h-5 w-5 text-gold" />
                     <span>Extracted Terms</span>
                 </CardTitle>
             </CardHeader>
             <CardContent className="p-0">
-                <div className="divide-y divide-slate-100">
+                <div className="divide-y divide-white/5">
                     {fields.map((item, idx) => (
                         <div key={idx} className={cn("p-4", compact ? "px-4 py-3" : "p-6")}>
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div className="space-y-1">
                                     <div className="flex items-center space-x-2">
-                                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">{item.label}</span>
+                                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">{item.label}</span>
                                         <ConfidenceBadge confidence={item.field?.confidence || 0} />
                                         <MethodBadge method={item.field?.method || ExtractionMethod.MISSING} />
                                     </div>
-                                    <p className="text-lg font-bold text-slate-900">
+                                    <p className="text-lg font-bold text-white">
                                         {item.type === 'currency' ? formatCurrency(item.field?.value) :
                                             item.type === 'days' ? (item.field?.value ? `${item.field.value} Days` : 'N/A') :
                                                 item.type === 'months' ? (item.field?.value ? `${item.field.value} Months` : 'N/A') :
@@ -51,11 +51,11 @@ export const ExtractionPanel = ({ extraction, compact }: ExtractionPanelProps) =
 
                                 {item.field?.source_text && !compact && (
                                     <div className="flex-1 max-w-md">
-                                        <div className="rounded-lg bg-slate-50 p-3 border border-slate-100 relative group">
-                                            <span className="absolute -top-2 left-3 bg-white px-1 text-[10px] font-bold text-slate-400 border border-slate-100 rounded">
+                                        <div className="rounded-lg bg-white/5 p-3 border border-white/5 relative group">
+                                            <span className="absolute -top-2 left-3 bg-[#0a0a0a] px-1 text-[10px] font-bold text-slate-500 border border-white/10 rounded">
                                                 SOURCE {item.field.page_number ? `P. ${item.field.page_number}` : ''}
                                             </span>
-                                            <p className="text-xs font-mono text-slate-600 line-clamp-2 italic">
+                                            <p className="text-xs font-mono text-slate-400 line-clamp-2 italic">
                                                 "{item.field.source_text}"
                                             </p>
                                         </div>
@@ -79,10 +79,10 @@ const ConfidenceBadge = ({ confidence }: { confidence: number }) => {
 
 const MethodBadge = ({ method }: { method: ExtractionMethod }) => {
     const styles = {
-        [ExtractionMethod.REGEX]: { label: 'Regex', icon: CheckCircle2, class: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
-        [ExtractionMethod.SNIPER_LLM]: { label: 'Sniper LLM', icon: FileText, class: 'bg-blue-50 text-blue-600 border-blue-100' },
-        [ExtractionMethod.LLM_FALLBACK]: { label: 'LLM Fallback', icon: AlertTriangle, class: 'bg-amber-50 text-amber-600 border-amber-100' },
-        [ExtractionMethod.MISSING]: { label: 'Missing', icon: HelpCircle, class: 'bg-slate-50 text-slate-400 border-slate-100' },
+        [ExtractionMethod.REGEX]: { label: 'Regex', icon: CheckCircle2, class: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
+        [ExtractionMethod.SNIPER_LLM]: { label: 'Sniper LLM', icon: FileText, class: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
+        [ExtractionMethod.LLM_FALLBACK]: { label: 'LLM Fallback', icon: AlertTriangle, class: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
+        [ExtractionMethod.MISSING]: { label: 'Missing', icon: HelpCircle, class: 'bg-white/5 text-slate-500 border-white/10' },
     };
 
     const config = styles[method] || styles[ExtractionMethod.MISSING];

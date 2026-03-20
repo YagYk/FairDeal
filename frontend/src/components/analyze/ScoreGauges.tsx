@@ -9,7 +9,7 @@ interface ScoreGaugesProps {
 
 export const ScoreGauges = ({ scoring }: ScoreGaugesProps) => {
     return (
-        <Card className="shadow-premium border-none ring-1 ring-slate-200">
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl">
             <CardHeader className="pb-2">
                 <CardTitle className="text-sm">Analysis Scores</CardTitle>
             </CardHeader>
@@ -61,17 +61,17 @@ const ScoreRing = ({ score, size, strokeWidth, label, compact }: ScoreRingProps)
     const offset = circumference - (score / 100) * circumference;
 
     const getColor = (s: number) => {
-        if (s >= 80) return 'text-emerald-500';
-        if (s >= 60) return 'text-brand-500';
-        if (s >= 40) return 'text-amber-500';
-        return 'text-red-500';
+        if (s >= 80) return 'text-emerald-400';
+        if (s >= 60) return 'text-gold';
+        if (s >= 40) return 'text-amber-400';
+        return 'text-red-400';
     };
 
     return (
         <div className="relative inline-flex flex-col items-center">
             <svg width={size} height={size} className="rotate-[-90deg]">
                 <circle
-                    className="text-slate-100"
+                    className="text-white/5"
                     strokeWidth={strokeWidth}
                     stroke="currentColor"
                     fill="transparent"
@@ -93,10 +93,10 @@ const ScoreRing = ({ score, size, strokeWidth, label, compact }: ScoreRingProps)
                 />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className={cn("font-bold text-slate-900", compact ? "text-sm" : "text-2xl")}>
+                <span className={cn("font-bold text-white", compact ? "text-sm" : "text-2xl")}>
                     {Math.round(score)}
                 </span>
-                {!compact && <span className="text-[10px] uppercase font-bold text-slate-400">/ 100</span>}
+                {!compact && <span className="text-[10px] uppercase font-bold text-slate-500">/ 100</span>}
             </div>
             <span className={cn("mt-2 font-semibold text-slate-500", compact ? "text-[10px]" : "text-xs")}>
                 {label}

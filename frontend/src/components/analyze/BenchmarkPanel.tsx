@@ -14,10 +14,10 @@ interface BenchmarkPanelProps {
 export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) => {
     if (!benchmark) {
         return (
-            <Card className="shadow-premium border-none ring-1 ring-slate-200 bg-slate-50/50">
+            <Card className="border-white/5 bg-white/5 backdrop-blur-xl">
                 <CardContent className="p-12 text-center">
-                    <Info className="h-10 w-10 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold text-slate-800">No benchmark available</h3>
+                    <Info className="h-10 w-10 text-slate-600 mx-auto mb-4" />
+                    <h3 className="text-lg font-bold text-white">No benchmark available</h3>
                     <p className="text-sm text-slate-500">We couldn't find a matching cohort for this role and experience level.</p>
                 </CardContent>
             </Card>
@@ -28,11 +28,11 @@ export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) =
     const data = generateDistributionData(benchmark);
 
     return (
-        <Card className="shadow-premium border-none ring-1 ring-slate-200">
-            <CardHeader className="border-b">
+        <Card className="border-white/5 bg-white/5 backdrop-blur-xl overflow-hidden">
+            <CardHeader className="border-b border-white/5">
                 <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center space-x-2">
-                        <BarChart3 className="h-5 w-5 text-brand-500" />
+                    <CardTitle className="flex items-center space-x-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                        <BarChart3 className="h-5 w-5 text-gold" />
                         <span>Market Benchmarking</span>
                     </CardTitle>
                     <div className="flex items-center space-x-2">
@@ -54,11 +54,11 @@ export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) =
                                 <AreaChart data={data}>
                                     <defs>
                                         <linearGradient id="colorSal" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="#4a6cf7" stopOpacity={0.1} />
-                                            <stop offset="95%" stopColor="#4a6cf7" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.2} />
+                                            <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
                                     <XAxis
                                         dataKey="salary"
                                         hide
@@ -68,9 +68,9 @@ export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) =
                                         content={({ active, payload }) => {
                                             if (active && payload && payload.length) {
                                                 return (
-                                                    <div className="rounded-lg bg-slate-900 px-3 py-2 text-xs text-white shadow-xl">
+                                                    <div className="rounded-lg bg-[#050505] border border-white/10 px-3 py-2 text-xs text-white shadow-xl">
                                                         <p className="font-bold">{formatCurrency(payload[0].payload.salary)}</p>
-                                                        <p className="text-slate-400">Frequency density</p>
+                                                        <p className="text-slate-500">Frequency density</p>
                                                     </div>
                                                 );
                                             }
@@ -80,7 +80,7 @@ export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) =
                                     <Area
                                         type="monotone"
                                         dataKey="density"
-                                        stroke="#4a6cf7"
+                                        stroke="#D4AF37"
                                         strokeWidth={2}
                                         fillOpacity={1}
                                         fill="url(#colorSal)"
@@ -88,12 +88,12 @@ export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) =
                                     {userSalary && (
                                         <ReferenceLine
                                             x={findClosestX(data, userSalary)}
-                                            stroke="#0f172a"
+                                            stroke="#FFBF00"
                                             strokeWidth={2}
                                             label={{
                                                 value: 'YOU',
                                                 position: 'top',
-                                                fill: '#0f172a',
+                                                fill: '#FFBF00',
                                                 fontSize: 10,
                                                 fontWeight: 'bold'
                                             }}
@@ -101,15 +101,15 @@ export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) =
                                     )}
                                     <ReferenceLine
                                         x={findClosestX(data, benchmark.market_median)}
-                                        stroke="#94a3b8"
+                                        stroke="rgba(255,255,255,0.3)"
                                         strokeDasharray="3 3"
-                                        label={{ value: 'MEDIAN', position: 'insideTopLeft', fill: '#94a3b8', fontSize: 9 }}
+                                        label={{ value: 'MEDIAN', position: 'insideTopLeft', fill: 'rgba(255,255,255,0.3)', fontSize: 9 }}
                                     />
                                 </AreaChart>
                             </ResponsiveContainer>
                         </div>
 
-                        <div className="mt-4 flex justify-between px-2 text-[10px] font-bold text-slate-400 tracking-tighter uppercase">
+                        <div className="mt-4 flex justify-between px-2 text-[10px] font-bold text-slate-500 tracking-tighter uppercase">
                             <span>Low (P25)</span>
                             <span>Median</span>
                             <span>High (P75)</span>
@@ -117,10 +117,10 @@ export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) =
                     </div>
 
                     <div className="space-y-6">
-                        <div className="rounded-2xl bg-brand-50/50 p-6 border border-brand-100 flex flex-col items-center text-center">
-                            <span className="text-xs font-bold text-brand-600 uppercase tracking-widest mb-1">Percentile</span>
-                            <span className="text-5xl font-black text-brand-700">{Math.round(benchmark.percentile_salary || 0)}</span>
-                            <p className="text-xs text-brand-600 mt-2 font-medium">
+                        <div className="rounded-2xl bg-gold/10 p-6 border border-gold/20 flex flex-col items-center text-center">
+                            <span className="text-xs font-bold text-gold uppercase tracking-widest mb-1">Percentile</span>
+                            <span className="text-5xl font-black text-gold">{Math.round(benchmark.percentile_salary || 0)}</span>
+                            <p className="text-xs text-slate-400 mt-2 font-medium">
                                 You earn more than {Math.round(benchmark.percentile_salary || 0)}% of the market.
                             </p>
                         </div>
@@ -138,9 +138,9 @@ export const BenchmarkPanel = ({ benchmark, userSalary }: BenchmarkPanelProps) =
                                 ))}
                             </div>
                             {benchmark.broaden_steps.length > 0 && (
-                                <div className="rounded-lg bg-amber-50 p-3 border border-amber-100">
-                                    <p className="text-[10px] font-bold text-amber-600 uppercase mb-1">Broadening</p>
-                                    <ul className="text-[10px] text-amber-700 space-y-0.5">
+                                <div className="rounded-lg bg-amber-500/10 p-3 border border-amber-500/20">
+                                    <p className="text-[10px] font-bold text-amber-400 uppercase mb-1">Broadening</p>
+                                    <ul className="text-[10px] text-amber-300 space-y-0.5">
                                         {benchmark.broaden_steps.map((step, i) => (
                                             <li key={i}>• {step.replace(/_/g, ' ')}</li>
                                         ))}

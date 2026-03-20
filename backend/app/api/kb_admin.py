@@ -4,6 +4,7 @@ from typing import List
 
 from fastapi import APIRouter, Query
 
+from ..config import settings
 from ..logging_config import get_logger
 from ..models.schemas import (
     KBStats,
@@ -49,13 +50,22 @@ def get_contract_chunks(contract_id: str) -> List[KBChunkPreview]:
 
 @router.get("/health")
 def health() -> dict:
-    ingestion = IngestionService()
-    rag = RAGService()
-    return {
-        "chroma_path": str(ingestion.settings.chroma_dir),
-        "processed_count": ingestion.count_processed_contracts(),
-        "collection_count": rag.collection_count(),
-    }
+    try:
+        ingestion = IngestionService()
+        rag = RAGService()
+        return {
+            "chroma_path": str(ingestion.settings.chroma_dir),
+            "processed_count": ingestion.count_processed_contracts(),
+            "collection_count": rag.collection_count(),
+        }
+    except Exception as exc:
+        log.warning(f"Health check partial failure: {exc}")
+        return {
+            "chroma_path": str(settings.chroma_dir) if hasattr(settings, "chroma_dir") else "unknown",
+            "processed_count": -1,
+            "collection_count": -1,
+            "error": str(exc),
+        }
 
 
 @router.get("/search", response_model=List[KBChunkPreview])

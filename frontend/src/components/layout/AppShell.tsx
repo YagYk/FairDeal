@@ -8,8 +8,8 @@ export const AppShell = () => {
             <Sidebar />
             <div className="flex flex-1 flex-col pl-64">
                 <TopNav />
-                <main className="flex-1">
-                    <div className="mx-auto max-w-7xl">
+                <main className="flex-1 pt-16">
+                    <div className="mx-auto max-w-7xl px-4 py-4">
                         <Outlet />
                     </div>
                 </main>
