@@ -1,0 +1,90 @@
+╔══════════════════════════════════════════════════════════════════╗
+║           FAIRDEAL VALIDATION RESULTS SUMMARY                  ║
+║           (for IEEE paper Section: Results & Validation)        ║
+╠══════════════════════════════════════════════════════════════════╣
+
+A. DATASET
+   Total test cases ............... 30
+   Categories ..................... Service (11), Product (11), Startup (6), Consulting (2)
+   CTC range ...................... ₹3.50L – ₹30.00L
+   Engine version ................. v3.0
+
+B. SCORING VALIDATION
+   Pass rate (within range) ....... 100.0%  (30/30)
+   Known-ordering accuracy ........ 100.0%  (15/15)
+   Determinism (3 runs) ........... 100.0%
+
+C. SCORE DISTRIBUTION
+   Mean ± SD ...................... 76.87 ± 14.55
+   Median ......................... 79.0
+   Range .......................... [53, 100]
+   IQR (Q1–Q3) ................... [64.0, 87.75]
+   Skewness ....................... -0.198
+   Kurtosis ....................... -1.320
+   Shapiro-Wilk p ................. 0.0340  (non-normal)
+
+D. CATEGORY COMPARISON (mean ± SD)
+       Service        60.36 ±  5.48   (n=11)
+       Consulting     72.50 ±  2.12   (n=2)
+       Startup        87.50 ±  6.77   (n=6)
+       Product        88.36 ±  6.64   (n=11)
+
+    Inter-group tests (Welch's t):
+        product vs service     t= 10.787  d=4.600  ***
+        startup vs service     t=  8.422  d=4.565  ***
+        product vs consulting  t=  6.343  d=2.494  ***
+
+    E. FEATURE–SCORE CORRELATIONS (Pearson r)
+       salary_percentile          r = +0.9335  (strong positive)
+       notice_percentile          r = -0.7529  (strong negative)
+       benefits_count             r = +0.9431  (strong positive)
+       non_compete_months         r = +0.1571  (weak positive)
+
+    F. COMPONENT SCORE STATISTICS
+       Component       Mean      SD    Min    Max
+       ------------------------------------------
+       Salary          61.0    26.4     26     98
+       Notice          70.1    15.5     50     88
+       Benefits        90.7     7.9     80    100
+       Clauses         95.9     6.0     80    100
+       Legal          100.0     0.0    100    100
+
+    G. SYSTEM PERFORMANCE
+       Evaluation time ................ 2.70 ms  (0.09 ms / case)
+
+    ╚══════════════════════════════════════════════════════════════════╝
+    
+
+    TABLE: PER-CONTRACT SCORING RESULTS
+    ID    Company          Category     CTC(L)  Score Grade          Badges
+    ------------------------------------------------------------------------------------------
+    TC01  TCS              service         3.6     60 FAIR           —
+    TC02  Infosys          service         4.2     55 AVERAGE        ⚠️ SERVICE TRAP
+    TC03  Wipro            service         3.5     53 AVERAGE        ⚠️ SERVICE TRAP
+    TC04  HCL              service         4.0     63 FAIR           —
+    TC05  Cognizant        service         4.5     65 FAIR           —
+    TC06  Tech Mahindra    service         3.8     54 AVERAGE        ⚠️ SERVICE TRAP
+    TC07  Capgemini        service         4.2     64 FAIR           —
+    TC08  Accenture        service         5.0     69 FAIR           —
+    TC09  LTIMindtree      service         3.9     54 AVERAGE        ⚠️ SERVICE TRAP
+    TC10  Mphasis          service         4.1     64 FAIR           —
+    TC11  Hexaware         service         3.7     63 FAIR           —
+    TC12  Google           product        28.0     90 EXCELLENT      —
+    TC13  Microsoft        product        24.0     89 EXCELLENT      —
+    TC14  Amazon           product        22.0     88 EXCELLENT      —
+    TC15  Flipkart         product        20.0     87 EXCELLENT      —
+    TC16  Adobe            product        26.0     89 EXCELLENT      —
+    TC17  Oracle           product        18.0     79 GOOD           —
+    TC18  Samsung          product        16.0     86 EXCELLENT      🏢 Standard MNC Package
+    TC19  Salesforce       product        30.0    100 EXCEPTIONAL    🦄 UNICORN CONTRACT
+    TC20  Walmart          product        19.0     86 EXCELLENT      —
+    TC21  Intuit           product        22.0     99 EXCEPTIONAL    🦄 UNICORN CONTRACT
+    TC22  Zoho             product         8.0     79 GOOD           —
+    TC23  Razorpay         startup        18.0     87 EXCELLENT      —
+    TC24  PhonePe          startup        16.0     89 EXCELLENT      🏢 Standard MNC Package
+    TC25  CRED             startup        24.0     99 EXCEPTIONAL    🦄 UNICORN CONTRACT
+    TC26  Swiggy           startup        14.0     86 EXCELLENT      🏢 Standard MNC Package
+    TC27  Zomato           startup        12.0     86 EXCELLENT      🏢 Standard MNC Package
+    TC28  Paytm            startup        10.0     78 GOOD           —
+    TC29  Deloitte         consulting      8.5     71 GOOD           —
+    TC30  EY               consulting      7.5     74 GOOD           —

@@ -1,0 +1,52 @@
+% ═══ TABLE I: Validation Summary ═══
+\begin{table}[htbp]
+\caption{Validation Metrics Summary}
+\label{tab:validation}
+\centering
+\begin{tabular}{l r l}
+\hline
+\textbf{Metric} & \textbf{Value} & \textbf{Interpretation} \\
+\hline
+Scoring pass rate & 100.0\% & All within expected ranges \\
+Ordering accuracy & 100.0\% & 15/15 pairs correct \\
+Determinism & 100.0\% & Identical across 3 runs \\
+Mean $\pm$ SD & 76.87 $\pm$ 14.55 & Healthy spread \\
+Score range & [53, 100] & Full range utilization \\
+Skewness & -0.198 & Approx.\ symmetric \\
+Shapiro-Wilk $p$ & 0.0340 & Non-normal distribution \\
+\hline
+\end{tabular}
+\end{table}
+
+% ═══ TABLE II: Feature Correlations ═══
+\begin{table}[htbp]
+\caption{Feature--Score Correlations}
+\label{tab:correlations}
+\centering
+\begin{tabular}{l r l}
+\hline
+\textbf{Feature} & \textbf{Pearson $r$} & \textbf{Strength} \\
+\hline
+salary\_percentile & +0.9335 & strong positive \\
+notice\_percentile & -0.7529 & strong negative \\
+benefits\_count & +0.9431 & strong positive \\
+non\_compete\_months & +0.1571 & weak positive \\
+\hline
+\end{tabular}
+\end{table}
+
+% ═══ TABLE III: Category Comparison ═══
+\begin{table}[htbp]
+\caption{Inter-Category Discrimination (Welch's $t$-test)}
+\label{tab:categories}
+\centering
+\begin{tabular}{l l r r r}
+\hline
+\textbf{Group A} & \textbf{Group B} & \textbf{$t$} & \textbf{Cohen's $d$} & \textbf{Sig.} \\
+\hline
+product & service & 10.787 & 4.600 & *** \\
+startup & service & 8.422 & 4.565 & *** \\
+product & consulting & 6.343 & 2.494 & *** \\
+\hline
+\end{tabular}
+\end{table}
