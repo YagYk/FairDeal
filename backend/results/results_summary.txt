@@ -50,7 +50,7 @@ D. CATEGORY COMPARISON (mean ± SD)
        Legal          100.0     0.0    100    100
 
     G. SYSTEM PERFORMANCE
-       Evaluation time ................ 2.70 ms  (0.09 ms / case)
+       Evaluation time ................ 2.68 ms  (0.09 ms / case)
 
     ╚══════════════════════════════════════════════════════════════════╝
     
