@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 import time
 import threading
 from pathlib import Path
@@ -32,9 +33,20 @@ def get_chroma_client(max_retries: int = 3) -> ClientAPI:
             import chromadb
             from chromadb.config import Settings as ChromaSettings
         except Exception as exc:  # noqa: BLE001
+            # Log the real exception so the operator can tell ImportError from
+            # a DLL load failure or a chroma-hnswlib build error.
+            log.error(
+                "ChromaDB import failed under interpreter %s (%s): %r",
+                sys.executable,
+                sys.version.split()[0],
+                exc,
+            )
             raise RuntimeError(
-                "ChromaDB is not available. On Windows/Python 3.12 you may need "
-                "Microsoft C++ Build Tools to build chroma-hnswlib, or use Python 3.11."
+                f"ChromaDB is not available under {sys.executable} "
+                f"({sys.version.split()[0]}). Underlying error: {exc!r}. "
+                "Install with `python -m pip install chromadb` using the same "
+                "interpreter, or on Windows/Python 3.12 install Microsoft C++ "
+                "Build Tools to build chroma-hnswlib."
             ) from exc
 
         persist_dir: Path = settings.chroma_dir

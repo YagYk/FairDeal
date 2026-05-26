@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     app_name: str = "FairDeal"
-    debug: bool = True
+    debug: bool = False
 
     # Paths
     base_dir: Path = Path(__file__).resolve().parent.parent
@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     market_data_path: Path = data_dir / "market_data.json"
     market_data_dir: Path = data_dir / "market_data"
     market_intel_dir: Path = data_dir / "market_intelligence"
-    contracts_raw_dir: Path = data_dir / "raw_contracts"
+    contracts_raw_dir: Path = data_dir / "contracts_raw"
     processed_dir: Path = data_dir / "processed"
     chroma_dir: Path = data_dir / "chroma"
 

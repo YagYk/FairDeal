@@ -59,6 +59,11 @@ analysis_result_*.json
 scoring_report.json
 temp_*
 
+# Local report scratch dumps (not part of the build)
+backend/results/_*.txt
+backend_error.log
+validation_error.log
+
 # Word documents (non-code artifacts at root)
 /*.docx
 

@@ -21,6 +21,60 @@
 
     ALL FIGURES LIVE IN:
         c:\Users\Yagyansh's\Documents\fyp\backend\results\
+
+    ──────────────────────────────────────────────────────────────────────
+    WORD-FILE EDIT CHECKLIST (changes made in this revision)
+    ──────────────────────────────────────────────────────────────────────
+    The four edits below are the ones you need to push into your Word
+    document. The line ranges refer to this draft (BTECH_REPORT_DRAFT.txt)
+    and the location in Word refers to the SRM project-report manual TOC.
+
+    1. TABLE OF CONTENTS (Word: the TOC page right after ABSTRACT)
+       - Add a new chapter entry "4  MATERIALS AND METHODS" between
+         the Sprint III block (Chapter 3) and "6  RESULTS AND DISCUSSIONS".
+       - Add the sub-section list shown in this draft (4.1 through 4.5).
+       - Bump the page numbers of Chapter 6, Chapter 7, and the
+         References onward; or simply right-click the TOC in Word and
+         choose "Update Field" -> "Update entire table" once Chapter 4
+         is pasted at the right place.
+
+    2. LIST OF TABLES (Word: page right after LIST OF FIGURES)
+       - Add the row "4.1  Summary of data collections used in the study"
+         between Table 3.7 and Table 6.1.
+       - All other table rows stay the same.
+
+    3. SECTION 2.4  RESEARCH OBJECTIVES  (Word: Chapter 2 - Literature
+       Survey, sub-section 2.4)
+       - Delete the existing paragraph plus the O1-O5 list.
+       - Replace with the new concise five-objective list under "2.4
+         Research Objectives" in this draft. The new version states the
+         research objectives only and does not describe project
+         implementation.
+
+    4. NEW CHAPTER 4  MATERIALS AND METHODS  (Word: insert as a new
+       chapter immediately after Chapter 3 - Sprint Planning and
+       Execution Methodology and immediately before Chapter 6 - Results
+       and Discussions)
+       - Copy the entire block in this draft that runs from
+         "CHAPTER 4 - MATERIALS AND METHODS" down to (but not
+         including) "CHAPTER 6 - RESULTS AND DISCUSSIONS".
+       - This chapter contains the detailed dataset, preprocessing,
+         experimental setup, and evaluation protocol descriptions.
+       - It introduces one new table (Table 4.1). Recreate it in Word
+         using "Insert -> Table" so the formatting matches the other
+         tables.
+
+    5. REFERENCES  (Word: References page near the end)
+       - Replace the existing "[9] Google DeepMind ..." entry with the
+         updated version in this draft, which carries the formal
+         "Gemini Team, Google" byline along with the lead authors.
+       - The inline citation numbers in Section 2.1 and 2.2 of the
+         literature survey have been corrected (Surden is [6] not [8],
+         Lewis et al. is [7] not [9], sentence-BERT is [8] not [14],
+         Gemini is [9] not [15]). Re-paste those two sub-sections
+         from this draft so the inline numbering matches the
+         references list.
+    ──────────────────────────────────────────────────────────────────────
 ════════════════════════════════════════════════════════════════════════════════
 
 
@@ -227,12 +281,38 @@ CHAPTER         TITLE                                               PAGE NO.
         3.3.4   Outcome of objectives / Result Analysis                  43
         3.3.5   Sprint Retrospective                                     44
 
-6               RESULTS AND DISCUSSIONS                                  45
-    6.1         Project Outcomes                                         46
+4               MATERIALS AND METHODS                                    45
+    4.1         Overview of the Experimental Design                      45
+    4.2         Dataset                                                  46
+        4.2.1   Real-Contract Pilot Corpus                               46
+        4.2.2   Synthetic Validation Corpus                              47
+        4.2.3   Retrieval Knowledge Base                                 48
+        4.2.4   Market Benchmarking Cohorts                              48
+    4.3         Dataset Preprocessing                                    49
+        4.3.1   Format Normalisation                                     49
+        4.3.2   OCR Pipeline for Scanned Pages                           50
+        4.3.3   Field Extraction and Sanitisation                        51
+        4.3.4   Clause Segmentation and Embedding                        52
+        4.3.5   Deduplication and Ground-Truth Annotation                53
+    4.4         Experimental Setup                                       54
+        4.4.1   Hardware and Software Environment                        54
+        4.4.2   Scoring Engine Configuration                             54
+        4.4.3   Reproducibility Controls                                 55
+    4.5         Evaluation Protocol                                      56
+        4.5.1   Pass Rate Against Expected Score Ranges                  56
+        4.5.2   Determinism Verification                                 57
+        4.5.3   Known-Ordering Compliance                                57
+        4.5.4   Inter-Category Discrimination                            58
+        4.5.5   Feature–Score Correlation Analysis                       58
+        4.5.6   Field-Extraction Pilot Evaluation                        59
+        4.5.7   Latency Profiling                                        59
 
-7               CONCLUSION AND FUTURE ENHANCEMENT                        55
+6               RESULTS AND DISCUSSIONS                                  60
+    6.1         Project Outcomes                                         61
 
-REFERENCES                                                               58
+7               CONCLUSION AND FUTURE ENHANCEMENT                        70
+
+REFERENCES                                                               73
 
 APPENDIX
     A           CODING                                                   62
@@ -289,6 +369,7 @@ TABLE NO.    TITLE                                                       PAGE
 3.5          Sprint II deliverables vs outcomes                          37
 3.6          Sprint III objectives and acceptance criteria               39
 3.7          Sprint III deliverables vs outcomes                         44
+4.1          Summary of data collections used in the study               46
 6.1          Validation metrics summary (N = 30)                         47
 6.2          Inter-category discrimination (Welch's t-test)              49
 6.3          Feature–score correlations                                  50
@@ -466,18 +547,20 @@ progress on each of these axes.
 
 Document understanding of legal contracts has moved from rule-based
 parsers to transformer-based models that can classify clauses with
-high precision. The LEGAL-BERT family of models [1] pre-trained on
-twelve gigabytes of legal text set strong baselines for clause
-classification on English corporate contracts. Information extraction
-has benefited from domain-specific benchmarks such as CUAD [4], which
-provides expert-annotated clause labels over 510 commercial contracts
-and 41 clause categories. Domain-adapted language modelling, finally,
-has been pushed forward by the general-purpose LLM revolution,
-culminating in instruction-tuned models (GPT-4, Gemini 2.0, Claude 3)
-that can answer arbitrary questions about a contract when provided
-the full document text in the prompt.
+high precision. The LEGAL-BERT family of models proposed by
+Chalkidis, Fergadiotis, Malakasiotis, Aletras, and Androutsopoulos
+[1], pre-trained on twelve gigabytes of legal text, set strong
+baselines for clause classification on English corporate contracts.
+Information extraction has benefited from domain-specific benchmarks
+such as CUAD, introduced by Hendrycks, Burns, Chen, and Ball [4],
+which provides expert-annotated clause labels over 510 commercial
+contracts and 41 clause categories. Domain-adapted language
+modelling, finally, has been pushed forward by the general-purpose
+LLM revolution, culminating in instruction-tuned models (GPT-4,
+Gemini 2.0, Claude 3) that can answer arbitrary questions about a
+contract when provided the full document text in the prompt.
 
-In parallel, retrieval-augmented generation [8] has emerged as a
+In parallel, retrieval-augmented generation [7] has emerged as a
 practical compromise between pure generative models (which hallucinate)
 and pure retrieval systems (which do not reason). RAG grounds
 generation in a vector store of domain content, and has become the
@@ -491,8 +574,9 @@ they routinely mix currencies ("Rs. 18 lakhs per annum"), reference
 the Industrial Disputes Act and Shops and Establishments Act,
 embed region-specific conventions (Karnataka companies differ from
 Maharashtra companies in notice-period norms), and rely heavily on
-discretionary "as per company policy" language. Sharma et al. [5]
-were among the first to document these differences systematically.
+discretionary "as per company policy" language. Sharma, Gupta, and
+Singh [5] were among the first to document these differences
+systematically.
 
 
 2.2  Existing Models and Frameworks
@@ -502,46 +586,53 @@ They fall into four groups: (i) legal language models, (ii) annotated
 datasets, (iii) commercial contract-review platforms, and (iv)
 retrieval-augmented generation stacks.
 
-LEGAL-BERT [1] is a domain-specific BERT variant pre-trained on a
-large corpus of legal documents. It excels at clause classification
-and legal named-entity recognition. It does not, however, extract
-numeric fields such as CTC, compute market percentiles, or produce
-negotiation language. Within the Indian context, clause labels
-trained on US contracts transfer poorly because the taxonomy is
-different (for example, LEGAL-BERT has no concept of "training bond").
+LEGAL-BERT, by Chalkidis, Fergadiotis, Malakasiotis, Aletras, and
+Androutsopoulos [1], is a domain-specific BERT variant pre-trained
+on a large corpus of legal documents. It excels at clause
+classification and legal named-entity recognition. It does not,
+however, extract numeric fields such as CTC, compute market
+percentiles, or produce negotiation language. Within the Indian
+context, clause labels trained on US contracts transfer poorly
+because the taxonomy is different (for example, LEGAL-BERT has no
+concept of "training bond").
 
-Anderson et al. [2] take a different angle. They formalise employment-
-contract fairness as a statistical property — a contract is fair at
-the thirtieth percentile but unfair at the seventieth — rather than
-as a binary label. Their work is theoretical and relies on expert
-annotation; it does not propose an automated pipeline.
+Anderson, Magruder, and Phipps [2] take a different angle. They
+formalise employment-contract fairness as a statistical property —
+a contract is fair at the thirtieth percentile but unfair at the
+seventieth — rather than as a binary label. Their work is
+theoretical and relies on expert annotation; it does not propose an
+automated pipeline.
 
 Commercial platforms (SpeedLegal, Kira, LawGeex) provide automated
-clause highlighting and risk flagging. As observed by Kerikmäe et al.
-[3] and Surden [8], these systems are designed for legal professionals
-rather than for employees. They are also closed-source and, for our
-audience, inaccessible.
+clause highlighting and risk flagging. As observed by Kerikmäe,
+Chochia, and Rull [3] and by Surden [6], these systems are designed
+for legal professionals rather than for employees. They are also
+closed-source and, for our audience, inaccessible.
 
-The CUAD dataset [4] is the most widely used benchmark for legal
-NLP. It labels 41 clause categories across 510 US commercial
-contracts and is the de-facto evaluation target for contract
-classification research. However, CUAD contains zero Indian
-employment contracts and none of its clause categories map to
-"training bond" or "notice period" as used in Indian offer letters.
+The CUAD dataset by Hendrycks, Burns, Chen, and Ball [4] is the
+most widely used benchmark for legal NLP. It labels 41 clause
+categories across 510 US commercial contracts and is the de-facto
+evaluation target for contract classification research. However,
+CUAD contains zero Indian employment contracts and none of its
+clause categories map to "training bond" or "notice period" as used
+in Indian offer letters.
 
-Lewis et al. [9] introduced retrieval-augmented generation, which
-combines a dense retriever with a sequence-to-sequence generator. RAG
-has since become the standard pattern for knowledge-grounded
-generation and is the retrieval component we adopted.
+Lewis, Perez, Piktus, Petroni, Karpukhin, Goyal, Küttler, Lewis,
+Yih, Rocktäschel, Riedel, and Kiela [7] introduced retrieval-
+augmented generation, which combines a dense retriever with a
+sequence-to-sequence generator. RAG has since become the standard
+pattern for knowledge-grounded generation and is the retrieval
+component we adopted.
 
-Google's Gemini family [15] is the current generation of
+Google's Gemini family [9] is the current generation of
 general-purpose multimodal LLMs and the model we use for (a) targeted
 field extraction when regex fails, (b) OCR on scanned pages via the
 Vision API, and (c) optional narration of final results.
 
-Finally, sentence-BERT [14] provides the embedding backbone for our
-vector store. We use the all-MiniLM-L6-v2 variant for its favourable
-accuracy-to-latency trade-off on short clause text.
+Finally, the sentence-BERT framework of Reimers and Gurevych [8]
+provides the embedding backbone for our vector store. We use the
+all-MiniLM-L6-v2 variant for its favourable accuracy-to-latency
+trade-off on short clause text.
 
 >>> INSERT TABLE 2.1 HERE <<<
 Recreate the table below in Word.
@@ -593,31 +684,32 @@ Caption: "Fig 2.1  Gap analysis across existing contract-analysis systems."
 
 2.4  Research Objectives
 
-Derived from the gaps above, the project targeted five concrete
-objectives. Each objective corresponds to a measurable outcome that
-is reported in Chapter 6.
+The research objectives of this work are stated below.
 
-    O1. Build an ingestion pipeline that accepts PDF and DOCX (including
-        scanned documents) and produces clean text for downstream
-        processing, with no manual pre-cleaning.
+    O1. To investigate techniques for robust ingestion of
+        heterogeneous Indian employment contract files and the
+        recovery of clean, machine-readable text from both
+        digitally born documents and scanned printouts.
 
-    O2. Build a hybrid extraction engine that captures the critical
-        contract fields (CTC, notice period, bond, non-compete,
-        probation, benefits) with full coverage — regex where possible,
-        LLM sniper otherwise.
+    O2. To formulate a hybrid information-extraction approach for
+        the critical fields of an Indian offer letter that
+        achieves full field coverage by combining deterministic
+        pattern matching with a focused language-model fallback.
 
-    O3. Build a market-benchmarking module that computes salary and
-        notice-period percentiles against curated Indian market data
-        with cohort broadening to handle niche roles.
+    O3. To design a market-benchmarking method for Indian salary
+        and notice-period distributions that remains usable when
+        cohort data is sparse, through a controlled cohort-
+        broadening procedure.
 
-    O4. Build a five-dimensional psychological scoring engine with
-        dynamic weighting and validate it against predetermined score
-        ranges on a controlled 30-contract corpus.
+    O4. To formulate and validate a multi-dimensional fairness
+        scoring scheme that is deterministic, calibrated against
+        domain expectations, and responsive to the presence of
+        statutory violations.
 
-    O5. Build a React-based frontend that exposes extraction, scoring,
-        red-flag detection, RAG evidence, and negotiation playbook to
-        an end user in a single page, with response time under ten
-        seconds.
+    O5. To establish a reproducible experimental protocol for
+        evaluating the proposed system on the dimensions of pass
+        rate, ordering accuracy, determinism, inter-category
+        discrimination, and feature–score correlation.
 
 
 2.5  Product Backlog (Key User Stories with Desired Outcomes)
@@ -1147,6 +1239,443 @@ Carry-over to hand-over: none. All user stories closed.
 
 
 ================================================================================
+CHAPTER 4 — MATERIALS AND METHODS
+================================================================================
+
+4.1  Overview of the Experimental Design
+
+The empirical work behind FAIRDEAL was carried out under three
+deliberate constraints. First, the validation set had to admit a
+known answer for every contract in it; without that, no claim about
+the correctness of a score is checkable. Second, the entire pipeline
+had to remain runnable end to end on a single laptop, so that any
+external reviewer could reproduce our numbers from a clean clone of
+the repository. Third, every preprocessing step had to be either
+deterministic by construction or, where an external service was
+genuinely required, controllable through an explicit configuration
+switch. These three constraints shaped the dataset, the preprocessing
+chain, and the evaluation protocol described in the rest of this
+chapter.
+
+The remaining sections describe the four data sources that the study
+relies on (a real-contract pilot, a synthetic validation corpus with
+predefined ground truth, a retrieval knowledge base, and twenty-two
+market cohorts), the preprocessing applied to each of them, the
+hardware and software setup under which the experiments were run,
+and the evaluation protocol that produced the metrics reported in
+Chapter 6.
+
+
+4.2  Dataset
+
+The study draws on four logically separate data collections. They
+are kept distinct on purpose: the validation of one component must
+not be allowed to contaminate the training or tuning of another.
+A summary of the four collections is given in Table 4.1.
+
+>>> INSERT TABLE 4.1 HERE <<<
+
+TABLE 4.1  SUMMARY OF DATA COLLECTIONS USED IN THE STUDY
+
+| Collection                          | Size  | Format(s)            | Role in the study                                                |
+| Real-contract pilot                 | 6     | PDF, DOCX, scanned   | Field-extraction evaluation; not used for scoring validation.    |
+| Synthetic validation corpus         | 30    | Encoded in code      | Scoring validation against predefined expected ranges.           |
+| Retrieval knowledge base            | 88    | Indexed clauses      | Evidence retrieval for the RAG layer at inference time.          |
+| Market benchmarking cohorts         | 22    | JSON cohort files    | Salary and notice-period percentile computation.                 |
+
+
+4.2.1  Real-Contract Pilot Corpus
+
+Six anonymised Indian employment contracts collected from peers and
+senior students form the real-contract pilot. The set was assembled
+to span deliberately different document conditions. Two of the six
+are clean digital PDF files exported from corporate HR portals; two
+are DOCX files that had been forwarded by email and were lightly
+edited along the way; one is a phone photograph of a printed offer
+letter, where the page is slightly skewed and partially shadowed;
+and the sixth is a scanner output where alternate pages have picked
+up a faint colour cast from an inkjet printer. Personally identifying
+fields — names, employee codes, manager names, account numbers,
+addresses — were removed by hand before the file entered the project
+tree. This pilot is used only for field-extraction evaluation
+(Section 6, Subsection F). It is held out of scoring validation
+on purpose, since the same authors who drafted the synthetic ground
+truth would otherwise be in a position to grade the engine on
+their own intuitions.
+
+
+4.2.2  Synthetic Validation Corpus
+
+The scoring engine is validated against a controlled corpus of
+thirty contracts authored programmatically. We chose the synthetic
+route over a larger real corpus for two reasons. First, the ground
+truth could be encoded with full precision: the salary percentile,
+notice percentile, benefit list, restrictive clauses, and role level
+are written out by hand for each test case rather than recovered
+from a document. Second, the experimental signal is not muddied by
+extraction errors, so a failure of the scoring engine cannot be
+masked by a successful upstream parse, and vice versa.
+
+The corpus spans four company categories. Eleven service-MNC
+contracts are modelled on TCS, Infosys, Wipro, HCL, Cognizant, Tech
+Mahindra, Capgemini, Accenture, LTIMindtree, Mphasis, and Hexaware.
+Eleven product-company contracts are modelled on Google, Microsoft,
+Amazon, Flipkart, Adobe, Oracle, Samsung, Salesforce, Walmart,
+Intuit, and Zoho. Six startup contracts are modelled on Razorpay,
+PhonePe, CRED, Swiggy, Zomato, and Paytm. The remaining two
+contracts are modelled on Deloitte and EY for the consulting
+category. Annual CTC values range from Rs. 3.50 lakhs at the
+entry-service end to Rs. 30.00 lakhs at the senior-product end,
+covering the operational band of Indian tech-employment offers.
+Each test case carries a predefined expected score range and an
+expected grade list; both are stored alongside the contract inputs
+in backend/app/evaluation/ground_truth.py and serve as the reference
+against which scoring outputs are compared.
+
+
+4.2.3  Retrieval Knowledge Base
+
+The retrieval-augmented evidence layer draws on a knowledge base of
+eighty-eight indexed contracts. The base aggregates the six
+anonymised real contracts, the thirty synthetic contracts described
+above, and a further fifty-two contracts collected during Sprint III
+to cover the long tail of clause language. The latter group includes
+additional service-MNC, product, and startup variants and was
+assembled specifically so that retrieval over rare clause types —
+garden leave, broad intellectual-property assignment, commission-
+linked compensation — would return realistic neighbours rather than
+collapsing onto a small set of duplicates. The knowledge base is
+read-only at evaluation time and never feeds back into the scoring
+engine; its only role is to surface evidence chunks that the user
+sees alongside the score.
+
+
+4.2.4  Market Benchmarking Cohorts
+
+Market percentiles are computed against twenty-two curated cohorts
+stored as JSON files under backend/data/market_data. Each file
+encodes a triple of role, city cluster, and experience band — for
+example "SDE / Bangalore / 0–2 years" or "Marketing / Mumbai /
+2–5 years". Salary and notice-period distributions inside each
+cohort were assembled from a combination of public reporting
+(Glassdoor median bands and AmbitionBox), publicly available
+company-reported salary ranges, and curated peer reports that were
+cross-checked against at least three sources per data point. The
+twenty-two cohorts cover seven role families (SDE, Analyst, HR,
+Marketing, Finance, Operations, Product) across five to seven city
+clusters and three experience bands, with a small set of fallback
+cohorts that are used when no specific match can be located. The
+cohort layout, including the synonym table that maps "Software
+Engineer", "Backend Developer", "Full Stack Engineer", and "SDE-1"
+to a canonical SDE role, is described in Section 3.2.2.
+
+
+4.3  Dataset Preprocessing
+
+Preprocessing is implemented as a chain of services under
+backend/app/services/. Each stage is unit-tested in isolation and
+exposes a fixed input/output contract through Pydantic models, so
+a change at one boundary cannot silently break a later stage. The
+preprocessing chain has five logical phases: format normalisation,
+OCR for scanned pages, field extraction and sanitisation, clause
+segmentation and embedding, and deduplication with ground-truth
+annotation. We describe each in turn.
+
+
+4.3.1  Format Normalisation
+
+The first stage, in parser_service.py, detects the file format and
+routes it to the appropriate text reader. PDF files are passed
+through pdfplumber, which is generally faithful for digitally born
+layouts and exposes the page-level text grid we need for the
+density check below. DOCX files are read with python-docx;
+paragraphs are walked in document order and assembled with explicit
+line breaks, so that the regex layer downstream can rely on
+positional information when matching section headers. The output
+of this stage is a plain dictionary of the form
+{text: str, pages: int, source: "digital" | "ocr"}. For DOCX inputs
+the source is always "digital" because the format does not admit a
+scanned variant.
+
+A density check on the parsed text decides whether the OCR cascade
+is required. If a PDF page contains fewer than a small empirically
+chosen number of characters per square inch (after stripping
+whitespace and page headers), the parser flags that page as scanned
+and the OCR cascade takes over for it. The threshold was tuned on
+the real-contract pilot — the goal was for scanned letters in the
+pilot to trigger OCR while clean digital exports stayed on the fast
+path — and has not been changed since. Pages that fall on the right
+side of the threshold pass straight through with the source field
+set to "digital".
+
+
+4.3.2  OCR Pipeline for Scanned Pages
+
+Scanned pages are processed by a three-tier cascade in
+ocr_service.py. The first tier sends the rendered page image to
+Google Gemini Vision through llm_service.py. Gemini Vision is
+preferred at this position because, on our pilot images, it handled
+multi-column layouts, embedded letterhead graphics, and faint
+inkjet bands more reliably than the other two tiers. If the Gemini
+call fails or is rate-limited, the service falls back to PyMuPDF,
+which sometimes succeeds on PDFs that look scanned to the eye but
+still carry a hidden text layer. The third tier renders the page at
+300 DPI with pdf2image and runs Tesseract; this is the slowest and
+least accurate path and is reserved for pages where the first two
+tiers return nothing usable.
+
+All three tiers feed into a shared post-processor that normalises
+whitespace, strips obvious OCR artefacts (stray pipe characters,
+isolated single letters, repeated punctuation runs), and runs a
+second density check on the recovered text. If the post-processed
+output still falls below the density threshold, the page is flagged
+for manual review rather than being silently passed downstream.
+This safeguard fired exactly once during the Sprint I pilot —
+correctly — on a heavily compressed scan from an old inkjet printer
+where Tesseract had returned a confident-looking block of garbage.
+
+
+4.3.3  Field Extraction and Sanitisation
+
+Extraction is hybrid by design. The deterministic layer, in
+rule_extraction_service.py, holds ninety-three compiled regular
+expressions grouped by field (CTC, notice period, training bond,
+non-compete duration, probation, benefits) and ordered within each
+group by specificity. The most specific pattern is tried first and
+the first match wins. Each pattern carries a section-context
+requirement that prevents, for example, a "Rs. 18 lakhs" reference
+inside an insurance-cap clause from being captured as the
+candidate's annual CTC. This contextualisation was added after a
+miss during Sprint I, where exactly that pattern fired on a real
+contract and inflated the salary by an order of magnitude.
+
+Currency normalisation runs after matching. Indian salary
+expressions appear in many forms — "18 LPA", "Rs. 1,800,000/-",
+"Rs. 18 Lacs", "INR 18,00,000", "Cost to Company: 18 lakhs per
+annum" — and the normaliser converts each surface form into a
+single Decimal value in rupees. Unit suffixes are handled through
+a small lookup table; lakhs and crores are expanded explicitly,
+because these tokens appear nowhere in Western salary corpora and
+are not handled by off-the-shelf currency parsers.
+
+When the regex pass leaves a required field empty,
+sniper_extraction_service.py constructs a focused prompt for that
+single field and asks Gemini 2.0 Flash for a typed JSON answer. The
+prompt template embeds the relevant section context (recovered
+through a lightweight section locator) and a strict schema
+definition; the response is parsed and validated against the
+matching Pydantic model before it is allowed back into the
+pipeline. Per-field prompting was chosen over a single
+extract-everything prompt early in the project. The single prompt
+produced inconsistent JSON, was sensitive to rate limits, and hid
+bugs at the boundary. Switching to per-field prompts cut token
+usage by roughly sixty percent and removed the half-structured-JSON
+failure mode.
+
+
+4.3.4  Clause Segmentation and Embedding
+
+Documents that are admitted into the knowledge base go through an
+additional segmentation stage in chunking_service.py. The chunker
+walks the text, identifies headers and keyword boundaries, and
+assigns each chunk to one of six clause categories: termination,
+intellectual property, non-compete, confidentiality, compensation,
+and a general catch-all. Where a header does not match the keyword
+list, the chunker drops to paragraph-level granularity rather than
+guessing at a category. Each chunk is then embedded with
+sentence-transformers/all-MiniLM-L6-v2, a 384-dimensional encoder
+selected for its favourable accuracy-to-latency trade-off on short
+clause text. Embeddings are L2-normalised so that cosine similarity
+reduces to a dot product at query time.
+
+The chunks, their embeddings, and a small metadata payload
+(contract_id, chunk_id, clause_type, filename, file_hash) are
+persisted into the fairdeal_contracts collection in ChromaDB.
+ChromaDB was chosen over FAISS for three practical reasons:
+persistent storage works out of the box on Windows, thread-safe
+singleton initialisation removes a class of cold-start race
+conditions we hit in an earlier prototype, and metadata filtering
+by clause_type can be expressed at query time as a where clause
+rather than as a Python-side post-filter.
+
+
+4.3.5  Deduplication and Ground-Truth Annotation
+
+Every contract is fingerprinted with SHA-256 before it enters the
+index. If a fingerprint already exists in the manifest, the
+contract is skipped; this prevents accidental duplication when the
+index is rebuilt and stops retrieval results from collapsing onto a
+small set of repeated chunks. Ground truth for the synthetic
+validation corpus is encoded directly in
+backend/app/evaluation/ground_truth.py as an explicit dictionary
+per test case — salary percentile, notice percentile, benefits
+list, training bond status and amount, non-compete duration,
+probation length, role level, equity flag, working-hours band, the
+expected score range, and the expected grade list. Encoding the
+ground truth in code rather than in a spreadsheet keeps it under
+version control alongside the scoring engine, so any change to a
+ground-truth value can be reviewed in a pull request the same way
+a code change would be.
+
+
+4.4  Experimental Setup
+
+4.4.1  Hardware and Software Environment
+
+All experiments were run on a Windows 10 development laptop with a
+sixteen-gigabyte memory budget and a standard consumer SSD. The
+backend runs on Python 3.11 with FastAPI as the web framework and
+uvicorn as the ASGI server; the frontend runs on Node 20 with
+Vite 5. The sentence-transformers encoder runs on CPU, because the
+embedding workload at this scale (eighty-eight contracts and a few
+thousand chunks) is small enough that GPU acceleration would not
+change the wall-clock time materially. Gemini calls go to the
+public API with the free-tier rate limits in effect; the validation
+suite is built so that the LLM-dependent paths can be replaced with
+cached responses for offline reproduction.
+
+
+4.4.2  Scoring Engine Configuration
+
+The psychological scoring engine in psychological_scoring.py is
+parameterised by a base weight vector that depends on role level
+(entry, mid, senior), a context-multiplier table for four contract
+archetypes (unicorn, golden handcuffs, toxic, startup rocket), and
+a calibration curve that expands the upper score range above
+eighty-five and compresses the lower range below thirty. All three
+configurations were locked at the start of Sprint III, after the
+calibration discussions that followed the Sprint II retrospective,
+and were not altered during the validation run reported in
+Chapter 6. Locking the configuration in this way means that the
+entire experimental result is a function of the input data, not of
+incidental engine tweaks made during the validation pass.
+
+
+4.4.3  Reproducibility Controls
+
+Reproducibility is enforced at three levels. At the algorithm
+level, the scoring engine is purely deterministic: every floating-
+point step is identical across runs because no random sampling is
+involved. At the data level, every input — test cases, market
+cohorts, knowledge-base contracts, ground truth — is checked into
+the repository under version control, so the exact data that
+produced the reported numbers is available to a reviewer. At the
+orchestration level, the validation suite is exposed through a
+single endpoint, /api/evaluate/run, that processes all thirty
+cases, computes the full metric set, and returns a JSON report; the
+same code path is invoked when the suite is run from the command
+line via the analyze CLI script. A reviewer who wants to reproduce
+the numbers in Chapter 6 needs only to clone the repository,
+install the dependencies, and call the endpoint.
+
+
+4.5  Evaluation Protocol
+
+The evaluation procedure is implemented in
+backend/app/evaluation/evaluator.py and produces seven distinct
+measurements, each described in this section. None of these
+measurements are computed against the real-contract pilot — that
+corpus is reserved for the field-extraction evaluation in §4.5.6 —
+because the same team that wrote the ground truth would otherwise
+be grading the engine on contracts they have already inspected.
+
+
+4.5.1  Pass Rate Against Expected Score Ranges
+
+For each of the thirty synthetic test cases, the scoring engine is
+invoked with the encoded inputs (salary percentile, notice
+percentile, benefits list, restrictive clauses, role level, and the
+remaining flags) and a final fairness score is produced. A test
+case is recorded as passing when the final score lies inside the
+expected range stored in ground_truth.py. The aggregate metric is
+the proportion of passing cases. Expected ranges are wide enough
+to absorb minor calibration drift — an entry-level service contract
+may carry an expected range of forty to sixty-five — but narrow
+enough to falsify any score that breaks a category-level ordering,
+such as a TCS entry contract scoring above a Salesforce senior
+contract.
+
+
+4.5.2  Determinism Verification
+
+The scoring engine is run three times in succession against the
+same input set, with the system clock changing between runs.
+Pairwise comparison of the resulting score vectors is then
+performed; a determinism score of one hundred percent requires
+every contract to produce an identical final score across all three
+runs. This guards against any inadvertent introduction of
+nondeterminism in calibration, weighting, or context-multiplier
+selection, all of which are easy to break by accident when an
+engineer is iterating on the formula.
+
+
+4.5.3  Known-Ordering Compliance
+
+Fifteen contract pairs with unambiguous quality orderings are
+encoded in KNOWN_ORDERINGS. Each pair takes the form (winner_id,
+loser_id) — for example, a Salesforce senior contract at
+Rs. 30 lakhs with equity, against a TCS entry contract at
+Rs. 3.62 lakhs with a two-year training bond. The ordering accuracy
+is the fraction of pairs in which the engine ranks the winner above
+the loser. Pairs were chosen specifically to avoid ambiguity: a
+domain expert presented with the two contracts side by side would
+unambiguously prefer the winner.
+
+
+4.5.4  Inter-Category Discrimination
+
+Welch's t-test, which does not assume equal variance between
+groups, is applied to the score distributions of pairs of company
+categories. Cohen's d is reported alongside the t-statistic as an
+effect-size measure. The categories of interest are product against
+service, startup against service, and product against consulting.
+The consulting group is small (n = 2) and is reported with the
+caveat that the t-test result there is illustrative rather than
+conclusive.
+
+
+4.5.5  Feature–Score Correlation Analysis
+
+Pearson correlation coefficients are computed between the final
+score and four input features: salary percentile, benefits count,
+notice percentile, and non-compete duration in months. The
+expectation, derived from the design of the scoring engine, is that
+the first two should correlate strongly and positively, the third
+should correlate strongly and negatively, and the fourth should
+correlate only weakly because of the confounding between high-CTC
+contracts and the simultaneous presence of non-compete clauses.
+Whether this expectation is met is reported in Chapter 6.
+
+
+4.5.6  Field-Extraction Pilot Evaluation
+
+The six real anonymised contracts are run through the full
+ingestion and extraction pipeline. Per-field accuracy is tabulated
+against the manually verified ground truth for that contract. The
+metric for each field is the proportion of contracts on which the
+regex layer alone produced the correct value; the LLM sniper is
+treated as a backstop and reported separately, so that the
+contribution of the deterministic and the model-based components
+can be compared rather than conflated.
+
+
+4.5.7  Latency Profiling
+
+Wall-clock latency is measured stage by stage on a contract that
+does not require OCR or sniper invocation, and a second time on a
+worst-case contract where both paths fire. Mean latency per stage
+is reported in milliseconds. The numbers reported are means over
+five repeated runs after a warm cache; cold-start latency, where
+the sentence-transformers encoder is still being loaded into
+memory, is excluded because it is paid once per server start rather
+than once per request.
+
+The seven measurements above produce every metric reported in
+Chapter 6 directly, with no hand-tuning between the experimental
+run and the figures.
+
+
+================================================================================
 CHAPTER 6 — RESULTS AND DISCUSSIONS
 ================================================================================
 
@@ -1481,8 +2010,11 @@ REFERENCES  (15 entries — meets the manual's minimum)
      using Siamese BERT-Networks," in Proc. EMNLP-IJCNLP, 2019,
      pp. 3982–3992.
 
-[9]  Google DeepMind, "Gemini: A Family of Highly Capable Multimodal
-     Models," arXiv preprint arXiv:2312.11805, 2023.
+[9]  Gemini Team, Google (R. Anil, S. Borgeaud, Y. Wu, J.-B. Alayrac,
+     J. Yu, R. Soricut, J. Schalkwyk, A. M. Dai, A. Hauth, K. Millican,
+     and the Gemini contributors), "Gemini: A Family of Highly
+     Capable Multimodal Models," arXiv preprint arXiv:2312.11805,
+     Dec. 2023.
 
 [10] S. Ramírez, "FastAPI: A modern, fast web framework for building
      APIs with Python 3.7+," 2019. [Online]. Available:

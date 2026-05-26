@@ -13,7 +13,12 @@ configure_logging()
 log = get_logger("main")
 
 app = FastAPI(
-    title="FairDeal DEBUG",
+    title="FairDeal",
+    description=(
+        "FAIRDEAL — AI-powered Indian employment contract intelligence engine. "
+        "Endpoints expose the eight-stage analysis pipeline, the knowledge-base "
+        "explorer, and the validation harness."
+    ),
     version="1.0.0",
     default_response_class=ORJSONResponse,
 )

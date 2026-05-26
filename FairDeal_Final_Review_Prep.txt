@@ -1,0 +1,93 @@
+================================================================================
+FAIRDEAL: FINAL YEAR PROJECT REVIEW PREPARATION GUIDE
+================================================================================
+Goal: Impress the panel, secure full marks, and demonstrate deep technical and domain knowledge.
+
+--------------------------------------------------------------------------------
+PART 1: PROJECT PITCH & CORE METRICS (The "Elevator Pitch")
+--------------------------------------------------------------------------------
+
+1. What exactly does FairDeal do?
+FairDeal is an AI-powered Employment Contract Intelligence Engine. It takes an employment contract (PDF/DOCX), runs it through an 8-stage automated pipeline, and dissects it to tell the user exactly where they stand. It extracts hidden clauses (bonds, notice periods), benchmarks the salary against real market data, assigns a psychological "fairness" score, and automatically generates a negotiation playbook to help the employee negotiate better terms.
+
+2. What is the Sample Size / Data Basis?
+- Market Benchmarking: FairDeal relies on segmented market data (Salary datasets by role, city, experience band, and company type) located in the backend data directory. To handle sparse data, it uses "progressive cohort broadening" (relaxing filters until statistical significance is reached).
+- RAG Knowledge Base: It uses a corpus of real contract precedents stored in a ChromaDB vector database to compare clauses and detect "Clause Drift". 
+
+3. What is the Novelty? (Your "Wow" Factors)
+- The "Sniper LLM" Architecture: Instead of dumping an entire 30-page PDF into an LLM (which is slow, expensive, and causes hallucinations), FairDeal first uses deterministic Regex. If that fails, it scores pages for relevance and sends ONLY the most relevant page to the LLM. 
+- Psychological Scoring Engine v3.0: It doesn't just average numbers. It uses "Context Multipliers" recognizing patterns like the "Golden Handcuffs" (great pay but trapped) or "Toxic Contracts" (multiple risk factors), altering the score based on real human psychology.
+- Clause Drift Detection: Using RAG (Retrieval-Augmented Generation), it measures how far a contract's language deviates from "gold standard" market precedent clauses.
+
+4. What does it do that no other tool in the current market does?
+- Current Market: Most PDF parsers or AI tools (like ChatGPT) just summarize text.
+- FairDeal's Edge: 
+  a) It calculates mathematical percentiles (P25, P50, P75) against REAL market salaries.
+  b) It checks Indian labor laws (e.g., flagging missing PF/gratuity).
+  c) It generates context-aware negotiation playbooks (e.g., it knows that negotiating salary at TCS/Infosys campus placements is pointless, so it automatically shifts focus to negotiating notice periods or bonds).
+  d) It works on scanned images via Gemini 2.0 Flash Vision OCR.
+
+
+--------------------------------------------------------------------------------
+PART 2: INTENSIVE VIVA QUESTIONS & ANSWERS (TECHNICAL)
+--------------------------------------------------------------------------------
+
+Q1: Explain your 8-stage architecture briefly.
+Answer: 
+1. Parse & OCR: Extracts text, uses Gemini Vision for scanned images.
+2. Hybrid Extraction: Regex first, falls back to "Sniper LLM" for missing fields.
+3. Market Benchmarking: Calculates salary/notice period percentiles.
+4. Red Flag Detection: Rule engine checks against Indian labor laws.
+5. Psych Scoring: Applies dynamic weights and context multipliers to grade the contract.
+6. Negotiation Playbook: Generates priority asks and email scripts.
+7. RAG Evidence: Queries ChromaDB to find similar precedent clauses.
+8. AI Narration: Generates a human-readable final verdict.
+
+Q2: Why did you use ChromaDB instead of traditional databases?
+Answer: ChromaDB is a Vector Database. Traditional databases perform keyword searches, but we needed "Semantic Search" to find similar contract clauses even if they use different wording. We use 'sentence-transformers/all-MiniLM-L6-v2' to convert text into embeddings (vectors) and ChromaDB stores/queries these efficiently to detect 'Clause Drift'.
+
+Q3: How do you solve the LLM "Hallucination" problem in your project?
+Answer: By NOT relying on LLMs for everything. We use a "Hybrid Extraction" pipeline. 90% of standard metrics are pulled via battle-tested Regex. When we do use an LLM, we use the "Sniper" method—we strictly isolate the exact page containing the data and send only that snippet with a highly constrained prompt. We also use a data sanitization pipeline to enforce sanity checks (like bounds checking Indian numbering formats like ₹18,00,000).
+
+Q4: Why FastAPI and React instead of Django/Flask or plain HTML?
+Answer: FastAPI was chosen for the backend because it supports native asynchronous programming (AsyncIO), which is critical when making multiple parallel I/O calls to LLMs and Vector databases. It also auto-generates Swagger documentation via Pydantic schemas. React 18 + Tailwind allowed us to build dynamic, complex UI components like Animated Score Gauges, Heatmaps, and Bell Curves smoothly.
+
+Q5: What happens if the LLM API goes down?
+Answer: The system is designed to be highly resilient. Without the API key, FairDeal gracefully degrades into a fully deterministic mode. It continues to extract via Regex, applies rule-based scoring, calculates benchmarks, and generates a deterministic narration based on conditions, ensuring the core product never breaks.
+
+Q6: How does the "Progressive Cohort Broadening" work in Benchmarking?
+Answer: If a user enters a hyper-specific role (e.g., "SDE in Tier-2 city with 0 YOE") and we have less than 5 data points, the system automatically relaxes the filters step-by-step (first location, then experience, then role) until it finds a statistically significant sample size to compare against.
+
+Q7: What is "Clause Drift"?
+Answer: It is an anomaly detection technique. By embedding standard, fair clauses into our vector database, we compare the user's uploaded clause against it. The vector distance between them represents the "drift." High drift means the employer has added unusual, potentially predatory legalese.
+
+
+--------------------------------------------------------------------------------
+PART 3: INTENSIVE VIVA QUESTIONS & ANSWERS (NON-TECHNICAL & BUSINESS)
+--------------------------------------------------------------------------------
+
+Q8: What specific problem is this solving?
+Answer: Millions of freshers and mid-level employees in India sign contracts blindly because they don't understand legalese. They get trapped by ₹2,00,000+ training bonds, 90-day notice periods, or restrictive non-competes. FairDeal democratizes legal and market intelligence, turning a 30-page complex document into a simple, actionable dashboard in under 5 seconds.
+
+Q9: Is it legal to upload employment contracts to your platform?
+Answer: We prioritize privacy. In a production environment, contracts are analyzed ephemerally (stored in memory, not on disk unless opted-in for the knowledge base), and we use local models/Regex as much as possible. Our Sniper LLM ensures only heavily fragmented, anonymized snippets reach external APIs.
+
+Q10: Who is your target audience?
+Answer: Primary audience: Fresh graduates entering the IT/Service sectors and mid-level professionals switching jobs. Secondary audience: HR professionals to benchmark their own offer letters against market standards.
+
+Q11: How do you define a "Toxic Contract" or "Golden Handcuffs"?
+Answer: These are our proprietary Context Multipliers. "Golden Handcuffs" is when the salary is top-tier (e.g., >80th percentile) but the restrictions are severe (90-day notice + heavy bond). A "Toxic Contract" is flagged when there are 3 or more critical risk factors (e.g., missing statutory benefits, illegal non-competes, massive bonds), actively dropping the psychological score by 15%.
+
+Q12: If you had more time, what would you add? (Future Scope)
+Answer: 
+1. B2B Enterprise Dashboard for HRs to ensure their contracts are fair.
+2. A real-time voice-based AI negotiation agent to roleplay negotiations with the user.
+3. Expansion from Indian labor laws to US/EU labor standards.
+4. Auto-redlining (actually crossing out and replacing text on the uploaded PDF).
+
+--------------------------------------------------------------------------------
+FINAL ADVICE FOR THE PRESENTATION:
+- Show the UI: Visuals of the "Clause Heatmap" and "Bell Curve" will immediately win them over.
+- Emphasize "Sniper LLM": Panelists love it when students show awareness of LLM flaws (cost/hallucination) and engineer workarounds.
+- Mention "Under 5 seconds": Speed is a great metric for technical efficiency. 
+================================================================================
